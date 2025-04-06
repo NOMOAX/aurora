@@ -1,0 +1,14 @@
+{
+  "name": "com.kevin-games.aurora",
+  "version": "1.0.0",
+  "displayName": "Aurora",
+  "description": "High-performance, low-memory-consumption toolkit for C#.",
+  "keywords": [
+    "aurora"
+  ],
+  "author": {
+    "name": "Kevin Games",
+    "email": "844038603@qq.com",
+    "url": "https://gitee.com/kevin-games"
+  }
+}
