@@ -325,7 +325,7 @@ namespace Aurora.Sorting
                     // run 的长度不足，扩充到 minRunCount，但不要超过剩余的元素数量
                     if (runCount < minRunCount)
                     {
-                        var forceRunCount = Math.Min(minRunCount, count);
+                        var forceRunCount = System.Math.Min(minRunCount, count);
                         BinaryInsertionSort.InternalSort(collection, index, forceRunCount, index + runCount, comparer);
                         runCount = forceRunCount;
                     }
@@ -377,7 +377,7 @@ namespace Aurora.Sorting
                     // run 的长度不足，扩充到 minRunCount，但不要超过剩余的元素数量
                     if (runCount < minRunCount)
                     {
-                        var forceRunCount = Math.Min(minRunCount, count);
+                        var forceRunCount = System.Math.Min(minRunCount, count);
                         BinaryInsertionSort.InternalSort(
                             keys,
                             values,

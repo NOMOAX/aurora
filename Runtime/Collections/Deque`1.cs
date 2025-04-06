@@ -547,7 +547,7 @@ namespace Aurora.Collections
             const int minimumGrow = 4;
 
             var newCapacity = checked(_array.Length * growFactor);
-            newCapacity = Math.Max(newCapacity, checked(_array.Length + minimumGrow));
+            newCapacity = System.Math.Max(newCapacity, checked(_array.Length + minimumGrow));
             if (newCapacity < capacity)
             {
                 newCapacity = capacity;

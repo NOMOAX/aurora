@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace Aurora
+﻿namespace Aurora
 {
     /// <summary>
     /// 提供一组数学方法。
     /// </summary>
-    public static class AuroraMath
+    public static class Math
     {
         /// <summary>
         /// 判断一个有符号 32 位整数是否是质数。
@@ -22,7 +20,7 @@ namespace Aurora
             {
                 return candidate == 2;
             }
-            var limit = (int) Math.Sqrt(candidate);
+            var limit = (int) System.Math.Sqrt(candidate);
             for (var divisor = 3; divisor <= limit; divisor += 2)
             {
                 if (candidate % divisor == 0)

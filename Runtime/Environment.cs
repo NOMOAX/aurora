@@ -3,7 +3,7 @@
     /// <summary>
     /// 运行环境。
     /// </summary>
-    public static class AuroraEnvironment
+    public static class Environment
     {
         /// <summary>
         /// 指示当前环境是否为单线程环境。
