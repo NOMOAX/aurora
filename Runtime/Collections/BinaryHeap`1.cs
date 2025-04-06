@@ -81,7 +81,7 @@ namespace Aurora.Collections
                 {
                     throw new OverflowException();
                 }
-                var newLength = (int) System.Math.Min((uint) length * 2 + 1, int.MaxValue);
+                var newLength = (int) Math.Min((uint) length * 2 + 1, int.MaxValue);
                 var newArray  = new T[newLength];
                 Array.Copy(_array, 0, newArray, 0, length);
                 _array = newArray;

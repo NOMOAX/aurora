@@ -27,7 +27,7 @@ namespace Aurora.Diagnostics
             stringBuilder.Append(',');
             stringBuilder.Append(' ');
             stringBuilder.Append('@');
-            stringBuilder.Append(System.Environment.CurrentManagedThreadId);
+            stringBuilder.Append(Environment.CurrentManagedThreadId);
         }
 
         /// <summary>

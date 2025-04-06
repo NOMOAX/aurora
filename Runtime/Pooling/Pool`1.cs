@@ -35,7 +35,7 @@ namespace Aurora.Pooling
         /// </summary>
         /// <param name="policy">要使用的策略。</param>
         /// <exception cref="ArgumentNullException"><paramref name="policy"/> 为 <see langword="null"/>。</exception>
-        public Pool(IPooledObjectPolicy<T> policy) : this(policy, System.Environment.ProcessorCount * 2)
+        public Pool(IPooledObjectPolicy<T> policy) : this(policy, Environment.ProcessorCount * 2)
         {
         }
 

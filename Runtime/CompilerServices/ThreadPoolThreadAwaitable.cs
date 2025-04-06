@@ -44,7 +44,7 @@ namespace Aurora.CompilerServices
 
             private static bool IsThreadPoolThread => Thread.CurrentThread.IsThreadPoolThread;
 
-            private static bool IsSingleThreadEnvironment => Environment.IsSingleThreadEnvironment;
+            private static bool IsSingleThreadEnvironment => AuroraEnvironment.IsSingleThreadEnvironment;
 
             public void OnCompleted(Action continuation)
             {

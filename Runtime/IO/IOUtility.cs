@@ -142,7 +142,7 @@ namespace Aurora.IO
                 {
                     return false;
                 }
-                var neededAvailableFreeSpace = System.Math.Max(existingFileLength - length, 0L);
+                var neededAvailableFreeSpace = Math.Max(existingFileLength - length, 0L);
                 InternalThrowIfNotEnoughAvailableFreeSpaceOnDrive(fileInfo.FullName, neededAvailableFreeSpace);
             }
             else
