@@ -1,0 +1,5 @@
+﻿<linker>
+    <assembly fullname="mscorlib">
+        <type fullname="System.Collections.Concurrent.ConcurrentDictionary`2"/>
+    </assembly>
+</linker>

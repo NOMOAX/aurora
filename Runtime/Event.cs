@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -10,31 +10,60 @@ namespace Aurora
     /// </summary>
     public static class Event
     {
-        private static readonly Dictionary<int, Delegate> Delegates = new Dictionary<int, Delegate>();
+        private static readonly ConcurrentDictionary<int, Delegate> Delegates =
+            new ConcurrentDictionary<int, Delegate>();
 
-        private static readonly object Lock = new object();
+        /// <remarks>表示 <c>System.Collections.Concurrent.ConcurrentDictionary&lt;int, Delegate&gt;</c> 类型的实例方法 <c>private bool TryRemoveInternal(int key, out Delegate value, bool match, Delegate oldValue)</c> 的签名</remarks>
+        private delegate bool TryRemoveInternalMethodSignature(
+            int          key,
+            out Delegate value,
+            bool         matchValue,
+            Delegate     oldValue);
+
+        /// <remarks>表示 <see cref="Delegates"/> 的实例方法 <c>private bool TryRemoveInternal(int key, out Delegate value, bool match, Delegate oldValue)</c></remarks>
+        private static readonly TryRemoveInternalMethodSignature TryRemoveInternalCall =
+            (TryRemoveInternalMethodSignature) Delegate.CreateDelegate(
+                typeof(TryRemoveInternalMethodSignature),
+                Delegates,
+                typeof(ConcurrentDictionary<int, Delegate>).GetMethod(
+                    "TryRemoveInternal",
+                    BindingFlags.Instance | BindingFlags.NonPublic,
+                    null,
+                    CallingConventions.Standard | CallingConventions.HasThis,
+                    new[] { typeof(int), typeof(Delegate).MakeByRefType(), typeof(bool), typeof(Delegate) },
+                    null
+                )!,
+                true
+            );
 
         /// <summary>
         /// 向事件注册委托。
         /// </summary>
         /// <param name="id">用于标识事件的识别号。</param>
-        /// <param name="subscribeDelegate">要向事件注册的委托。</param>
-        /// <exception cref="ArgumentException">被 <paramref name="id"/> 标识的事件和 <paramref name="subscribeDelegate"/> 都不为 <see langword="null"/>，且他们不是相同委托类型的实例。</exception>
-        public static void Subscribe(int id, Delegate subscribeDelegate)
+        /// <param name="delegate">要向事件注册的委托。</param>
+        /// <exception cref="ArgumentException">被 <paramref name="id"/> 标识的事件和 <paramref name="delegate"/> 都不为 <see langword="null"/>，且他们不是相同委托类型的实例。</exception>
+        public static void Subscribe(int id, Delegate @delegate)
         {
-            if (subscribeDelegate == null)
+            if (@delegate == null)
             {
                 return;
             }
-            lock (Lock)
+            while (true)
             {
-                if (Delegates.TryGetValue(id, out var @delegate))
+                if (Delegates.TryGetValue(id, out var oldDelegate))
                 {
-                    Delegates[id] = Delegate.Combine(@delegate, subscribeDelegate);
+                    var newDelegate = Delegate.Combine(oldDelegate, @delegate);
+                    if (Delegates.TryUpdate(id, newDelegate, oldDelegate))
+                    {
+                        return;
+                    }
                 }
                 else
                 {
-                    Delegates.Add(id, subscribeDelegate);
+                    if (Delegates.TryAdd(id, @delegate))
+                    {
+                        return;
+                    }
                 }
             }
         }
@@ -43,28 +72,34 @@ namespace Aurora
         /// 从事件取消注册委托。
         /// </summary>
         /// <param name="id">用于标识事件的识别号。</param>
-        /// <param name="unsubscribeDelegate">要从事件取消注册的委托。</param>
-        /// <exception cref="ArgumentException">被 <paramref name="id"/> 标识的事件和 <paramref name="unsubscribeDelegate"/> 都不为 <see langword="null"/>，且他们不是相同委托类型的实例。</exception>
-        public static void Unsubscribe(int id, Delegate unsubscribeDelegate)
+        /// <param name="delegate">要从事件取消注册的委托。</param>
+        /// <exception cref="ArgumentException">被 <paramref name="id"/> 标识的事件和 <paramref name="delegate"/> 都不为 <see langword="null"/>，且他们不是相同委托类型的实例。</exception>
+        public static void Unsubscribe(int id, Delegate @delegate)
         {
-            if (unsubscribeDelegate == null)
+            if (@delegate == null)
             {
                 return;
             }
-            lock (Lock)
+            while (true)
             {
-                if (!Delegates.TryGetValue(id, out var @delegate))
+                if (!Delegates.TryGetValue(id, out var oldDelegate))
                 {
                     return;
                 }
-                var left = Delegate.Remove(@delegate, unsubscribeDelegate);
-                if (left == null)
+                var newDelegate = Delegate.Remove(oldDelegate, @delegate);
+                if (newDelegate != null)
                 {
-                    Delegates.Remove(id);
+                    if (Delegates.TryUpdate(id, newDelegate, oldDelegate))
+                    {
+                        return;
+                    }
                 }
                 else
                 {
-                    Delegates[id] = left;
+                    if (TryRemove(id, oldDelegate))
+                    {
+                        return;
+                    }
                 }
             }
         }
@@ -79,17 +114,7 @@ namespace Aurora
         /// <exception cref="ArgumentException"><paramref name="args"/> 中参数的顺序或类型不合法。</exception>
         public static object Send(int id, params object[] args)
         {
-            bool     got;
-            Delegate @delegate;
-            lock (Lock)
-            {
-                got = Delegates.TryGetValue(id, out @delegate);
-            }
-            return got switch
-            {
-                true  => Invoke(@delegate, args),
-                false => null
-            };
+            return Delegates.TryGetValue(id, out var value) ? Invoke(value, args) : null;
         }
 
         /// <summary>
@@ -104,17 +129,7 @@ namespace Aurora
         /// <exception cref="InvalidCastException">无法将返回值转换为 <typeparamref name="T"/>。</exception>
         public static T Send<T>(int id, params object[] args)
         {
-            bool     got;
-            Delegate @delegate;
-            lock (Lock)
-            {
-                got = Delegates.TryGetValue(id, out @delegate);
-            }
-            return got switch
-            {
-                true  => Invoke<T>(@delegate, args),
-                false => default
-            };
+            return Delegates.TryGetValue(id, out var value) ? Invoke<T>(value, args) : default;
         }
 
         /// <summary>
@@ -127,17 +142,7 @@ namespace Aurora
         /// <exception cref="ArgumentException"><paramref name="args"/> 中参数的顺序或类型不合法。</exception>
         public static object[] Sends(int id, params object[] args)
         {
-            bool     got;
-            Delegate @delegate;
-            lock (Lock)
-            {
-                got = Delegates.TryGetValue(id, out @delegate);
-            }
-            return got switch
-            {
-                true  => Invokes(@delegate, args),
-                false => Array.Empty<object>()
-            };
+            return Delegates.TryGetValue(id, out var value) ? Invokes(value, args) : Array.Empty<object>();
         }
 
         /// <summary>
@@ -152,17 +157,7 @@ namespace Aurora
         /// <exception cref="InvalidCastException">在调用被 <paramref name="id"/> 标识的事件的委托列表时，无法将其中的某一个返回值转换为 <typeparamref name="T"/>。</exception>
         public static T[] Sends<T>(int id, params object[] args)
         {
-            bool     got;
-            Delegate @delegate;
-            lock (Lock)
-            {
-                got = Delegates.TryGetValue(id, out @delegate);
-            }
-            return got switch
-            {
-                true  => Invokes<T>(@delegate, args),
-                false => Array.Empty<T>()
-            };
+            return Delegates.TryGetValue(id, out var value) ? Invokes<T>(value, args) : Array.Empty<T>();
         }
 
         /// <summary>
@@ -170,10 +165,7 @@ namespace Aurora
         /// </summary>
         public static void Clear()
         {
-            lock (Lock)
-            {
-                Delegates.Clear();
-            }
+            Delegates.Clear();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -212,6 +204,15 @@ namespace Aurora
                 returnValues[i] = Invoke<T>(delegates[i], args);
             }
             return returnValues;
+        }
+
+        /// <summary>
+        /// 尝试从 <see cref="Delegates"/> 中移除指定的键，当且仅当存在该键，且与该键对应的值等于 <paramref name="oldValue"/>。
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool TryRemove(int key, Delegate oldValue)
+        {
+            return TryRemoveInternalCall(key, out _, true, oldValue);
         }
     }
 }
