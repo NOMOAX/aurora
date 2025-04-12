@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Aurora.Pooling;
 
 namespace Aurora.Diagnostics
@@ -11,7 +12,11 @@ namespace Aurora.Diagnostics
         /// <summary>
         /// 获取单一实例。
         /// </summary>
-        public static ConsoleLogger Instance { get; } = new ConsoleLogger();
+        public static ConsoleLogger Instance
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get;
+        } = new ConsoleLogger();
 
         private ConsoleLogger()
         {

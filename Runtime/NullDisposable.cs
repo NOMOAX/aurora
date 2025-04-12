@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace Aurora
 {
@@ -10,7 +11,11 @@ namespace Aurora
         /// <summary>
         /// 获取单一实例。
         /// </summary>
-        public static NullDisposable Instance { get; } = new NullDisposable();
+        public static NullDisposable Instance
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get;
+        } = new NullDisposable();
 
         private NullDisposable()
         {
