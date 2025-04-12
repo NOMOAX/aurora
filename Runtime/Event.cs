@@ -6,21 +6,21 @@ using System.Runtime.CompilerServices;
 namespace Aurora
 {
     /// <summary>
-    /// 管理被识别号标识的事件的注册、取消注册和发送。
+    /// Manages event registration, unregistration, and publishing.
     /// </summary>
     public static class Event
     {
         private static readonly ConcurrentDictionary<int, Delegate> Delegates =
             new ConcurrentDictionary<int, Delegate>();
 
-        /// <remarks>表示 <c>System.Collections.Concurrent.ConcurrentDictionary&lt;int, Delegate&gt;</c> 类型的实例方法 <c>private bool TryRemoveInternal(int key, out Delegate value, bool match, Delegate oldValue)</c> 的签名</remarks>
+        /// <remarks>Represents the signature of the private <c>TryRemoveInternal</c> method in <c>ConcurrentDictionary&lt;int, Delegate&gt;</c> class.</remarks>
         private delegate bool TryRemoveInternalMethodSignature(
             int          key,
             out Delegate value,
             bool         matchValue,
             Delegate     oldValue);
 
-        /// <remarks>表示 <see cref="Delegates"/> 的实例方法 <c>private bool TryRemoveInternal(int key, out Delegate value, bool match, Delegate oldValue)</c></remarks>
+        /// <remarks>Represents the private <c>TryRemoveInternal</c> method of the <see cref="Delegates"/> instance.</remarks>
         private static readonly TryRemoveInternalMethodSignature TryRemoveInternalCall =
             (TryRemoveInternalMethodSignature) Delegate.CreateDelegate(
                 typeof(TryRemoveInternalMethodSignature),
@@ -37,11 +37,11 @@ namespace Aurora
             );
 
         /// <summary>
-        /// 向事件注册委托。
+        /// Subscribes a delegate to the event identified by the specified identifier.
         /// </summary>
-        /// <param name="id">用于标识事件的识别号。</param>
-        /// <param name="delegate">要向事件注册的委托。</param>
-        /// <exception cref="ArgumentException">被 <paramref name="id"/> 标识的事件和 <paramref name="delegate"/> 都不为 <see langword="null"/>，且他们不是相同委托类型的实例。</exception>
+        /// <param name="id">The unique identifier of the event.</param>
+        /// <param name="delegate">The delegate to subscribe to the event.</param>
+        /// <exception cref="ArgumentException">Both the event associated with <paramref name="id"/> and <paramref name="delegate"/> are not <see langword="null"/>, and they are not instances of the same delegate type.</exception>
         public static void Subscribe(int id, Delegate @delegate)
         {
             if (@delegate == null)
@@ -69,11 +69,11 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 从事件取消注册委托。
+        /// Unsubscribes a delegate from the event identified by the specified identifier.
         /// </summary>
-        /// <param name="id">用于标识事件的识别号。</param>
-        /// <param name="delegate">要从事件取消注册的委托。</param>
-        /// <exception cref="ArgumentException">被 <paramref name="id"/> 标识的事件和 <paramref name="delegate"/> 都不为 <see langword="null"/>，且他们不是相同委托类型的实例。</exception>
+        /// <param name="id">The unique identifier of the event.</param>
+        /// <param name="delegate">The delegate to unsubscribe from the event.</param>
+        /// <exception cref="ArgumentException">Both the event associated with <paramref name="id"/> and <paramref name="delegate"/> are not <see langword="null"/>, and they are not instances of the same delegate type.</exception>
         public static void Unsubscribe(int id, Delegate @delegate)
         {
             if (@delegate == null)
@@ -105,63 +105,33 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 发送事件。
+        /// Publishes the event identified by the specified identifier.
         /// </summary>
-        /// <param name="id">用于标识事件的识别号。</param>
-        /// <param name="args">参数。</param>
-        /// <returns>如果存在被 <paramref name="id"/> 标识的事件，则为调用该事件的返回值；否则为 <see langword="null"/>。</returns>
-        /// <exception cref="TargetParameterCountException"><paramref name="args"/> 中参数的数量不合法。</exception>
-        /// <exception cref="ArgumentException"><paramref name="args"/> 中参数的顺序或类型不合法。</exception>
-        public static object Send(int id, params object[] args)
+        /// <param name="id">The unique identifier of the event.</param>
+        /// <param name="args">An array of objects that are the arguments to pass to the event associated with <paramref name="id"/>.</param>
+        /// <returns>The object returned by the event associated with <paramref name="id"/>, or <see langword="null"/> if <see cref="id"/> is not found.</returns>
+        /// <exception cref="TargetParameterCountException">The <paramref name="args"/> array does not have the correct number of arguments.</exception>
+        /// <exception cref="ArgumentException">The element of the <paramref name="args"/> array do not match the signature of the event associated with <paramref name="id"/>.</exception>
+        public static object Publish(int id, params object[] args)
         {
-            return Delegates.TryGetValue(id, out var value) ? Invoke(value, args) : null;
+            return Delegates.TryGetValue(id, out var @delegate) ? Invoke(@delegate, args) : null;
         }
 
         /// <summary>
-        /// 发送事件。
+        /// Publishes the event identified by the specified identifier.
         /// </summary>
-        /// <param name="id">用于标识事件的识别号。</param>
-        /// <param name="args">参数。</param>
-        /// <typeparam name="T">返回值的类型。</typeparam>
-        /// <returns>如果存在被 <paramref name="id"/> 标识的事件，则为调用该事件的返回值转换为 <typeparamref name="T"/>（如果为 <see langword="null"/> 则为 <typeparamref name="T"/> 的默认值）后的结果；否则为 <typeparamref name="T"/> 的默认值。</returns>
-        /// <exception cref="TargetParameterCountException"><paramref name="args"/> 中参数的数量不合法。</exception>
-        /// <exception cref="ArgumentException"><paramref name="args"/> 中参数的顺序或类型不合法。</exception>
-        /// <exception cref="InvalidCastException">无法将返回值转换为 <typeparamref name="T"/>。</exception>
-        public static T Send<T>(int id, params object[] args)
+        /// <param name="id">The unique identifier of the event.</param>
+        /// <param name="args">An array of objects that are the arguments to pass to the event associated with <paramref name="id"/>.</param>
+        /// <returns>An array of objects that are returned by each of the invocation list of the event associated with <paramref name="id"/>, or an empty array if <see cref="id"/> is not found.</returns>
+        /// <exception cref="TargetParameterCountException">The <paramref name="args"/> array does not have the correct number of arguments.</exception>
+        /// <exception cref="ArgumentException">The element of the <paramref name="args"/> array do not match the signature of the event associated with <paramref name="id"/>.</exception>
+        public static object[] PublishAll(int id, params object[] args)
         {
-            return Delegates.TryGetValue(id, out var value) ? Invoke<T>(value, args) : default;
+            return Delegates.TryGetValue(id, out var @delegate) ? InvokeAll(@delegate, args) : Array.Empty<object>();
         }
 
         /// <summary>
-        /// 发送事件。
-        /// </summary>
-        /// <param name="id">用于标识事件的识别号。</param>
-        /// <param name="args">参数。</param>
-        /// <returns>如果存在被 <paramref name="id"/> 标识的事件，则为该事件的委托列表按顺序调用后再将各个返回值组合而成的数组；否则为长度为 0 的数组。</returns>
-        /// <exception cref="TargetParameterCountException"><paramref name="args"/> 中参数的数量不合法。</exception>
-        /// <exception cref="ArgumentException"><paramref name="args"/> 中参数的顺序或类型不合法。</exception>
-        public static object[] Sends(int id, params object[] args)
-        {
-            return Delegates.TryGetValue(id, out var value) ? Invokes(value, args) : Array.Empty<object>();
-        }
-
-        /// <summary>
-        /// 发送事件。
-        /// </summary>
-        /// <param name="id">用于标识事件的识别号。</param>
-        /// <param name="args">参数。</param>
-        /// <typeparam name="T">返回值的类型。</typeparam>
-        /// <returns>如果存在被 <paramref name="id"/> 标识的事件，则为该事件的委托列表按顺序调用后再将各个返回值转换为 <typeparamref name="T"/>（如果为 <see langword="null"/> 则为 <typeparamref name="T"/> 的默认值）后再组合而成的数组；否则为长度为 0 的数组。</returns>
-        /// <exception cref="TargetParameterCountException"><paramref name="args"/> 中参数的数量不合法。</exception>
-        /// <exception cref="ArgumentException"><paramref name="args"/> 中参数的顺序或类型不合法。</exception>
-        /// <exception cref="InvalidCastException">在调用被 <paramref name="id"/> 标识的事件的委托列表时，无法将其中的某一个返回值转换为 <typeparamref name="T"/>。</exception>
-        public static T[] Sends<T>(int id, params object[] args)
-        {
-            return Delegates.TryGetValue(id, out var value) ? Invokes<T>(value, args) : Array.Empty<T>();
-        }
-
-        /// <summary>
-        /// 清除 <see cref="Event"/> 中的所有事件。
+        /// Removes all events in <see cref="Event"/>.
         /// </summary>
         public static void Clear()
         {
@@ -175,13 +145,7 @@ namespace Aurora
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static T Invoke<T>(Delegate @delegate, object[] args)
-        {
-            return (T) Invoke(@delegate, args);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static object[] Invokes(Delegate @delegate, object[] args)
+        private static object[] InvokeAll(Delegate @delegate, object[] args)
         {
             var delegates    = @delegate.GetInvocationList();
             var length       = delegates.Length;
@@ -193,21 +157,8 @@ namespace Aurora
             return returnValues;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static T[] Invokes<T>(Delegate @delegate, object[] args)
-        {
-            var delegates    = @delegate.GetInvocationList();
-            var length       = delegates.Length;
-            var returnValues = new T[length];
-            for (var i = 0; i < length; i++)
-            {
-                returnValues[i] = Invoke<T>(delegates[i], args);
-            }
-            return returnValues;
-        }
-
         /// <summary>
-        /// 尝试从 <see cref="Delegates"/> 中移除指定的键，当且仅当存在该键，且与该键对应的值等于 <paramref name="oldValue"/>。
+        /// Removes a key and value from <see cref="Delegates"/>. Both the key and value must match the entry in the dictionary for it to be removed.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool TryRemove(int key, Delegate oldValue)
