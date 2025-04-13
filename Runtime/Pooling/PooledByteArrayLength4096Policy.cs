@@ -5,7 +5,7 @@ namespace Aurora.Pooling
     /// <summary>
     /// 管理池中的长度为 4096 的字节数组的策略。
     /// </summary>
-    public class PooledByteArray4096Policy : IPooledObjectPolicy<byte[]>
+    public class PooledByteArrayLength4096Policy : IPooledObjectPolicy<byte[]>
     {
         private const int Length = 4096;
 
@@ -16,7 +16,7 @@ namespace Aurora.Pooling
         }
 
         /// <inheritdoc />
-        public void OnGet(byte[] obj)
+        public void Get(byte[] obj)
         {
         }
 
@@ -38,11 +38,10 @@ namespace Aurora.Pooling
         /// <inheritdoc />
         public void Dispose(byte[] obj)
         {
-            if (obj == null)
+            if (obj != null)
             {
-                return;
+                Array.Clear(obj, 0, obj.Length);
             }
-            Array.Clear(obj, 0, Length);
         }
     }
 }

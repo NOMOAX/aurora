@@ -12,7 +12,8 @@ namespace Aurora.Pooling
         /// <summary>
         /// 长度为 4096 的字节数组池。
         /// </summary>
-        public static readonly IPool<byte[]> ByteArray4096 = new Pool<byte[]>(new PooledByteArray4096Policy());
+        public static readonly IPool<byte[]> ByteArrayLength4096 =
+            new Pool<byte[]>(new PooledByteArrayLength4096Policy());
 
         /// <summary>
         /// 内存流池。

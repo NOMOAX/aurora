@@ -16,7 +16,7 @@ namespace Aurora.Pooling
         /// <param name="array">此输出参数将被赋值为一个长度为 4096 且所有元素都为 0 的字节数组。</param>
         public ByteArray4096UsingScope(out byte[] array)
         {
-            _array = PredefinedPools.ByteArray4096.Get();
+            _array = PredefinedPools.ByteArrayLength4096.Get();
             array  = _array;
         }
 
@@ -26,7 +26,7 @@ namespace Aurora.Pooling
             var array = _array;
             if (array != null && Interlocked.CompareExchange(ref _array, null, array) == array)
             {
-                PredefinedPools.ByteArray4096.Return(array);
+                PredefinedPools.ByteArrayLength4096.Return(array);
             }
         }
     }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
 
 namespace Aurora.Pooling
@@ -9,9 +8,7 @@ namespace Aurora.Pooling
     /// </summary>
     public class PooledMemoryStreamPolicy : IPooledObjectPolicy<MemoryStream>
     {
-        private static readonly Type MemoryStreamType = typeof(MemoryStream);
-
-        private static readonly FieldInfo MemoryStreamIsExpandableFieldInfo = MemoryStreamType.GetField(
+        private static readonly FieldInfo MemoryStreamIsExpandableFieldInfo = typeof(MemoryStream).GetField(
             "_expandable",
             BindingFlags.Instance | BindingFlags.NonPublic
         );
@@ -38,7 +35,7 @@ namespace Aurora.Pooling
         }
 
         /// <inheritdoc />
-        public void OnGet(MemoryStream obj)
+        public void Get(MemoryStream obj)
         {
         }
 
@@ -53,7 +50,7 @@ namespace Aurora.Pooling
             {
                 return false;
             }
-            if (obj.GetType() != MemoryStreamType)
+            if (obj.GetType() != typeof(MemoryStream))
             {
                 return false;
             }
@@ -72,23 +69,6 @@ namespace Aurora.Pooling
         /// <inheritdoc />
         public void Dispose(MemoryStream obj)
         {
-            if (obj == null)
-            {
-                return;
-            }
-            if (!obj.CanRead)
-            {
-                return;
-            }
-            if (obj.GetType() != MemoryStreamType)
-            {
-                return;
-            }
-            if (!IsExpandable(obj))
-            {
-                return;
-            }
-            obj.SetLength(0L);
         }
     }
 }

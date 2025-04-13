@@ -1,18 +1,11 @@
-﻿using System;
-
-namespace Aurora.Pooling
+﻿namespace Aurora.Pooling
 {
     /// <summary>
     /// 对象池。
     /// </summary>
     /// <typeparam name="T">对象池中成员的类型。</typeparam>
-    public interface IPool<T> : IDisposable where T : class
+    public interface IPool<T> where T : class
     {
-        /// <summary>
-        /// 获取一个值，这个值指示对象池是否为空。
-        /// </summary>
-        bool IsEmpty { get; }
-
         /// <summary>
         /// 如果对象池中有可用的成员，则取出该成员；否则创建一个新对象。
         /// </summary>

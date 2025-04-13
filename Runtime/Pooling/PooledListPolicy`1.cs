@@ -25,7 +25,7 @@ namespace Aurora.Pooling
         }
 
         /// <inheritdoc />
-        public void OnGet(List<T> obj)
+        public void Get(List<T> obj)
         {
         }
 

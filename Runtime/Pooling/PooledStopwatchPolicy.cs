@@ -14,7 +14,7 @@ namespace Aurora.Pooling
         }
 
         /// <inheritdoc />
-        public void OnGet(Stopwatch obj)
+        public void Get(Stopwatch obj)
         {
         }
 

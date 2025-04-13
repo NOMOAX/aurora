@@ -17,7 +17,7 @@ namespace Aurora.Pooling
         }
 
         /// <inheritdoc />
-        public void OnGet(T[] obj)
+        public void Get(T[] obj)
         {
         }
 
@@ -39,11 +39,10 @@ namespace Aurora.Pooling
         /// <inheritdoc />
         public void Dispose(T[] obj)
         {
-            if (obj == null)
+            if (obj != null)
             {
-                return;
+                Array.Clear(obj, 0, obj.Length);
             }
-            Array.Clear(obj, 0, obj.Length);
         }
     }
 }

@@ -39,7 +39,7 @@ namespace Aurora.IO
             {
                 throw new NotSupportedException();
             }
-            var buffer = PredefinedPools.ByteArray4096.Get();
+            var buffer = PredefinedPools.ByteArrayLength4096.Get();
             try
             {
                 int count;
@@ -50,7 +50,7 @@ namespace Aurora.IO
             }
             finally
             {
-                PredefinedPools.ByteArray4096.Return(buffer);
+                PredefinedPools.ByteArrayLength4096.Return(buffer);
             }
         }
 
@@ -100,7 +100,7 @@ namespace Aurora.IO
             {
                 throw new NotSupportedException();
             }
-            var buffer = PredefinedPools.ByteArray4096.Get();
+            var buffer = PredefinedPools.ByteArrayLength4096.Get();
             try
             {
                 int count;
@@ -112,7 +112,7 @@ namespace Aurora.IO
             }
             finally
             {
-                PredefinedPools.ByteArray4096.Return(buffer);
+                PredefinedPools.ByteArrayLength4096.Return(buffer);
             }
         }
     }

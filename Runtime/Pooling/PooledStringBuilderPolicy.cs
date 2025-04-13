@@ -24,7 +24,7 @@ namespace Aurora.Pooling
         }
 
         /// <inheritdoc />
-        public void OnGet(StringBuilder obj)
+        public void Get(StringBuilder obj)
         {
         }
 
@@ -46,11 +46,6 @@ namespace Aurora.Pooling
         /// <inheritdoc />
         public void Dispose(StringBuilder obj)
         {
-            if (obj == null)
-            {
-                return;
-            }
-            obj.Length = 0;
         }
     }
 }

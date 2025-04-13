@@ -16,7 +16,7 @@
         /// 在取出对象池中的可用的成员或创建新对象时，要对该成员或新对象执行的操作。
         /// </summary>
         /// <param name="obj">从对象池中取出的可用的成员，或创建的新对象。</param>
-        void OnGet(T obj);
+        void Get(T obj);
 
         /// <summary>
         /// 判断对象是否可以放入池。

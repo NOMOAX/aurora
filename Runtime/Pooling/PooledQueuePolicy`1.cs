@@ -25,7 +25,7 @@ namespace Aurora.Pooling
         }
 
         /// <inheritdoc />
-        public void OnGet(Queue<T> obj)
+        public void Get(Queue<T> obj)
         {
         }
 
