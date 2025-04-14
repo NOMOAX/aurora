@@ -9,6 +9,82 @@ namespace Aurora.Collections
     /// 有限状态机。
     /// </summary>
     /// <typeparam name="T">状态的标识符的类型。</typeparam>
+    /// <example>
+    /// <code>
+    /// public enum MyStateId
+    /// {
+    ///     One,
+    ///     Two
+    /// }
+    /// public sealed class MyStateOne : IState&lt;MyStateId&gt;
+    /// {
+    ///     public override MyStateId Id => MyStateId.One;
+    ///     public void OnEnter(StateMachine&lt;MyStateId&gt; stateMachine, IState&lt;MyStateId&gt; from)
+    ///     {
+    ///         if (from != null)
+    ///         {
+    ///             Console.WriteLine($"[{nameof(MyStateOne)}.{nameof(OnEnter)}] 从 {from.Id} 状态切换到 {Id} 状态");
+    ///         }
+    ///         else
+    ///         {
+    ///             Console.WriteLine($"[{nameof(MyStateOne)}.{nameof(OnEnter)}] 进入 {Id} 状态");
+    ///         }
+    ///         stateMachine.ScheduleTransitionTo(MyStateId.Two);
+    ///     }
+    ///     public void OnExit(StateMachine&lt;MyStateId&gt; stateMachine, IState&lt;MyStateId&gt; to)
+    ///     {
+    ///         if (to != null)
+    ///         {
+    ///             Console.WriteLine($"[{nameof(MyStateOne)}.{nameof(OnExit)}] 从 {Id} 状态切换到 {to.Id} 状态");
+    ///         }
+    ///         else
+    ///         {
+    ///             Console.WriteLine($"[{nameof(MyStateOne)}.{nameof(OnExit)}] 退出 {Id} 状态");
+    ///         }
+    ///     }
+    /// }
+    /// public sealed class MyStateTwo : IState&lt;MyStateId&gt;
+    /// {
+    ///     public override MyStateId Id => MyStateId.Two;
+    ///     public void OnEnter(StateMachine&lt;MyStateId&gt; stateMachine, IState&lt;MyStateId&gt; from)
+    ///     {
+    ///         if (from != null)
+    ///         {
+    ///             Console.WriteLine($"[{nameof(MyStateTwo)}.{nameof(OnEnter)}] 从 {from.Id} 状态切换到 {Id} 状态");
+    ///         }
+    ///         else
+    ///         {
+    ///             Console.WriteLine($"[{nameof(MyStateTwo)}.{nameof(OnEnter)}] 进入 {Id} 状态");
+    ///         }
+    ///         stateMachine.ScheduleTransitionToNull();
+    ///     }
+    ///     public void OnExit(StateMachine&lt;MyStateId&gt; stateMachine, IState&lt;MyStateId&gt; to)
+    ///     {
+    ///         if (to != null)
+    ///         {
+    ///             Console.WriteLine($"[{nameof(MyStateTwo)}.{nameof(OnExit)}] 从 {Id} 状态切换到 {to.Id} 状态");
+    ///         }
+    ///         else
+    ///         {
+    ///             Console.WriteLine($"[{nameof(MyStateTwo)}.{nameof(OnExit)}] 退出 {Id} 状态");
+    ///         }
+    ///     }
+    /// }
+    /// // state machine owner code
+    /// var stateMachine = new StateMachine&lt;MyStateId&gt;();
+    /// stateMachine.AddState(new MyStateOne());
+    /// stateMachine.AddState(new MyStateTwo());
+    /// stateMachine.ScheduleTransitionTo(MyStateId.One);
+    /// while (stateMachine.Update())
+    /// {
+    /// }
+    /// // output:
+    /// // [MyStateOne.OnEnter] 进入 One 状态
+    /// // [MyStateOne.OnExit] 从 One 状态切换到 Two 状态
+    /// // [MyStateTwo.OnEnter] 从 One 状态切换到 Two 状态
+    /// // [MyStateTwo.OnExit] 退出 Two 状态
+    /// </code>
+    /// </example>
     public class StateMachine<T>
     {
         private readonly Dictionary<T, IState<T>> _states;
@@ -19,7 +95,7 @@ namespace Aurora.Collections
 
         private IState<T> _currentState;
 
-        private bool _hasNextState;
+        private bool _isStateTransitionScheduled;
 
         private IState<T> _nextState;
 
@@ -84,7 +160,6 @@ namespace Aurora.Collections
         /// <param name="state">状态。</param>
         /// <exception cref="ArgumentNullException"><paramref name="state"/> 为 <see langword="null"/>。</exception>
         /// <exception cref="ArgumentException"><paramref name="state"/> 的标识符为 <see langword="null"/>，或者有限状态机已含有与 <paramref name="state"/> 具有相同标识符的状态，或者在子类的实现中拒绝添加 <paramref name="state"/> 到有限状态机。</exception>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddState(IState<T> state)
         {
             if (state == null)
@@ -121,7 +196,6 @@ namespace Aurora.Collections
         /// <returns>如果成功找到并移除具有指定标识符的状态，则为 <see langword="true"/> ；否则为 <see langword="false"/>。</returns>
         /// <exception cref="ArgumentNullException"><paramref name="stateId"/> 为 <see langword="null"/>。</exception>
         /// <exception cref="InvalidOperationException">有限状态机正在进入或退出状态。</exception>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool RemoveState(T stateId)
         {
             if (stateId == null)
@@ -151,7 +225,6 @@ namespace Aurora.Collections
         /// <exception cref="ArgumentNullException"><paramref name="stateId"/> 为 <see langword="null"/>。</exception>
         /// <exception cref="InvalidOperationException">有限状态机正在进入或退出状态。</exception>
         /// <exception cref="ArgumentException">有限状态机不含有标识符为 <paramref name="stateId"/> 的状态。</exception>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void TransitionTo(T stateId)
         {
             if (stateId == null)
@@ -159,7 +232,7 @@ namespace Aurora.Collections
                 throw new ArgumentException("状态标识符不能为空", nameof(stateId));
             }
             ThrowIfEnteringOrExiting();
-            InternalTransitionToDuringNextUpdate(stateId);
+            InternalScheduleTransitionTo(stateId);
             InternalUpdate();
         }
 
@@ -167,11 +240,10 @@ namespace Aurora.Collections
         /// 让 <see cref="StateMachine{T}"/> 退出当前状态。
         /// </summary>
         /// <exception cref="InvalidOperationException">有限状态机正在进入或退出状态。</exception>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void TransitionToNull()
         {
             ThrowIfEnteringOrExiting();
-            InternalTransitionToNullDuringNextUpdate();
+            InternalScheduleTransitionToNull();
             InternalUpdate();
         }
 
@@ -182,52 +254,49 @@ namespace Aurora.Collections
         /// <exception cref="ArgumentNullException"><paramref name="stateId"/> 为 <see langword="null"/>。</exception>
         /// <exception cref="InvalidOperationException">有限状态机正在退出状态。</exception>
         /// <exception cref="ArgumentException">有限状态机不含有标识符为 <paramref name="stateId"/> 的状态。</exception>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void TransitionToDuringNextUpdate(T stateId)
+        public void ScheduleTransitionTo(T stateId)
         {
             if (stateId == null)
             {
                 throw new ArgumentException("状态标识符不能为空", nameof(stateId));
             }
             ThrowIfExiting();
-            InternalTransitionToDuringNextUpdate(stateId);
+            InternalScheduleTransitionTo(stateId);
         }
 
         /// <summary>
         /// 安排 <see cref="StateMachine{T}"/> 在下一次执行 <see cref="Update"/> 时退出当前状态。
         /// </summary>
         /// <exception cref="InvalidOperationException">有限状态机正在退出状态。</exception>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void TransitionToNullDuringNextUpdate()
+        public void ScheduleTransitionToNull()
         {
             ThrowIfExiting();
-            InternalTransitionToNullDuringNextUpdate();
+            InternalScheduleTransitionToNull();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void InternalTransitionToDuringNextUpdate(T stateId)
+        private void InternalScheduleTransitionTo(T stateId)
         {
             if (!_states.TryGetValue(stateId, out var nextState))
             {
                 throw new ArgumentException($"不含有标识符为 {stateId} 的状态");
             }
-            _hasNextState = true;
-            _nextState    = nextState;
+            _isStateTransitionScheduled = true;
+            _nextState                  = nextState;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void InternalTransitionToNullDuringNextUpdate()
+        private void InternalScheduleTransitionToNull()
         {
-            _hasNextState = _currentState != null;
-            _nextState    = null;
+            _isStateTransitionScheduled = _currentState != null;
+            _nextState                  = null;
         }
 
         /// <summary>
         /// 更新 <see cref="StateMachine{T}"/>。
         /// </summary>
-        /// <returns></returns>
+        /// <returns>如果执行了状态切换，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
         /// <exception cref="InvalidOperationException">有限状态机正在进入或退出状态。</exception>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Update()
         {
             ThrowIfEnteringOrExiting();
@@ -237,11 +306,11 @@ namespace Aurora.Collections
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool InternalUpdate()
         {
-            if (!_hasNextState)
+            if (!_isStateTransitionScheduled)
             {
                 return false;
             }
-            _hasNextState = false;
+            _isStateTransitionScheduled = false;
             var currentState = _currentState;
             var nextState    = _nextState;
             _nextState = null;
