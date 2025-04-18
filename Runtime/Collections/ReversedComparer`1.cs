@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace Aurora.Collections
 {
@@ -12,11 +11,7 @@ namespace Aurora.Collections
         /// <summary>
         /// 获取比较结果与 <typeparamref name="T"/> 的默认比较器相反的比较器。
         /// </summary>
-        public static ReversedComparer<T> Default
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get;
-        } = new ReversedComparer<T>(Comparer<T>.Default);
+        public static ReversedComparer<T> Default { get; } = new ReversedComparer<T>(Comparer<T>.Default);
 
         private readonly IComparer<T> _comparer;
 

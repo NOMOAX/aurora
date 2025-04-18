@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 
 namespace Aurora
 {
     internal sealed class ThreadSafeRandom : Random
     {
-        internal static ThreadSafeRandom Instance
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get;
-        } = new ThreadSafeRandom();
+        internal static ThreadSafeRandom Instance { get; } = new ThreadSafeRandom();
 
         private readonly object _lock = new object();
 

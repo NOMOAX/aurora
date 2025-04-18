@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace Aurora.Collections
 {
@@ -14,11 +13,7 @@ namespace Aurora.Collections
         /// <summary>
         /// 获取单一实例。
         /// </summary>
-        public static NullEnumerator<T> Instance
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get;
-        } = new NullEnumerator<T>();
+        public static NullEnumerator<T> Instance { get; } = new NullEnumerator<T>();
 
         private NullEnumerator()
         {

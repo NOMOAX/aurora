@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Aurora.Diagnostics;
 
 namespace Aurora
 {
@@ -11,6 +12,10 @@ namespace Aurora
     /// <typeparam name="T">The type of event identifier.</typeparam>
     public sealed class EventBus<T>
     {
+        private const string SubscriptionFailed = "Subscription (ID = {0}, Type = {1}) failed, will retry.";
+
+        private const string UnsubscriptionFailed = "Unsubscription (ID = {0}, Type = {1}) failed, will retry.";
+
         /// <remarks>Represents the signature of the private <c>TryRemoveInternal</c> method in <c>ConcurrentDictionary&lt;T, Delegate&gt;</c> class.</remarks>
         private delegate bool TryRemoveInternalMethodSignature(
             T            key,
@@ -21,11 +26,7 @@ namespace Aurora
         /// <summary>
         /// Get a shared <see cref="EventBus{T}"/> instance.
         /// </summary>
-        public static EventBus<T> Shared
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get;
-        } = new EventBus<T>();
+        public static EventBus<T> Shared { get; } = new EventBus<T>();
 
         private readonly ConcurrentDictionary<T, Delegate> _delegates = new ConcurrentDictionary<T, Delegate>();
 
@@ -81,6 +82,7 @@ namespace Aurora
                         return;
                     }
                 }
+                Log.V(string.Format(SubscriptionFailed, id, TypeUtility.GetNicelyFormattedName(@delegate.GetType())));
             }
         }
 
@@ -117,6 +119,7 @@ namespace Aurora
                         return;
                     }
                 }
+                Log.V(string.Format(UnsubscriptionFailed, id, TypeUtility.GetNicelyFormattedName(@delegate.GetType())));
             }
         }
 

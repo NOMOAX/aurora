@@ -12,11 +12,7 @@ namespace Aurora.Collections
         /// <summary>
         /// 获取单一实例。
         /// </summary>
-        public static HashCodeComparer<T> Instance
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get;
-        } = new HashCodeComparer<T>();
+        public static HashCodeComparer<T> Instance { get; } = new HashCodeComparer<T>();
 
         private HashCodeComparer()
         {

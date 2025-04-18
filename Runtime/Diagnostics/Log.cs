@@ -63,7 +63,6 @@ namespace Aurora.Diagnostics
         /// 记录指定对象的字符串表现形式（等级为 <see cref="LogLevel.V"/>）。
         /// </summary>
         /// <param name="value">要记录的对象。</param>
-        [Conditional("DEBUG")]
         public static void V(object value)
         {
             Logger?.Log(value, LogLevel.V);
