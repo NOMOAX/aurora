@@ -13,12 +13,12 @@ namespace Aurora.Diagnostics
         /// </summary>
         public static ILogger Logger { get; set; } = ConsoleLogger.Instance;
 
-        private static LogLevel _level;
+        private static LogLevel _level = LogLevel.V;
 
         /// <summary>
         /// 获取或设置记录等级。
         /// </summary>
-        /// <remarks>小于此值的记录不会执行。</remarks>
+        /// <remarks>小于此值的记录不会执行。默认值为 <see cref="LogLevel.V"/>。</remarks>
         public static LogLevel Level
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
