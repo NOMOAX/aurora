@@ -60,9 +60,14 @@ namespace Aurora
         /// </summary>
         /// <param name="value">枚举成员。</param>
         /// <returns>表示 <paramref name="value"/> 的字段信息。</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> 不是在 <typeparamref name="TEnum"/> 枚举中定义的成员。</exception>
         /// <remarks>如果存在其他枚举成员与 <paramref name="value"/> 具有相同的值，请改用 <see cref="GetFieldInfo(string)"/> 以确保获取准确的返回值。</remarks>
         public static FieldInfo GetFieldInfo(TEnum value)
         {
+            if (!IsDefined(value))
+            {
+                throw new ArgumentOutOfRangeException(nameof(value), value, null);
+            }
             var name = value.ToString();
             return typeof(TEnum).GetField(name, BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Public);
         }
@@ -73,13 +78,45 @@ namespace Aurora
         /// <param name="name">枚举成员的名称。</param>
         /// <returns>表示该枚举类型中名称为 <paramref name="name"/> 的枚举成员的字段信息。</returns>
         /// <exception cref="ArgumentNullException"><paramref name="name"/> 为 <see langword="null"/>。</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="name"/> 不是任何 <typeparamref name="TEnum"/> 枚举成员的名称。</exception>
         public static FieldInfo GetFieldInfo(string name)
         {
             if (name == null)
             {
                 throw new ArgumentNullException(nameof(name));
             }
-            return typeof(TEnum).GetField(name, BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Public);
+            return typeof(TEnum).GetField(
+                       name,
+                       BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Public
+                   ) ?? throw new ArgumentOutOfRangeException(nameof(name), name, null);
+        }
+
+        /// <summary>
+        /// 获取指定枚举值是否带有 <see cref="ObsoleteAttribute"/> 特性。
+        /// </summary>
+        /// <param name="value">枚举成员。</param>
+        /// <returns>如果 <paramref name="value"/> 带有 <see cref="ObsoleteAttribute"/> 特性，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> 不是在 <typeparamref name="TEnum"/> 枚举中定义的成员。</exception>
+        public static bool IsObsolete(TEnum value)
+        {
+            if (!IsDefined(value))
+            {
+                throw new ArgumentOutOfRangeException(nameof(value), value, null);
+            }
+            var fieldInfo = GetFieldInfo(value);
+            return fieldInfo.GetCustomAttributes(typeof(ObsoleteAttribute), false).Length == 1;
+        }
+
+        /// <summary>
+        /// 获取具有指定名称的枚举成员是否带有 <see cref="ObsoleteAttribute"/> 特性。
+        /// </summary>
+        /// <param name="name">枚举成员的名称。</param>
+        /// <returns>如果名称为 <paramref name="name"/> 的枚举成员带有 <see cref="ObsoleteAttribute"/> 特性，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="name"/> 不是任何 <typeparamref name="TEnum"/> 枚举成员的名称。</exception>
+        public static bool IsObsolete(string name)
+        {
+            var fieldInfo = GetFieldInfo(name);
+            return fieldInfo.GetCustomAttributes(typeof(ObsoleteAttribute), false).Length == 1;
         }
     }
 }
