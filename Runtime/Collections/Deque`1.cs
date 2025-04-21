@@ -89,6 +89,75 @@ namespace Aurora.Collections
         /// </summary>
         public int Capacity => _array.Length;
 
+        /// <summary>
+        /// 获取或设置位于指定索引处的元素。
+        /// </summary>
+        /// <param name="index">索引。</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> 不是有效的索引。有效的索引应从 <see cref="IndexOf"/>、<see cref="FindIndex"/>、<see cref="LastIndexOf"/>、<see cref="FindLastIndex"/> 获得。</exception>
+        public T this[int index]
+        {
+            get
+            {
+                var size = _size;
+                if (size == 0)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(index), index, "双端队列为空");
+                }
+                var array = _array;
+                if (index < 0 || index >= array.Length)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(index), index, null);
+                }
+                var head = _head;
+                var tail = _tail;
+                if (head < tail)
+                {
+                    if (index < head || index >= head + size)
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(index), index, null);
+                    }
+                }
+                else
+                {
+                    if (index >= tail && index < head)
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(index), index, null);
+                    }
+                }
+                return array[index];
+            }
+            set
+            {
+                var size = _size;
+                if (size == 0)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(index), index, "双端队列为空");
+                }
+                var array = _array;
+                if (index < 0 || index >= array.Length)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(index), index, null);
+                }
+                var head = _head;
+                var tail = _tail;
+                if (head < tail)
+                {
+                    if (index < head || index >= head + size)
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(index), index, null);
+                    }
+                }
+                else
+                {
+                    if (index >= tail && index < head)
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(index), index, null);
+                    }
+                }
+                array[index] = value;
+            }
+        }
+
         bool ICollection.IsSynchronized => false;
 
         object ICollection.SyncRoot => this;
@@ -567,7 +636,7 @@ namespace Aurora.Collections
             {
                 return false;
             }
-            RemoveAt(index);
+            InternalRemoveAt(index);
             return true;
         }
 
@@ -583,11 +652,16 @@ namespace Aurora.Collections
             {
                 return false;
             }
-            RemoveAt(index);
+            InternalRemoveAt(index);
             return true;
         }
 
-        private int IndexOf(T item)
+        /// <summary>
+        /// 搜索指定的对象，返回在 <see cref="Deque{T}"/> 中第一个匹配项的从零开始的索引。
+        /// </summary>
+        /// <param name="item">要在 <see cref="Deque{T}"/> 中定位的对象。</param>
+        /// <returns>如果找到，则为 <see cref="Deque{T}"/> 中第一个匹配项的从零开始的索引；否则为 -1。</returns>
+        public int IndexOf(T item)
         {
             var size = _size;
             if (size == 0)
@@ -605,7 +679,88 @@ namespace Aurora.Collections
             return index >= 0 ? index : Array.IndexOf(array, item, 0, tail);
         }
 
-        private int LastIndexOf(T item)
+        /// <summary>
+        /// 搜索与指定条件相匹配的元素，返回在 <see cref="Deque{T}"/> 中第一个匹配元素的从零开始的索引。
+        /// </summary>
+        /// <param name="match">条件。</param>
+        /// <returns>如果找到与 <paramref name="match"/> 相匹配的第一个元素，则为该元素的从零开始的索引；否则为 -1。</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="match"/> 为 <see langword="null"/>。</exception>
+        public int FindIndex(Predicate<T> match)
+        {
+            if (match == null)
+            {
+                throw new ArgumentNullException(nameof(match));
+            }
+            var size = _size;
+            if (size == 0)
+            {
+                return -1;
+            }
+            var array = _array;
+            var head  = _head;
+            var tail  = _tail;
+            if (tail == 0 || head < tail)
+            {
+                Array.FindIndex(array, head, size, match);
+            }
+            var index = Array.FindIndex(array, head, array.Length - head, match);
+            return index >= 0 ? index : Array.FindIndex(array, 0, tail, match);
+        }
+
+        /// <summary>
+        /// 搜索与指定条件相匹配的元素，返回在 <see cref="Deque{T}"/> 中第一个匹配元素的从零开始的索引。
+        /// </summary>
+        /// <param name="match">条件。</param>
+        /// <param name="state"></param>
+        /// <typeparam name="TState">由用户传入的状态参数。</typeparam>
+        /// <returns>如果找到与 <paramref name="match"/> 相匹配的第一个元素，则为该元素的从零开始的索引；否则为 -1。</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="match"/> 为 <see langword="null"/>。</exception>
+        public int FindIndex<TState>(ParameterizedPredicate<T, TState> match, TState state)
+        {
+            if (match == null)
+            {
+                throw new ArgumentNullException(nameof(match));
+            }
+            var size = _size;
+            if (size == 0)
+            {
+                return -1;
+            }
+            var array = _array;
+            var head  = _head;
+            var tail  = _tail;
+            if (tail == 0 || head < tail)
+            {
+                FindIndex(array, head, size, match, state);
+            }
+            var index = FindIndex(array, head, array.Length - head, match, state);
+            return index >= 0 ? index : FindIndex(array, 0, tail, match, state);
+        }
+
+        private static int FindIndex<TState>(
+            T[]                               array,
+            int                               startIndex,
+            int                               count,
+            ParameterizedPredicate<T, TState> match,
+            TState                            state)
+        {
+            var endIndex = startIndex + count;
+            for (var i = startIndex; i < endIndex; i++)
+            {
+                if (match(array[i], state))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// 搜索指定的对象，返回在 <see cref="Deque{T}"/> 中最后一个匹配项的从零开始的索引。
+        /// </summary>
+        /// <param name="item">要在 <see cref="Deque{T}"/> 中定位的对象。</param>
+        /// <returns>如果找到，则为 <see cref="Deque{T}"/> 中最后一个匹配项的从零开始的索引；否则为 -1。</returns>
+        public int LastIndexOf(T item)
         {
             var size = _size;
             if (size == 0)
@@ -623,7 +778,110 @@ namespace Aurora.Collections
             return index >= 0 ? index : Array.LastIndexOf(array, item, array.Length - 1, array.Length - head);
         }
 
-        private void RemoveAt(int index)
+        /// <summary>
+        /// 搜索与指定条件相匹配的元素，返回在 <see cref="Deque{T}"/> 中最后一个匹配元素的从零开始的索引。
+        /// </summary>
+        /// <param name="match">条件。</param>
+        /// <returns>如果找到与 <paramref name="match"/> 相匹配的最后一个元素，则为该元素的从零开始的索引；否则为 -1。</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="match"/> 为 <see langword="null"/>。</exception>
+        public int FindLastIndex(Predicate<T> match)
+        {
+            var size = _size;
+            if (size == 0)
+            {
+                return -1;
+            }
+            var array = _array;
+            var head  = _head;
+            var tail  = _tail;
+            if (tail == 0 || head < tail)
+            {
+                return Array.FindLastIndex(array, tail - 1, size, match);
+            }
+            var index = Array.FindLastIndex(array, tail - 1, tail, match);
+            return index >= 0 ? index : Array.FindLastIndex(array, array.Length - 1, array.Length - head, match);
+        }
+
+        /// <summary>
+        /// 搜索与指定条件相匹配的元素，返回在 <see cref="Deque{T}"/> 中最后一个匹配元素的从零开始的索引。
+        /// </summary>
+        /// <param name="match">条件。</param>
+        /// <param name="state"></param>
+        /// <typeparam name="TState">由用户传入的状态参数。</typeparam>
+        /// <returns>如果找到与 <paramref name="match"/> 相匹配的最后一个元素，则为该元素的从零开始的索引；否则为 -1。</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="match"/> 为 <see langword="null"/>。</exception>
+        public int FindLastIndex<TState>(ParameterizedPredicate<T, TState> match, TState state)
+        {
+            var size = _size;
+            if (size == 0)
+            {
+                return -1;
+            }
+            var array = _array;
+            var head  = _head;
+            var tail  = _tail;
+            if (tail == 0 || head < tail)
+            {
+                return FindLastIndex(array, tail - 1, size, match, state);
+            }
+            var index = FindLastIndex(array, tail - 1, tail, match, state);
+            return index >= 0 ? index : FindLastIndex(array, array.Length - 1, array.Length - head, match, state);
+        }
+
+        private static int FindLastIndex<TState>(
+            T[]                               array,
+            int                               startIndex,
+            int                               count,
+            ParameterizedPredicate<T, TState> match,
+            TState                            state)
+        {
+            var endIndex = startIndex - count;
+            for (var i = startIndex; i > endIndex; i--)
+            {
+                if (match(array[i], state))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// 移除 <see cref="Deque{T}"/> 指定索引处的元素。
+        /// </summary>
+        /// <param name="index">要移除的元素的从零开始的索引。</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> 不是有效的索引。有效的索引应从 <see cref="IndexOf"/>、<see cref="FindIndex"/>、<see cref="LastIndexOf"/>、<see cref="FindLastIndex"/> 获得。</exception>
+        public void RemoveAt(int index)
+        {
+            var size = _size;
+            if (size == 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), index, "双端队列为空");
+            }
+            if (index < 0 || index >= _array.Length)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), index, null);
+            }
+            var head = _head;
+            var tail = _tail;
+            if (head < tail)
+            {
+                if (index < head || index >= head + size)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(index), index, null);
+                }
+            }
+            else
+            {
+                if (index >= tail && index < head)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(index), index, null);
+                }
+            }
+            InternalRemoveAt(index);
+        }
+
+        private void InternalRemoveAt(int index)
         {
             var array = _array;
             var head  = _head;

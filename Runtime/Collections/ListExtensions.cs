@@ -122,9 +122,9 @@ namespace Aurora.Collections
         /// <returns>如果找到与 <paramref name="match"/> 定义的条件相匹配的第一个元素，则为该元素；否则为类型 <typeparamref name="TSource"/> 的默认值。</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> 或 <paramref name="match"/> 为 <see langword="null"/>。</exception>
         public static TSource Find<TSource, TState>(
-            this IList<TSource>         collection,
-            Func<TSource, TState, bool> match,
-            TState                      state)
+            this IList<TSource>                     collection,
+            ParameterizedPredicate<TSource, TState> match,
+            TState                                  state)
         {
             if (collection == null)
             {
@@ -156,9 +156,9 @@ namespace Aurora.Collections
         /// <returns>如果找到与 <paramref name="match"/> 定义的条件相匹配的第一个元素，则为该元素的从零开始的索引；否则为 -1。</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> 或 <paramref name="match"/> 为 <see langword="null"/>。</exception>
         public static int FindIndex<TSource, TState>(
-            this IList<TSource>         collection,
-            Func<TSource, TState, bool> match,
-            TState                      state)
+            this IList<TSource>                     collection,
+            ParameterizedPredicate<TSource, TState> match,
+            TState                                  state)
         {
             if (collection == null)
             {
@@ -189,9 +189,9 @@ namespace Aurora.Collections
         /// <returns>如果找到与 <paramref name="match"/> 定义的条件相匹配的最后一个元素，则为该元素；否则为类型 <typeparamref name="TSource"/> 的默认值。</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> 或 <paramref name="match"/> 为 <see langword="null"/>。</exception>
         public static TSource FindLast<TSource, TState>(
-            this IList<TSource>         collection,
-            Func<TSource, TState, bool> match,
-            TState                      state)
+            this IList<TSource>                     collection,
+            ParameterizedPredicate<TSource, TState> match,
+            TState                                  state)
         {
             if (collection == null)
             {
@@ -223,9 +223,9 @@ namespace Aurora.Collections
         /// <returns>如果找到与 <paramref name="match"/> 定义的条件相匹配的最后一个元素，则为该元素的从零开始的索引；否则为 -1。</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> 或 <paramref name="match"/> 为 <see langword="null"/>。</exception>
         public static int FindLastIndex<TSource, TState>(
-            this IList<TSource>         collection,
-            Func<TSource, TState, bool> match,
-            TState                      state)
+            this IList<TSource>                     collection,
+            ParameterizedPredicate<TSource, TState> match,
+            TState                                  state)
         {
             if (collection == null)
             {
