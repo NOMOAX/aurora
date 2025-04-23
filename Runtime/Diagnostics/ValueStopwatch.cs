@@ -14,10 +14,12 @@ namespace Aurora.Diagnostics
 
         private long _startTimeStamp;
 
+        private bool _isRunning;
+
         /// <summary>
         /// 获取一个值，该值指示 <see cref="ValueStopwatch"/> 是否正在运行。
         /// </summary>
-        public bool IsRunning { get; private set; }
+        public readonly bool IsRunning => _isRunning;
 
         /// <summary>
         /// 获取 <see cref="ValueStopwatch"/> 测量得出的总运行时间。
@@ -39,12 +41,12 @@ namespace Aurora.Diagnostics
         /// </summary>
         public void Start()
         {
-            if (IsRunning)
+            if (_isRunning)
             {
                 return;
             }
             _startTimeStamp = Stopwatch.GetTimestamp();
-            IsRunning       = true;
+            _isRunning      = true;
         }
 
         /// <summary>
@@ -63,12 +65,12 @@ namespace Aurora.Diagnostics
         /// </summary>
         public void Stop()
         {
-            if (!IsRunning)
+            if (!_isRunning)
             {
                 return;
             }
-            _elapsed  += Stopwatch.GetTimestamp() - _startTimeStamp;
-            IsRunning =  false;
+            _elapsed   += Stopwatch.GetTimestamp() - _startTimeStamp;
+            _isRunning =  false;
             if (_elapsed >= 0L)
             {
                 return;
@@ -83,7 +85,7 @@ namespace Aurora.Diagnostics
         {
             _elapsed        = 0L;
             _startTimeStamp = 0L;
-            IsRunning       = false;
+            _isRunning      = false;
         }
 
         /// <summary>
@@ -93,17 +95,17 @@ namespace Aurora.Diagnostics
         {
             _elapsed        = 0L;
             _startTimeStamp = Stopwatch.GetTimestamp();
-            IsRunning       = true;
-        }
-
-        private readonly long GetRawElapsedTicks()
-        {
-            return IsRunning ? _elapsed + (Stopwatch.GetTimestamp() - _startTimeStamp) : _elapsed;
+            _isRunning      = true;
         }
 
         private readonly long GetElapsedDateTimeTicks()
         {
             return (long) (GetRawElapsedTicks() * TickFrequency);
+        }
+
+        private readonly long GetRawElapsedTicks()
+        {
+            return _isRunning ? _elapsed + (Stopwatch.GetTimestamp() - _startTimeStamp) : _elapsed;
         }
     }
 }

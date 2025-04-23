@@ -37,6 +37,8 @@ namespace Aurora.Collections
 
         private readonly Func<CancellationToken, Task> _repairOperabilityAsyncFunc;
 
+        private readonly int _priority;
+
         /// <summary>
         /// 初始化 <see cref="RepairableOperableNode"/> 类的新实例。
         /// </summary>
@@ -44,7 +46,7 @@ namespace Aurora.Collections
         {
             _operableFunc               = FuncReturnTrue;
             _repairOperabilityAsyncFunc = FuncReturnCompletedTask;
-            Priority                    = 0;
+            _priority                   = 0;
         }
 
         /// <summary>
@@ -62,14 +64,14 @@ namespace Aurora.Collections
             _operableFunc = operableFunc ?? throw new ArgumentNullException(nameof(operableFunc));
             _repairOperabilityAsyncFunc = repairOperabilityAsyncFunc ??
                                           throw new ArgumentNullException(nameof(repairOperabilityAsyncFunc));
-            Priority = priority;
+            _priority = priority;
         }
 
         /// <summary>
         /// 优先级。
         /// </summary>
         /// <remarks>父结点会优先访问和操作优先级更小的子结点。</remarks>
-        public int Priority { get; }
+        public int Priority => _priority;
 
         /// <summary>
         /// 获取一个值，这个值指示此结点是否可操作。
@@ -185,7 +187,7 @@ namespace Aurora.Collections
             {
                 return 1;
             }
-            return this == other ? 0 : Priority.CompareTo(other.Priority);
+            return this == other ? 0 : _priority.CompareTo(other._priority);
         }
     }
 }

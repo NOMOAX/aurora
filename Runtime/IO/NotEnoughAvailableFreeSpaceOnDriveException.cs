@@ -11,13 +11,17 @@ namespace Aurora.IO
     {
         private string _message;
 
+        private readonly DriveInfo _driveInfo;
+
+        private readonly long? _availableFreeSpaceOnDrive;
+
         /// <summary>
         /// 初始化 <see cref="NotEnoughAvailableFreeSpaceOnDriveException"/> 类的新实例。
         /// </summary>
         public NotEnoughAvailableFreeSpaceOnDriveException()
         {
-            DriveInfo                 = null;
-            AvailableFreeSpaceOnDrive = null;
+            _driveInfo                 = null;
+            _availableFreeSpaceOnDrive = null;
         }
 
         /// <summary>
@@ -26,8 +30,8 @@ namespace Aurora.IO
         /// <param name="driveInfo">驱动器信息。</param>
         public NotEnoughAvailableFreeSpaceOnDriveException(DriveInfo driveInfo)
         {
-            DriveInfo                 = driveInfo;
-            AvailableFreeSpaceOnDrive = null;
+            _driveInfo                 = driveInfo;
+            _availableFreeSpaceOnDrive = null;
         }
 
         /// <summary>
@@ -46,19 +50,19 @@ namespace Aurora.IO
                     null
                 );
             }
-            DriveInfo                 = driveInfo;
-            AvailableFreeSpaceOnDrive = availableFreeSpaceOnDrive;
+            _driveInfo                 = driveInfo;
+            _availableFreeSpaceOnDrive = availableFreeSpaceOnDrive;
         }
 
         /// <summary>
         /// 获取从构造函数传入的驱动器信息。
         /// </summary>
-        public DriveInfo DriveInfo { get; }
+        public DriveInfo DriveInfo => _driveInfo;
 
         /// <summary>
         /// 获取从构造函数传入的驱动器可用空闲空间，若没有传入，则为 <see langword="null"/>。
         /// </summary>
-        public long? AvailableFreeSpaceOnDrive { get; }
+        public long? AvailableFreeSpaceOnDrive => _availableFreeSpaceOnDrive;
 
         /// <inheritdoc />
         public override string Message => _message ??= CreateMessage();
@@ -68,11 +72,11 @@ namespace Aurora.IO
             var stringBuilder = PredefinedPools.StringBuilder.Get();
             try
             {
-                var driveInfo = DriveInfo;
+                var driveInfo = _driveInfo;
                 if (driveInfo == null)
                 {
                     stringBuilder.Append("Not enough available free space on drive.");
-                    var availableFreeSpaceOnDrive = AvailableFreeSpaceOnDrive;
+                    var availableFreeSpaceOnDrive = _availableFreeSpaceOnDrive;
                     if (availableFreeSpaceOnDrive.HasValue)
                     {
                         stringBuilder.Append(' ');
@@ -85,7 +89,7 @@ namespace Aurora.IO
                 else
                 {
                     stringBuilder.AppendFormat("Not enough available free space on drive \"{0}\".", driveInfo.Name);
-                    var availableFreeSpaceOnDrive = AvailableFreeSpaceOnDrive;
+                    var availableFreeSpaceOnDrive = _availableFreeSpaceOnDrive;
                     if (!availableFreeSpaceOnDrive.HasValue && driveInfo.IsReady)
                     {
                         GetAvailableFreeSpaceNoThrow(ref availableFreeSpaceOnDrive, driveInfo);

@@ -33,6 +33,8 @@ namespace Aurora.Collections
 
         private readonly List<Node> _children = new List<Node>();
 
+        private int _version;
+
         /// <summary>
         /// 获取存放直接子结点的只读集合。
         /// </summary>
@@ -89,7 +91,11 @@ namespace Aurora.Collections
         /// <br/>
         /// 根据这个值的不变确保枚举依然合理。
         /// </remarks>
-        public int Version { get; private set; }
+        public int Version
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _version;
+        }
 
         private static IEnumerable<Node> GetChildrenAsEnumerable(Node node)
         {
@@ -377,7 +383,7 @@ namespace Aurora.Collections
                 _parent = parent;
                 foreach (var shouldUpdateVersionNode in versionUpdateNodes)
                 {
-                    ++shouldUpdateVersionNode.Version;
+                    ++shouldUpdateVersionNode._version;
                 }
             }
             finally
@@ -483,11 +489,11 @@ namespace Aurora.Collections
                 return true;
             }
 
-            object IEnumerator.Current => Current;
+            readonly object IEnumerator.Current => Current;
 
-            Node IEnumerator<Node>.Current => Current;
+            readonly Node IEnumerator<Node>.Current => Current;
 
-            private Node Current
+            private readonly Node Current
             {
                 get
                 {

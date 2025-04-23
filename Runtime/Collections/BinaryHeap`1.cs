@@ -328,7 +328,7 @@ namespace Aurora.Collections
             }
 
             /// <inheritdoc />
-            public T Current
+            public readonly T Current
             {
                 get
                 {
@@ -348,7 +348,7 @@ namespace Aurora.Collections
                 }
             }
 
-            object IEnumerator.Current => Current;
+            readonly object IEnumerator.Current => Current;
 
             void IEnumerator.Reset()
             {

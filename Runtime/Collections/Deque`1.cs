@@ -1027,7 +1027,7 @@ namespace Aurora.Collections
             }
 
             /// <inheritdoc />
-            public T Current
+            public readonly T Current
             {
                 get
                 {
@@ -1039,12 +1039,12 @@ namespace Aurora.Collections
                 }
             }
 
-            private void ThrowEnumerationNotStartedOrEnded()
+            private readonly void ThrowEnumerationNotStartedOrEnded()
             {
                 throw new InvalidOperationException(_index == -1 ? "枚举未开始" : "枚举已结束");
             }
 
-            object IEnumerator.Current => Current;
+            readonly object IEnumerator.Current => Current;
 
             void IEnumerator.Reset()
             {
