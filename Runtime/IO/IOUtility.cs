@@ -157,8 +157,8 @@ namespace Aurora.IO
             using var fileStream = fileInfo.Create();
             if (length > 0L)
             {
-                fileStream.Seek(length - 1L, SeekOrigin.Begin);
-                fileStream.WriteByte(0);
+                fileStream.SetLength(length);
+                fileStream.Flush(true);
             }
             return true;
         }
