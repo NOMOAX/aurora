@@ -30,7 +30,8 @@ namespace Aurora
             /// <summary>
             /// 可获取单精度浮点数有效定点数字的格式。
             /// </summary>
-            public const string FloatFormatSignificantFixedPointFigures = "0.#########";
+            public const string FloatFormatSignificantFixedPointFigures =
+                "0.###################################################";
 
             /// <summary>
             /// 可使得双精度浮点数成功往返的格式。
@@ -40,7 +41,8 @@ namespace Aurora
             /// <summary>
             /// 可获取双精度浮点数有效定点数字的格式。
             /// </summary>
-            public const string DoubleFormatSignificantFixedPointFigures = "0.#################";
+            public const string DoubleFormatSignificantFixedPointFigures =
+                "0.##################################################################################################################################################################################################################################################################################################################################################";
 
             /// <summary>
             /// 用于匹配符合 RFC 5322 标准的电子邮件地址的正则表达式模式。
