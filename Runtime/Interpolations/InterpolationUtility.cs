@@ -34,6 +34,35 @@ namespace Aurora.Interpolations
         }
 
         /// <summary>
+        /// 计算指定值在开始值和结束值之间的线性权重。
+        /// </summary>
+        /// <param name="begin">开始值。</param>
+        /// <param name="end">结束值。</param>
+        /// <param name="value">目标值。</param>
+        /// <returns>如果 <paramref name="begin"/> 与 <paramref name="end"/> 不相等，则为 <c>(value - begin) / (end - begin)</c>；否则为 0。</returns>
+        public static double InverseLinearInterpolate(double begin, double end, double value)
+        {
+            return InternalInverseLinearInterpolate(begin, end, value, 0);
+        }
+
+        /// <summary>
+        /// 计算指定值在开始值和结束值之间的线性权重。
+        /// </summary>
+        /// <param name="begin">开始值。</param>
+        /// <param name="end">结束值。</param>
+        /// <param name="value">目标值。</param>
+        /// <param name="defaultWeightWhenBeginAndEndAreEqual">当 <paramref name="begin"/> 与 <paramref name="end"/> 相等时，将返回这个值。</param>
+        /// <returns>如果 <paramref name="begin"/> 与 <paramref name="end"/> 不相等，则为 <c>(value - begin) / (end - begin)</c>；否则为 <paramref name="defaultWeightWhenBeginAndEndAreEqual"/>。</returns>
+        public static double InverseLinearInterpolate(
+            double begin,
+            double end,
+            double value,
+            double defaultWeightWhenBeginAndEndAreEqual)
+        {
+            return InternalInverseLinearInterpolate(begin, end, value, defaultWeightWhenBeginAndEndAreEqual);
+        }
+
+        /// <summary>
         /// 将线性插值权重值转换为另一权重值。
         /// </summary>
         /// <param name="interpolation">要转换到的插值类型。</param>
@@ -49,6 +78,20 @@ namespace Aurora.Interpolations
         private static double InternalLinearInterpolate(double begin, double end, double weight)
         {
             return begin * (1 - weight) + end * weight;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static double InternalInverseLinearInterpolate(
+            double begin,
+            double end,
+            double value,
+            double defaultWeightWhenBeginAndEndAreEqual)
+        {
+            if (begin == end)
+            {
+                return defaultWeightWhenBeginAndEndAreEqual;
+            }
+            return (value - begin) / (end - begin);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
