@@ -9,9 +9,10 @@ namespace Aurora.Collections
     /// 双端队列。
     /// </summary>
     /// <typeparam name="T">双端队列中元素的类型。</typeparam>
+    /// <remarks>为保证安全性，<see cref="Deque{T}"/> 自身未提供全部功能。要使用额外功能，请通过 <see cref="GetAccessor"/> 获取访问器。</remarks>
     [DebuggerTypeProxy(typeof(DequeDebugView<>))]
     [DebuggerDisplay(nameof(Count) + " = {" + nameof(Count) + "}")]
-    public class Deque<T> : ICollection, IReadOnlyCollection<T>
+    public class Deque<T> : ICollection<T>, ICollection, IReadOnlyList<T>
     {
         /// <summary>
         /// 存放元素的数组。
@@ -25,7 +26,7 @@ namespace Aurora.Collections
         private int _head;
 
         /// <summary>
-        /// 结尾处元素的上一个元素的索引。
+        /// 结尾处元素的下一个（如果是最后一个，则回到开头）元素的索引。
         /// </summary>
         private int _tail;
 
@@ -89,78 +90,29 @@ namespace Aurora.Collections
         /// </summary>
         public int Capacity => _array.Length;
 
-        /// <summary>
-        /// 获取或设置位于指定索引处的元素。
-        /// </summary>
-        /// <param name="index">索引。</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> 不是有效的索引。有效的索引应从 <see cref="IndexOf"/>、<see cref="FindIndex"/>、<see cref="LastIndexOf"/>、<see cref="FindLastIndex"/> 获得。</exception>
-        public T this[int index]
+        bool ICollection<T>.IsReadOnly => false;
+
+        void ICollection<T>.Add(T item)
         {
-            get
-            {
-                var size = _size;
-                if (size == 0)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(index), index, "双端队列为空");
-                }
-                var array = _array;
-                if (index < 0 || index >= array.Length)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(index), index, null);
-                }
-                var head = _head;
-                var tail = _tail;
-                if (head < tail)
-                {
-                    if (index < head || index >= head + size)
-                    {
-                        throw new ArgumentOutOfRangeException(nameof(index), index, null);
-                    }
-                }
-                else
-                {
-                    if (index >= tail && index < head)
-                    {
-                        throw new ArgumentOutOfRangeException(nameof(index), index, null);
-                    }
-                }
-                return array[index];
-            }
-            set
-            {
-                var size = _size;
-                if (size == 0)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(index), index, "双端队列为空");
-                }
-                var array = _array;
-                if (index < 0 || index >= array.Length)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(index), index, null);
-                }
-                var head = _head;
-                var tail = _tail;
-                if (head < tail)
-                {
-                    if (index < head || index >= head + size)
-                    {
-                        throw new ArgumentOutOfRangeException(nameof(index), index, null);
-                    }
-                }
-                else
-                {
-                    if (index >= tail && index < head)
-                    {
-                        throw new ArgumentOutOfRangeException(nameof(index), index, null);
-                    }
-                }
-                array[index] = value;
-            }
+            EnqueueLast(item);
         }
+
+        bool ICollection<T>.Remove(T item)
+        {
+            var index = IndexOf(item);
+            if (index < 0)
+            {
+                return false;
+            }
+            RemoveAt(index);
+            return true;
+        }
+
+        object ICollection.SyncRoot => this;
 
         bool ICollection.IsSynchronized => false;
 
-        object ICollection.SyncRoot => this;
+        T IReadOnlyList<T>.this[int index] => GetAccessor()[index];
 
         /// <summary>
         /// 移除 <see cref="Deque{T}"/> 中的所有元素。
@@ -624,44 +576,7 @@ namespace Aurora.Collections
             SetCapacity(newCapacity);
         }
 
-        /// <summary>
-        /// 从 <see cref="Deque{T}"/> 中移除指定对象的第一个匹配项。
-        /// </summary>
-        /// <param name="item">要移除的对象。</param>
-        /// <returns>如果成功移除，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
-        public bool RemoveFirst(T item)
-        {
-            var index = IndexOf(item);
-            if (index < 0)
-            {
-                return false;
-            }
-            InternalRemoveAt(index);
-            return true;
-        }
-
-        /// <summary>
-        /// 从 <see cref="Deque{T}"/> 中移除指定对象的最后一个匹配项。
-        /// </summary>
-        /// <param name="item">要移除的对象。</param>
-        /// <returns>如果成功移除，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
-        public bool RemoveLast(T item)
-        {
-            var index = LastIndexOf(item);
-            if (index < 0)
-            {
-                return false;
-            }
-            InternalRemoveAt(index);
-            return true;
-        }
-
-        /// <summary>
-        /// 搜索指定的对象，返回在 <see cref="Deque{T}"/> 中第一个匹配项的从零开始的索引。
-        /// </summary>
-        /// <param name="item">要在 <see cref="Deque{T}"/> 中定位的对象。</param>
-        /// <returns>如果找到，则为 <see cref="Deque{T}"/> 中第一个匹配项的从零开始的索引；否则为 -1。</returns>
-        public int IndexOf(T item)
+        private int IndexOf(T item)
         {
             var size = _size;
             if (size == 0)
@@ -679,18 +594,8 @@ namespace Aurora.Collections
             return index >= 0 ? index : Array.IndexOf(array, item, 0, tail);
         }
 
-        /// <summary>
-        /// 搜索与指定条件相匹配的元素，返回在 <see cref="Deque{T}"/> 中第一个匹配元素的从零开始的索引。
-        /// </summary>
-        /// <param name="match">条件。</param>
-        /// <returns>如果找到与 <paramref name="match"/> 相匹配的第一个元素，则为该元素的从零开始的索引；否则为 -1。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="match"/> 为 <see langword="null"/>。</exception>
-        public int FindIndex(Predicate<T> match)
+        private int FindIndex(Predicate<T> match)
         {
-            if (match == null)
-            {
-                throw new ArgumentNullException(nameof(match));
-            }
             var size = _size;
             if (size == 0)
             {
@@ -707,20 +612,8 @@ namespace Aurora.Collections
             return index >= 0 ? index : Array.FindIndex(array, 0, tail, match);
         }
 
-        /// <summary>
-        /// 搜索与指定条件相匹配的元素，返回在 <see cref="Deque{T}"/> 中第一个匹配元素的从零开始的索引。
-        /// </summary>
-        /// <param name="match">条件。</param>
-        /// <param name="state"></param>
-        /// <typeparam name="TState">由用户传入的状态参数。</typeparam>
-        /// <returns>如果找到与 <paramref name="match"/> 相匹配的第一个元素，则为该元素的从零开始的索引；否则为 -1。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="match"/> 为 <see langword="null"/>。</exception>
-        public int FindIndex<TState>(ParameterizedPredicate<T, TState> match, TState state)
+        private int FindIndex<TState>(ParameterizedPredicate<T, TState> match, TState state)
         {
-            if (match == null)
-            {
-                throw new ArgumentNullException(nameof(match));
-            }
             var size = _size;
             if (size == 0)
             {
@@ -755,12 +648,7 @@ namespace Aurora.Collections
             return -1;
         }
 
-        /// <summary>
-        /// 搜索指定的对象，返回在 <see cref="Deque{T}"/> 中最后一个匹配项的从零开始的索引。
-        /// </summary>
-        /// <param name="item">要在 <see cref="Deque{T}"/> 中定位的对象。</param>
-        /// <returns>如果找到，则为 <see cref="Deque{T}"/> 中最后一个匹配项的从零开始的索引；否则为 -1。</returns>
-        public int LastIndexOf(T item)
+        private int LastIndexOf(T item)
         {
             var size = _size;
             if (size == 0)
@@ -778,13 +666,7 @@ namespace Aurora.Collections
             return index >= 0 ? index : Array.LastIndexOf(array, item, array.Length - 1, array.Length - head);
         }
 
-        /// <summary>
-        /// 搜索与指定条件相匹配的元素，返回在 <see cref="Deque{T}"/> 中最后一个匹配元素的从零开始的索引。
-        /// </summary>
-        /// <param name="match">条件。</param>
-        /// <returns>如果找到与 <paramref name="match"/> 相匹配的最后一个元素，则为该元素的从零开始的索引；否则为 -1。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="match"/> 为 <see langword="null"/>。</exception>
-        public int FindLastIndex(Predicate<T> match)
+        private int FindLastIndex(Predicate<T> match)
         {
             var size = _size;
             if (size == 0)
@@ -802,15 +684,7 @@ namespace Aurora.Collections
             return index >= 0 ? index : Array.FindLastIndex(array, array.Length - 1, array.Length - head, match);
         }
 
-        /// <summary>
-        /// 搜索与指定条件相匹配的元素，返回在 <see cref="Deque{T}"/> 中最后一个匹配元素的从零开始的索引。
-        /// </summary>
-        /// <param name="match">条件。</param>
-        /// <param name="state"></param>
-        /// <typeparam name="TState">由用户传入的状态参数。</typeparam>
-        /// <returns>如果找到与 <paramref name="match"/> 相匹配的最后一个元素，则为该元素的从零开始的索引；否则为 -1。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="match"/> 为 <see langword="null"/>。</exception>
-        public int FindLastIndex<TState>(ParameterizedPredicate<T, TState> match, TState state)
+        private int FindLastIndex<TState>(ParameterizedPredicate<T, TState> match, TState state)
         {
             var size = _size;
             if (size == 0)
@@ -846,42 +720,7 @@ namespace Aurora.Collections
             return -1;
         }
 
-        /// <summary>
-        /// 移除 <see cref="Deque{T}"/> 指定索引处的元素。
-        /// </summary>
-        /// <param name="index">要移除的元素的从零开始的索引。</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> 不是有效的索引。有效的索引应从 <see cref="IndexOf"/>、<see cref="FindIndex"/>、<see cref="LastIndexOf"/>、<see cref="FindLastIndex"/> 获得。</exception>
-        public void RemoveAt(int index)
-        {
-            var size = _size;
-            if (size == 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index), index, "双端队列为空");
-            }
-            if (index < 0 || index >= _array.Length)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index), index, null);
-            }
-            var head = _head;
-            var tail = _tail;
-            if (head < tail)
-            {
-                if (index < head || index >= head + size)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(index), index, null);
-                }
-            }
-            else
-            {
-                if (index >= tail && index < head)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(index), index, null);
-                }
-            }
-            InternalRemoveAt(index);
-        }
-
-        private void InternalRemoveAt(int index)
+        private void RemoveAt(int index)
         {
             var array = _array;
             var head  = _head;
@@ -970,6 +809,29 @@ namespace Aurora.Collections
         }
 
         /// <summary>
+        /// 获取访问器。
+        /// </summary>
+        /// <returns>访问此 <see cref="Deque{T}"/> 的访问器。</returns>
+        public Accessor GetAccessor()
+        {
+            return new Accessor(this);
+        }
+
+        private int ToLogicalIndex(int index)
+        {
+            var head     = _head;
+            var capacity = _array.Length;
+            return index - head >= 0 ? index - head : index - head + capacity;
+        }
+
+        private int ToIndex(int logicalIndex)
+        {
+            var head     = _head;
+            var capacity = _array.Length;
+            return head + logicalIndex < (uint) capacity ? head + logicalIndex : head + logicalIndex - capacity;
+        }
+
+        /// <summary>
         /// 用于枚举 <see cref="Deque{T}"/> 的枚举器。
         /// </summary>
         public struct Enumerator : IEnumerator<T>
@@ -1015,14 +877,7 @@ namespace Aurora.Collections
                     _current = default;
                     return false;
                 }
-                var array      = _deque._array;
-                var capacity   = (uint) array.Length;
-                var arrayIndex = (uint) (_deque._head + _index);
-                if (arrayIndex >= capacity)
-                {
-                    arrayIndex -= capacity;
-                }
-                _current = array[arrayIndex];
+                _current = _deque._array[_deque.ToIndex(_index)];
                 return true;
             }
 
@@ -1054,6 +909,204 @@ namespace Aurora.Collections
                 }
                 _index   = -1;
                 _current = default;
+            }
+        }
+
+        /// <summary>
+        /// 用于访问 <see cref="Deque{T}"/> 的访问器。
+        /// </summary>
+        public readonly struct Accessor
+        {
+            private readonly Deque<T> _deque;
+
+            internal Accessor(Deque<T> deque)
+            {
+                _deque = deque;
+            }
+
+            /// <summary>
+            /// 获取 <see cref="Deque{T}"/> 中元素的数量。
+            /// </summary>
+            /// <exception cref="InvalidOperationException">此实例无效，请通过 <see cref="Deque{T}.GetAccessor"/> 获取有效的访问器实例。</exception>
+            public int Count
+            {
+                get
+                {
+                    if (_deque == null)
+                    {
+                        throw new InvalidOperationException();
+                    }
+                    return _deque._size;
+                }
+            }
+
+            /// <summary>
+            /// 获取或设置 <see cref="Deque{T}"/> 中位于指定索引处的元素。
+            /// </summary>
+            /// <param name="index">索引。</param>
+            /// <exception cref="InvalidOperationException">此实例无效，请通过 <see cref="Deque{T}.GetAccessor"/> 获取有效的访问器实例。</exception>
+            /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> 小于 0，或者大于或等于 <see cref="Deque{T}"/> 中元素的数量。</exception>
+            public T this[int index]
+            {
+                get
+                {
+                    if (_deque == null)
+                    {
+                        throw new InvalidOperationException();
+                    }
+                    if (index < 0 || index >= _deque._size)
+                    {
+                        throw new ArgumentOutOfRangeException();
+                    }
+                    return _deque._array[_deque.ToIndex(index)];
+                }
+                set
+                {
+                    if (index < 0 || index >= _deque._size)
+                    {
+                        throw new ArgumentOutOfRangeException();
+                    }
+                    _deque._array[_deque.ToIndex(index)] = value;
+                }
+            }
+
+            /// <summary>
+            /// 搜索指定的对象，返回在 <see cref="Deque{T}"/> 中第一个匹配项的从零开始的索引。
+            /// </summary>
+            /// <param name="item">要在 <see cref="Deque{T}"/> 中定位的对象。</param>
+            /// <returns>如果找到，则为 <see cref="Deque{T}"/> 中第一个匹配项的从零开始的索引；否则为 -1。</returns>
+            /// <exception cref="InvalidOperationException">此实例无效，请通过 <see cref="Deque{T}.GetAccessor"/> 获取有效的访问器实例。</exception>
+            public int IndexOf(T item)
+            {
+                if (_deque == null)
+                {
+                    throw new InvalidOperationException();
+                }
+                var index = _deque.IndexOf(item);
+                return index >= 0 ? _deque.ToLogicalIndex(index) : index;
+            }
+
+            /// <summary>
+            /// 搜索与指定条件相匹配的元素，返回在 <see cref="Deque{T}"/> 中第一个匹配元素的从零开始的索引。
+            /// </summary>
+            /// <param name="match">条件。</param>
+            /// <returns>如果找到与 <paramref name="match"/> 相匹配的第一个元素，则为该元素的从零开始的索引；否则为 -1。</returns>
+            /// <exception cref="InvalidOperationException">此实例无效，请通过 <see cref="Deque{T}.GetAccessor"/> 获取有效的访问器实例。</exception>
+            /// <exception cref="ArgumentNullException"><paramref name="match"/> 为 <see langword="null"/>。</exception>
+            public int FindIndex(Predicate<T> match)
+            {
+                if (_deque == null)
+                {
+                    throw new InvalidOperationException();
+                }
+                if (match == null)
+                {
+                    throw new ArgumentNullException(nameof(match));
+                }
+                var index = _deque.FindIndex(match);
+                return index >= 0 ? _deque.ToLogicalIndex(index) : index;
+            }
+
+            /// <summary>
+            /// 搜索与指定条件相匹配的元素，返回在 <see cref="Deque{T}"/> 中第一个匹配元素的从零开始的索引。
+            /// </summary>
+            /// <param name="match">条件。</param>
+            /// <param name="state">由用户传入的状态参数。</param>
+            /// <typeparam name="TState">状态参数的类型。</typeparam>
+            /// <returns>如果找到与 <paramref name="match"/> 相匹配的第一个元素，则为该元素的从零开始的索引；否则为 -1。</returns>
+            /// <exception cref="InvalidOperationException">此实例无效，请通过 <see cref="Deque{T}.GetAccessor"/> 获取有效的访问器实例。</exception>
+            /// <exception cref="ArgumentNullException"><paramref name="match"/> 为 <see langword="null"/>。</exception>
+            public int FindIndex<TState>(ParameterizedPredicate<T, TState> match, TState state)
+            {
+                if (_deque == null)
+                {
+                    throw new InvalidOperationException();
+                }
+                if (match == null)
+                {
+                    throw new ArgumentNullException(nameof(match));
+                }
+                var index = _deque.FindIndex(match, state);
+                return index >= 0 ? _deque.ToLogicalIndex(index) : index;
+            }
+
+            /// <summary>
+            /// 搜索指定的对象，返回在 <see cref="Deque{T}"/> 中最后一个匹配项的从零开始的索引。
+            /// </summary>
+            /// <param name="item">要在 <see cref="Deque{T}"/> 中定位的对象。</param>
+            /// <returns>如果找到，则为 <see cref="Deque{T}"/> 中最后一个匹配项的从零开始的索引；否则为 -1。</returns>
+            /// <exception cref="InvalidOperationException">此实例无效，请通过 <see cref="Deque{T}.GetAccessor"/> 获取有效的访问器实例。</exception>
+            public int LastIndexOf(T item)
+            {
+                if (_deque == null)
+                {
+                    throw new InvalidOperationException();
+                }
+                var index = _deque.LastIndexOf(item);
+                return index >= 0 ? _deque.ToLogicalIndex(index) : index;
+            }
+
+            /// <summary>
+            /// 搜索与指定条件相匹配的元素，返回在 <see cref="Deque{T}"/> 中最后一个匹配元素的从零开始的索引。
+            /// </summary>
+            /// <param name="match">条件。</param>
+            /// <returns>如果找到与 <paramref name="match"/> 相匹配的最后一个元素，则为该元素的从零开始的索引；否则为 -1。</returns>
+            /// <exception cref="InvalidOperationException">此实例无效，请通过 <see cref="Deque{T}.GetAccessor"/> 获取有效的访问器实例。</exception>
+            /// <exception cref="ArgumentNullException"><paramref name="match"/> 为 <see langword="null"/>。</exception>
+            public int FindLastIndex(Predicate<T> match)
+            {
+                if (_deque == null)
+                {
+                    throw new InvalidOperationException();
+                }
+                if (match == null)
+                {
+                    throw new ArgumentNullException(nameof(match));
+                }
+                var index = _deque.FindLastIndex(match);
+                return index >= 0 ? _deque.ToLogicalIndex(index) : index;
+            }
+
+            /// <summary>
+            /// 搜索与指定条件相匹配的元素，返回在 <see cref="Deque{T}"/> 中最后一个匹配元素的从零开始的索引。
+            /// </summary>
+            /// <param name="match">条件。</param>
+            /// <param name="state">由用户传入的状态参数。</param>
+            /// <typeparam name="TState">状态参数的类型。</typeparam>
+            /// <returns>如果找到与 <paramref name="match"/> 相匹配的最后一个元素，则为该元素的从零开始的索引；否则为 -1。</returns>
+            /// <exception cref="InvalidOperationException">此实例无效，请通过 <see cref="Deque{T}.GetAccessor"/> 获取有效的访问器实例。</exception>
+            /// <exception cref="ArgumentNullException"><paramref name="match"/> 为 <see langword="null"/>。</exception>
+            public int FindLastIndex<TState>(ParameterizedPredicate<T, TState> match, TState state)
+            {
+                if (_deque == null)
+                {
+                    throw new InvalidOperationException();
+                }
+                if (match == null)
+                {
+                    throw new ArgumentNullException(nameof(match));
+                }
+                var index = _deque.FindLastIndex(match, state);
+                return index >= 0 ? _deque.ToLogicalIndex(index) : index;
+            }
+
+            /// <summary>
+            /// 移除 <see cref="Deque{T}"/> 指定索引处的元素。
+            /// </summary>
+            /// <param name="index">要移除的元素的从零开始的索引。</param>
+            /// <exception cref="InvalidOperationException">此实例无效，请通过 <see cref="Deque{T}.GetAccessor"/> 获取有效的访问器实例。</exception>
+            /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> 小于 0，或者大于或等于 <see cref="Deque{T}"/> 中元素的数量。</exception>
+            public void RemoveAt(int index)
+            {
+                if (_deque == null)
+                {
+                    throw new InvalidOperationException();
+                }
+                if (index < 0 || index >= _deque._size)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+                _deque.RemoveAt(_deque.ToIndex(index));
             }
         }
     }
