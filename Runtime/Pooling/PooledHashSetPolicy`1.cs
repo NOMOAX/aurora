@@ -46,7 +46,7 @@ namespace Aurora.Pooling
             {
                 return false;
             }
-            if (obj.Comparer != (object) EqualityComparer<T>.Default)
+            if (obj.Comparer != EqualityComparer<T>.Default)
             {
                 return false;
             }
