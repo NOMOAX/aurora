@@ -11,14 +11,14 @@ namespace Aurora.Interpolations
         /// <summary>
         /// 根据指定的插值方式和权重在指定的开始值和结束值之间执行插值。
         /// </summary>
-        /// <param name="interpolation">插值类型。</param>
         /// <param name="begin">开始值。</param>
         /// <param name="end">结束值。</param>
         /// <param name="weight">一个介于 0 和 1 之间的值，指示插值的权重。</param>
+        /// <param name="interpolation">插值类型。</param>
         /// <returns>插值。</returns>
-        public static double Interpolate(Interpolation interpolation, double begin, double end, double weight)
+        public static double Interpolate(double begin, double end, double weight, Interpolation interpolation)
         {
-            return InternalLinearInterpolate(begin, end, InternalTransform(interpolation, weight));
+            return InternalLinearInterpolate(begin, end, InternalTransform(weight, interpolation));
         }
 
         /// <summary>
@@ -65,13 +65,13 @@ namespace Aurora.Interpolations
         /// <summary>
         /// 将线性插值权重值转换为另一权重值。
         /// </summary>
-        /// <param name="interpolation">要转换到的插值类型。</param>
         /// <param name="weight">线性插值的权重值。</param>
+        /// <param name="interpolation">要转换到的插值类型。</param>
         /// <returns>新权重值。使用此权重值在开始值和结束值之间执行线性插值，等同于在开始值和结束值之间执行 <paramref name="interpolation"/> 插值。</returns>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="interpolation"/> 不是在 <see cref="Interpolation"/> 枚举中定义的成员。</exception>
-        public static double Transform(Interpolation interpolation, double weight)
+        public static double Transform(double weight, Interpolation interpolation)
         {
-            return InternalTransform(interpolation, weight);
+            return InternalTransform(weight, interpolation);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -95,7 +95,7 @@ namespace Aurora.Interpolations
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static double InternalTransform(Interpolation interpolation, double weight)
+        private static double InternalTransform(double weight, Interpolation interpolation)
         {
             return interpolation switch
             {
