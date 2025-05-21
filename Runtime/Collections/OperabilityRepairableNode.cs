@@ -7,9 +7,9 @@ using Aurora.Sorting;
 namespace Aurora.Collections
 {
     /// <summary>
-    /// 可修复可操作性的可操作结点。
+    /// 表示操作性可修复的结点。
     /// </summary>
-    public sealed class RepairableOperableNode : Node, IComparable, IComparable<RepairableOperableNode>
+    public sealed class OperabilityRepairableNode : Node, IComparable, IComparable<OperabilityRepairableNode>
     {
         /// <summary>
         /// 表示一个方法，该方法的返回值为 <see langword="true"/>。
@@ -40,9 +40,9 @@ namespace Aurora.Collections
         private readonly int _priority;
 
         /// <summary>
-        /// 初始化 <see cref="RepairableOperableNode"/> 类的新实例。
+        /// 初始化 <see cref="OperabilityRepairableNode"/> 类的新实例。
         /// </summary>
-        public RepairableOperableNode()
+        public OperabilityRepairableNode()
         {
             _operableFunc               = FuncReturnTrue;
             _repairOperabilityAsyncFunc = FuncReturnCompletedTask;
@@ -50,13 +50,13 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 初始化 <see cref="RepairableOperableNode"/> 类的新实例。
+        /// 初始化 <see cref="OperabilityRepairableNode"/> 类的新实例。
         /// </summary>
         /// <param name="operableFunc">一个返回值为 <see cref="bool"/> 的方法。返回值表示该结点是否可操作。</param>
         /// <param name="repairOperabilityAsyncFunc">一个返回值为 <see cref="Task"/> 的方法。返回值是一个任务，执行该任务以尝试异步修复该结点的可操作性。</param>
         /// <param name="priority">优先级。父结点会优先访问和操作优先级更小的子结点。</param>
         /// <exception cref="ArgumentNullException"><paramref name="operableFunc"/> 或 <paramref name="repairOperabilityAsyncFunc"/> 为 <see langword="null"/></exception>
-        public RepairableOperableNode(
+        public OperabilityRepairableNode(
             Func<bool>                    operableFunc,
             Func<CancellationToken, Task> repairOperabilityAsyncFunc,
             int                           priority)
@@ -91,7 +91,7 @@ namespace Aurora.Collections
                 }
                 foreach (var node in Children)
                 {
-                    if (node is RepairableOperableNode { InternalOperable: false })
+                    if (node is OperabilityRepairableNode { InternalOperable: false })
                     {
                         return false;
                     }
@@ -113,7 +113,7 @@ namespace Aurora.Collections
         private async Task InternalRepairOperabilityAsync(CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var list = PredefinedPools<RepairableOperableNode>.List.Get();
+            var list = PredefinedPools<OperabilityRepairableNode>.List.Get();
             try
             {
                 GetChildren(list);
@@ -136,7 +136,7 @@ namespace Aurora.Collections
             }
             finally
             {
-                PredefinedPools<RepairableOperableNode>.List.Return(list);
+                PredefinedPools<OperabilityRepairableNode>.List.Return(list);
             }
             var version      = Version;
             var selfOperable = _operableFunc();
@@ -177,11 +177,11 @@ namespace Aurora.Collections
             {
                 return 0;
             }
-            return obj is RepairableOperableNode other ? CompareTo(other) : throw new ArgumentException();
+            return obj is OperabilityRepairableNode other ? CompareTo(other) : throw new ArgumentException();
         }
 
         /// <inheritdoc />
-        public int CompareTo(RepairableOperableNode other)
+        public int CompareTo(OperabilityRepairableNode other)
         {
             if (other == null)
             {

@@ -4,9 +4,9 @@ namespace Aurora
 {
     internal sealed class ThreadSafeRandom : Random
     {
-        internal static ThreadSafeRandom Instance { get; } = new ThreadSafeRandom();
+        internal static ThreadSafeRandom Instance { get; } = new();
 
-        private readonly object _lock = new object();
+        private readonly object _lock = new();
 
         private ThreadSafeRandom()
         {

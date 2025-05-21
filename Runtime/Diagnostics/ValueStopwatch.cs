@@ -24,7 +24,7 @@ namespace Aurora.Diagnostics
         /// <summary>
         /// 获取 <see cref="ValueStopwatch"/> 测量得出的总运行时间。
         /// </summary>
-        public readonly TimeSpan Elapsed => new TimeSpan(GetElapsedDateTimeTicks());
+        public readonly TimeSpan Elapsed => new(GetElapsedDateTimeTicks());
 
         /// <summary>
         /// 获取 <see cref="ValueStopwatch"/> 测量得出的总运行时间（以毫秒为单位）。

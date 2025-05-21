@@ -336,15 +336,12 @@ namespace Aurora.Collections
                     {
                         throw new ObjectDisposedException(typeof(Enumerator).FullName);
                     }
-                    if (_index == -2)
+                    return _index switch
                     {
-                        throw new InvalidOperationException("枚举器位于二叉堆的第一个成员之前");
-                    }
-                    if (_index == -1)
-                    {
-                        throw new InvalidOperationException("枚举器位于二叉堆的最后一个成员之后");
-                    }
-                    return _currentElement;
+                        -2 => throw new InvalidOperationException("枚举器位于二叉堆的第一个成员之前"),
+                        -1 => throw new InvalidOperationException("枚举器位于二叉堆的最后一个成员之后"),
+                        _  => _currentElement
+                    };
                 }
             }
 

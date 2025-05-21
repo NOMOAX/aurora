@@ -149,8 +149,7 @@ namespace Aurora.IO
             {
                 InternalThrowIfNotEnoughAvailableFreeSpaceOnDrive(fileInfo.FullName, length);
             }
-            var directoryInfo = fileInfo.Directory;
-            if (directoryInfo is { Exists: false })
+            if (fileInfo.Directory is { Exists: false } directoryInfo)
             {
                 directoryInfo.Create();
             }

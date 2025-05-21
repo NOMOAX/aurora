@@ -84,7 +84,7 @@ namespace Aurora.Threading
         {
             internal readonly TaskCompletionSource<VoidResult> CompletionSource;
 
-            internal CancellationTokenRegistration CancellationRegistration;
+            internal readonly CancellationTokenRegistration CancellationRegistration;
 
             public Waiter(
                 TaskCompletionSource<VoidResult> completionSource,

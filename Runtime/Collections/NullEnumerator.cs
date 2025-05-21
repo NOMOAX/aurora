@@ -10,7 +10,7 @@ namespace Aurora.Collections
         /// <summary>
         /// 获取单一实例。
         /// </summary>
-        public static NullEnumerator Instance { get; } = new NullEnumerator();
+        public static NullEnumerator Instance { get; } = new();
 
         private NullEnumerator()
         {

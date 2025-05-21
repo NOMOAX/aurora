@@ -59,8 +59,10 @@ namespace Aurora
             /// <summary>
             /// 用于匹配符合 RFC 5322 标准的电子邮件地址的模式。
             /// </summary>
-            public static readonly System.Text.RegularExpressions.Regex EmailAddressRegex =
-                new System.Text.RegularExpressions.Regex(String.EmailAddressRegexPattern, RegexOptions.Compiled);
+            public static readonly System.Text.RegularExpressions.Regex EmailAddressRegex = new(
+                String.EmailAddressRegexPattern,
+                RegexOptions.Compiled
+            );
         }
 
         /// <summary>

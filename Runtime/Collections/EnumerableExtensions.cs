@@ -18,40 +18,40 @@ namespace Aurora.Collections
         /// <exception cref="ArgumentNullException"><paramref name="source"/> 为 <see langword="null"/>。</exception>
         public static int IndexOf<TSource>(this IEnumerable<TSource> source, TSource value)
         {
-            if (source == null)
+            switch (source)
             {
-                throw new ArgumentNullException(nameof(source));
-            }
-            if (source is TSource[] array)
-            {
-                return Array.IndexOf(array, value);
-            }
-            if (source is IList<TSource> list)
-            {
-                return list.IndexOf(value);
-            }
-            using var enumerator = source.GetEnumerator();
-            if (enumerator.MoveNext())
-            {
-                var equalityComparer = EqualityComparer<TSource>.Default;
-                var currentIndex     = -1;
-                var foundIndex       = -1;
-                do
+                case null:
+                    throw new ArgumentNullException(nameof(source));
+                case TSource[] array:
+                    return Array.IndexOf(array, value);
+                case IList<TSource> list:
+                    return list.IndexOf(value);
+                default:
                 {
-                    checked
+                    using var enumerator = source.GetEnumerator();
+                    if (enumerator.MoveNext())
                     {
-                        ++currentIndex;
+                        var equalityComparer = EqualityComparer<TSource>.Default;
+                        var currentIndex     = -1;
+                        var foundIndex       = -1;
+                        do
+                        {
+                            checked
+                            {
+                                ++currentIndex;
+                            }
+                            var current = enumerator.Current;
+                            if (equalityComparer.Equals(current, value))
+                            {
+                                foundIndex = currentIndex;
+                                break;
+                            }
+                        } while (enumerator.MoveNext());
+                        return foundIndex;
                     }
-                    var current = enumerator.Current;
-                    if (equalityComparer.Equals(current, value))
-                    {
-                        foundIndex = currentIndex;
-                        break;
-                    }
-                } while (enumerator.MoveNext());
-                return foundIndex;
+                    return -1;
+                }
             }
-            return -1;
         }
 
         /// <summary>
@@ -106,39 +106,39 @@ namespace Aurora.Collections
         /// <exception cref="ArgumentNullException"><paramref name="source"/> 为 <see langword="null"/>。</exception>
         public static int LastIndexOf<TSource>(this IEnumerable<TSource> source, TSource value)
         {
-            if (source == null)
+            switch (source)
             {
-                throw new ArgumentNullException(nameof(source));
-            }
-            if (source is TSource[] array)
-            {
-                return Array.LastIndexOf(array, value);
-            }
-            if (source is List<TSource> list)
-            {
-                return list.LastIndexOf(value);
-            }
-            using var enumerator = source.GetEnumerator();
-            if (enumerator.MoveNext())
-            {
-                var equalityComparer = EqualityComparer<TSource>.Default;
-                var currentIndex     = -1;
-                var foundIndex       = -1;
-                do
+                case null:
+                    throw new ArgumentNullException(nameof(source));
+                case TSource[] array:
+                    return Array.LastIndexOf(array, value);
+                case List<TSource> list:
+                    return list.LastIndexOf(value);
+                default:
                 {
-                    checked
+                    using var enumerator = source.GetEnumerator();
+                    if (enumerator.MoveNext())
                     {
-                        ++currentIndex;
+                        var equalityComparer = EqualityComparer<TSource>.Default;
+                        var currentIndex     = -1;
+                        var foundIndex       = -1;
+                        do
+                        {
+                            checked
+                            {
+                                ++currentIndex;
+                            }
+                            var current = enumerator.Current;
+                            if (equalityComparer.Equals(current, value))
+                            {
+                                foundIndex = currentIndex;
+                            }
+                        } while (enumerator.MoveNext());
+                        return foundIndex;
                     }
-                    var current = enumerator.Current;
-                    if (equalityComparer.Equals(current, value))
-                    {
-                        foundIndex = currentIndex;
-                    }
-                } while (enumerator.MoveNext());
-                return foundIndex;
+                    return -1;
+                }
             }
-            return -1;
         }
 
         /// <summary>

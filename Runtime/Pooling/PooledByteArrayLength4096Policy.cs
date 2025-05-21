@@ -23,11 +23,7 @@ namespace Aurora.Pooling
         /// <inheritdoc />
         public bool Return(byte[] obj)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-            if (obj.Length != Length)
+            if (obj is not { Length: Length })
             {
                 return false;
             }

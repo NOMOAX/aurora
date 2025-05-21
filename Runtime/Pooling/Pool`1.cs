@@ -22,7 +22,7 @@ namespace Aurora.Pooling
 
         private T _fastItem;
 
-        private readonly ConcurrentQueue<T> _items = new ConcurrentQueue<T>();
+        private readonly ConcurrentQueue<T> _items = new();
 
         private int _count;
 

@@ -26,9 +26,9 @@ namespace Aurora
         /// <summary>
         /// Get a shared <see cref="EventBus{T}"/> instance.
         /// </summary>
-        public static EventBus<T> Shared { get; } = new EventBus<T>();
+        public static EventBus<T> Shared { get; } = new();
 
-        private readonly ConcurrentDictionary<T, Delegate> _delegates = new ConcurrentDictionary<T, Delegate>();
+        private readonly ConcurrentDictionary<T, Delegate> _delegates = new();
 
         /// <remarks>Represents the private <c>TryRemoveInternal</c> method of the <see cref="_delegates"/> instance.</remarks>
         private readonly TryRemoveInternalMethodSignature _tryRemoveInternal;

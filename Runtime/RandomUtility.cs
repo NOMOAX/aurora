@@ -18,22 +18,9 @@ namespace Aurora
         /// </summary>
         /// <param name="probability">概率。</param>
         /// <returns>一个 <see cref="bool"/> 值，有 <paramref name="probability"/> 的概率为 <see langword="true"/>，有 1 - <paramref name="probability"/> 的概率为 <see langword="false"/>。</returns>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="probability"/> 不是范围 [0, 1] 中的数。</exception>
         public static bool P(double probability)
         {
-            if (probability == 0d)
-            {
-                return false;
-            }
-            if (probability == 1d)
-            {
-                return true;
-            }
-            if (probability > 0d && probability < 1d)
-            {
-                return probability > ThreadSafeRandom.Instance.NextDouble();
-            }
-            throw new ArgumentOutOfRangeException(nameof(probability), probability, null);
+            return probability > ThreadSafeRandom.Instance.NextDouble();
         }
 
         /// <summary>

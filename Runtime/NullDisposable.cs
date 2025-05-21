@@ -10,7 +10,7 @@ namespace Aurora
         /// <summary>
         /// 获取单一实例。
         /// </summary>
-        public static NullDisposable Instance { get; } = new NullDisposable();
+        public static NullDisposable Instance { get; } = new();
 
         private NullDisposable()
         {

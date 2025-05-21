@@ -332,19 +332,13 @@ namespace Aurora.Interpolations
             const double n1 = 7.5625;
             const double d1 = 2.75;
 
-            if (amount < 1 / d1)
+            return amount switch
             {
-                return n1 * amount * amount;
-            }
-            if (amount < 2 / d1)
-            {
-                return n1 * (amount -= 1.5 / d1) * amount + 0.75;
-            }
-            if (amount < 2.5 / d1)
-            {
-                return n1 * (amount -= 2.25 / d1) * amount + 0.9375;
-            }
-            return n1 * (amount -= 2.625 / d1) * amount + 0.984375;
+                < 1 / d1   => n1 * amount * amount,
+                < 2 / d1   => n1 * (amount -= 1.5 / d1) * amount + 0.75,
+                < 2.5 / d1 => n1 * (amount -= 2.25 / d1) * amount + 0.9375,
+                _          => n1 * (amount -= 2.625 / d1) * amount + 0.984375
+            };
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

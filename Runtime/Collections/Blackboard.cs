@@ -10,7 +10,7 @@ namespace Aurora.Collections
     [DebuggerTypeProxy(typeof(BlackboardDebugView))]
     public class Blackboard
     {
-        private readonly Dictionary<string, object> _dictionary = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> _dictionary = new();
 
         internal IDictionary<string, object> Dictionary => _dictionary;
 

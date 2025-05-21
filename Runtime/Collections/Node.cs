@@ -31,7 +31,7 @@ namespace Aurora.Collections
             set => SetParent(value);
         }
 
-        private readonly List<Node> _children = new List<Node>();
+        private readonly List<Node> _children = new();
 
         private int _version;
 

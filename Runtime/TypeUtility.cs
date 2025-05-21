@@ -49,8 +49,7 @@ namespace Aurora
             typeof(ValueTuple<,,,,,,,>)
         };
 
-        private static readonly ConditionalWeakTable<Type, string> NicelyFormattedTypeNames =
-            new ConditionalWeakTable<Type, string>();
+        private static readonly ConditionalWeakTable<Type, string> NicelyFormattedTypeNames = new();
 
         private static readonly ConditionalWeakTable<Type, string>.CreateValueCallback
             CreateNicelyFormattedTypeNameCallback = CreateNicelyFormattedTypeName;

@@ -11,7 +11,7 @@ namespace Aurora.Diagnostics
         /// <summary>
         /// 获取单一实例。
         /// </summary>
-        public static ConsoleLogger Instance { get; } = new ConsoleLogger();
+        public static ConsoleLogger Instance { get; } = new();
 
         private ConsoleLogger()
         {
