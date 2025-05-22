@@ -16,10 +16,15 @@ namespace Aurora
         /// <summary>
         /// 获取一个 <see cref="bool"/> 值，它有 <paramref name="probability"/> 的概率为 <see langword="true"/>，有 1 - <paramref name="probability"/> 的概率为 <see langword="false"/>。
         /// </summary>
-        /// <param name="probability">概率。</param>
+        /// <param name="probability">概率。它应该大于等于 0 且小于等于 1。</param>
         /// <returns>一个 <see cref="bool"/> 值，有 <paramref name="probability"/> 的概率为 <see langword="true"/>，有 1 - <paramref name="probability"/> 的概率为 <see langword="false"/>。</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="probability"/> 为非数字或小于 0 或大于 1。</exception>
         public static bool P(double probability)
         {
+            if (probability is double.NaN or < 0 or > 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(probability));
+            }
             return probability > ThreadSafeRandom.Instance.NextDouble();
         }
 
@@ -31,7 +36,7 @@ namespace Aurora
         /// <typeparam name="T">集合中元素的类型。</typeparam>
         /// <returns>如果选取到了元素，则为该元素；否则为 <typeparamref name="T"/> 的默认值。</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> 或 <paramref name="weights"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentException"><paramref name="collection"/> 中包含的元素数小于 <paramref name="weights"/>，或者 <paramref name="weights"/> 中至少有一个元素小于 0 或者为非数字。</exception>
+        /// <exception cref="ArgumentException"><paramref name="collection"/> 中包含的元素数小于 <paramref name="weights"/>，或者 <paramref name="weights"/> 中至少有一个元素为非数字或者小于 0。</exception>
         /// <exception cref="NotSupportedException">将 <paramref name="weights"/> 从后往前依次累加，在某一步得到正无穷大。</exception>
         public static T Choose<T>(IList<T> collection, IList<double> weights)
         {
@@ -53,7 +58,7 @@ namespace Aurora
         /// <returns>如果选取到了元素，则为该元素；否则为 <typeparamref name="T"/> 的默认值。</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> 或 <paramref name="weights"/> 为 <see langword="null"/>。</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> 小于 0，或者 <paramref name="count"/> 小于 1。</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> 加上 <paramref name="count"/> 大于 <paramref name="collection"/> 中包含的元素数，或者 <paramref name="index"/> 加上 <paramref name="count"/> 大于 <paramref name="weights"/> 中包含的元素数，或者 <paramref name="weights"/> 中至少有一个元素小于 0 或者为非数字。</exception>
+        /// <exception cref="ArgumentException"><paramref name="index"/> 加上 <paramref name="count"/> 大于 <paramref name="collection"/> 中包含的元素数，或者 <paramref name="index"/> 加上 <paramref name="count"/> 大于 <paramref name="weights"/> 中包含的元素数，或者 <paramref name="weights"/> 中至少有一个元素为非数字或者小于 0。</exception>
         /// <exception cref="NotSupportedException">将 <paramref name="weights"/> 从后往前依次累加，在某一步得到正无穷大。</exception>
         public static T Choose<T>(IList<T> collection, IList<double> weights, int index, int count)
         {
@@ -94,7 +99,7 @@ namespace Aurora
         /// <typeparam name="T">集合中元素的类型。</typeparam>
         /// <returns>如果选取到了元素，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> 或 <paramref name="weights"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentException"><paramref name="collection"/> 中包含的元素数小于 <paramref name="weights"/>，或者 <paramref name="weights"/> 中至少有一个元素小于 0 或者为非数字。</exception>
+        /// <exception cref="ArgumentException"><paramref name="collection"/> 中包含的元素数小于 <paramref name="weights"/>，或者 <paramref name="weights"/> 中至少有一个元素为非数字或者小于 0。</exception>
         /// <exception cref="NotSupportedException">将 <paramref name="weights"/> 从后往前依次累加，在某一步得到正无穷大。</exception>
         public static bool TryChoose<T>(IList<T> collection, IList<double> weights, out T chosen)
         {
@@ -117,7 +122,7 @@ namespace Aurora
         /// <returns>如果选取到了元素，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> 或 <paramref name="weights"/> 为 <see langword="null"/>。</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> 小于 0，或者 <paramref name="count"/> 小于 1。</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> 加上 <paramref name="count"/> 大于 <paramref name="collection"/> 中包含的元素数，或者 <paramref name="index"/> 加上 <paramref name="count"/> 大于 <paramref name="weights"/> 中包含的元素数，或者 <paramref name="weights"/> 中至少有一个元素小于 0 或者为非数字。</exception>
+        /// <exception cref="ArgumentException"><paramref name="index"/> 加上 <paramref name="count"/> 大于 <paramref name="collection"/> 中包含的元素数，或者 <paramref name="index"/> 加上 <paramref name="count"/> 大于 <paramref name="weights"/> 中包含的元素数，或者 <paramref name="weights"/> 中至少有一个元素为非数字或者小于 0。</exception>
         /// <exception cref="NotSupportedException">将 <paramref name="weights"/> 从后往前依次累加，在某一步得到正无穷大。</exception>
         public static bool TryChoose<T>(IList<T> collection, IList<double> weights, int index, int count, out T chosen)
         {
@@ -176,7 +181,7 @@ namespace Aurora
         /// <returns>如果选取到了权重值，则为该权重值在权重值集合中的索引；否则为负数。</returns>
         /// <exception cref="ArgumentNullException"><paramref name="weights"/> 为 <see langword="null"/>。</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> 小于 0，或者 <paramref name="count"/> 小于 1。</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> 加上 <paramref name="count"/> 大于 <paramref name="weights"/> 中包含的元素数，或者 <paramref name="weights"/> 中至少有一个元素小于 0 或者为非数字。</exception>
+        /// <exception cref="ArgumentException"><paramref name="index"/> 加上 <paramref name="count"/> 大于 <paramref name="weights"/> 中包含的元素数，或者 <paramref name="weights"/> 中至少有一个元素为非数字或者小于 0。</exception>
         /// <exception cref="NotSupportedException">将 <paramref name="weights"/> 从后往前依次累加，在某一步得到正无穷大。</exception>
         public static int GetChosenIndex(IList<double> weights, int index, int count)
         {
@@ -197,9 +202,13 @@ namespace Aurora
                 throw new ArgumentException();
             }
             var last = weights[index + count - 1];
-            if (!(last >= 0d))
+            if (last is double.NaN)
             {
-                throw new ArgumentException($"{nameof(weights)} 中至少有一个元素小于 0 或者为非数字", nameof(weights));
+                throw new ArgumentException($"{nameof(weights)} 中至少有一个元素为非数字", nameof(weights));
+            }
+            if (last < 0)
+            {
+                throw new ArgumentException($"{nameof(weights)} 中至少有一个元素小于 0", nameof(weights));
             }
             var sum  = last;
             var sums = new double[count - 1];
@@ -207,12 +216,16 @@ namespace Aurora
             {
                 var weightIndex = index + sumIndex;
                 var weight      = weights[weightIndex];
-                if (!(weight >= 0d))
+                if (weight is double.NaN)
                 {
-                    throw new ArgumentException($"{nameof(weights)} 中至少有一个元素小于 0 或者为非数字", nameof(weights));
+                    throw new ArgumentException($"{nameof(weights)} 中至少有一个元素为非数字", nameof(weights));
+                }
+                if (weight < 0)
+                {
+                    throw new ArgumentException($"{nameof(weights)} 中至少有一个元素小于 0", nameof(weights));
                 }
                 sum += weight;
-                if (double.IsPositiveInfinity(sum))
+                if (sum is double.PositiveInfinity)
                 {
                     throw new NotSupportedException($"{nameof(weights)} 从后往前依次累加会在某一步得到正无穷大，无法进行计算");
                 }
@@ -222,7 +235,7 @@ namespace Aurora
             {
                 var weightIndex = index + sumIndex;
                 var weight      = weights[weightIndex];
-                if (weight == 0d)
+                if (weight == 0)
                 {
                     continue;
                 }
@@ -231,7 +244,7 @@ namespace Aurora
                     return sumIndex;
                 }
             }
-            return last != 0d ? index + count - 1 : -1;
+            return last != 0 ? index + count - 1 : -1;
         }
     }
 }
