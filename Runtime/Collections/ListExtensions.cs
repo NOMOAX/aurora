@@ -244,5 +244,70 @@ namespace Aurora.Collections
             }
             return -1;
         }
+
+        /// <summary>
+        /// 移除当前 <see cref="IList{T}"/> 中所有与指定条件相匹配的元素。
+        /// </summary>
+        /// <param name="collection">要移除其元素的集合。</param>
+        /// <param name="match">条件。</param>
+        /// <param name="state">将传递给 <paramref name="match"/> 的第二个形参。</param>
+        /// <typeparam name="TSource">集合中元素的类型。</typeparam>
+        /// <typeparam name="TState"><paramref name="state"/> 的类型。</typeparam>
+        /// <returns>从 <see cref="IList{T}"/> 中移除的元素数。</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 或 <paramref name="match"/> 为 <see langword="null"/>。</exception>
+        /// <exception cref="ArgumentException"><paramref name="collection"/> 是只读的。</exception>
+        public static int RemoveAll<TSource, TState>(
+            this IList<TSource>                     collection,
+            ParameterizedPredicate<TSource, TState> match,
+            TState                                  state)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+            if (collection.IsReadOnly)
+            {
+                throw new ArgumentException();
+            }
+            if (match == null)
+            {
+                throw new ArgumentNullException(nameof(match));
+            }
+            var freeIndex = 0;
+            var count     = collection.Count;
+            while (freeIndex < count && !match(collection[freeIndex], state))
+            {
+                freeIndex++;
+            }
+            if (freeIndex == count)
+            {
+                return 0;
+            }
+            var current = freeIndex + 1;
+            while (current < count)
+            {
+                while (current < count && match(collection[current], state))
+                {
+                    current++;
+                }
+                if (current < count)
+                {
+                    collection[freeIndex++] = collection[current++];
+                }
+            }
+            if (collection is List<TSource> list)
+            {
+                list.RemoveRange(freeIndex, count - freeIndex);
+            }
+            else
+            {
+                var count1 = count;
+                while (count1-- > freeIndex)
+                {
+                    collection.RemoveAt(count1);
+                }
+            }
+            return count - freeIndex;
+        }
     }
 }
