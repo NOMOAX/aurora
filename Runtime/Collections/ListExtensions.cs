@@ -134,9 +134,8 @@ namespace Aurora.Collections
             {
                 throw new ArgumentNullException(nameof(match));
             }
-            for (var i = 0; i < collection.Count; i++)
+            foreach (var item in collection)
             {
-                var item = collection[i];
                 if (match(item, state))
                 {
                     return item;
