@@ -20,7 +20,7 @@ namespace Aurora.Collections
             {
                 throw new ArgumentNullException(nameof(collection));
             }
-            ShuffleInPlace(collection, 0, collection.Count);
+            collection.ShuffleInPlace(0, collection.Count);
         }
 
         /// <summary>
@@ -58,55 +58,6 @@ namespace Aurora.Collections
                 {
                     continue;
                 }
-                (collection[i], collection[j]) = (collection[j], collection[i]);
-            }
-        }
-
-        /// <summary>
-        /// 反转当前 <see cref="IList{T}"/> 中元素的顺序。
-        /// </summary>
-        /// <param name="collection">要被反转的集合。</param>
-        /// <typeparam name="T">集合中元素的类型。</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 为 <see langword="null"/>。</exception>
-        public static void ReverseInPlace<T>(this IList<T> collection)
-        {
-            if (collection == null)
-            {
-                throw new ArgumentNullException(nameof(collection));
-            }
-            ReverseInPlace(collection, 0, collection.Count);
-        }
-
-        /// <summary>
-        /// 反转当前 <see cref="IList{T}"/> 的指定范围中元素的顺序。
-        /// </summary>
-        /// <param name="collection">要被反转的集合。</param>
-        /// <param name="index">反转范围的起始索引。</param>
-        /// <param name="count">反转范围内的元素数。</param>
-        /// <typeparam name="T">集合中元素的类型。</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> 小于 0，或 <paramref name="count"/> 小于 0。</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> 和 <paramref name="count"/> 不能指定 <paramref name="collection"/> 中的合理范围。</exception>
-        public static void ReverseInPlace<T>(this IList<T> collection, int index, int count)
-        {
-            if (collection == null)
-            {
-                throw new ArgumentNullException(nameof(collection));
-            }
-            if (index < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index), index, null);
-            }
-            if (count < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(count), count, null);
-            }
-            if (collection.Count - index < count)
-            {
-                throw new ArgumentException();
-            }
-            for (int i = index, j = index + count - 1; i < j; i++, j--)
-            {
                 (collection[i], collection[j]) = (collection[j], collection[i]);
             }
         }
@@ -242,6 +193,38 @@ namespace Aurora.Collections
                 }
             }
             return -1;
+        }
+
+        /// <summary>
+        /// 将当前 <see cref="IList{T}"/> 转换为另一种类型的 <see cref="List{T}"/>。
+        /// </summary>
+        /// <param name="collection">要转换为目标类型的集合。</param>
+        /// <param name="converter">转换器。</param>
+        /// <param name="state">传入转换器的第二个参数。</param>
+        /// <typeparam name="TInput">源 <see cref="IList{T}"/> 元素的类型。</typeparam>
+        /// <typeparam name="TOutput">目标 <see cref="List{T}"/> 元素的类型。</typeparam>
+        /// <returns>目标类型的 <see cref="List{T}"/>，包含从源 <see cref="IList{T}"/> 转换而来的元素。</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 或 <paramref name="converter"/> 为 <see langword="null"/>。</exception>
+        public static List<TOutput> ConvertAll<TInput, TOutput>(
+            this IList<TInput>            collection,
+            Func<TInput, object, TOutput> converter,
+            object                        state)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+            if (converter == null)
+            {
+                throw new ArgumentNullException(nameof(converter));
+            }
+            var count      = collection.Count;
+            var outputList = new List<TOutput>(count);
+            for (var i = 0; i < count; i++)
+            {
+                outputList.Add(converter(collection[i], state));
+            }
+            return outputList;
         }
 
         /// <summary>

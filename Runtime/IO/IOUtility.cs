@@ -91,7 +91,7 @@ namespace Aurora.IO
         /// </summary>
         /// <param name="path">路径。</param>
         /// <param name="length">长度。</param>
-        /// <returns>如果文件已存在，并且该文件的长度等于指定的长度，则为 <see langword="false"/>；否则为 <see langword="false"/>。</returns>
+        /// <returns>如果文件已存在，并且该文件的长度等于指定的长度，则为 <see langword="false"/>；否则为 <see langword="true"/>。</returns>
         /// <exception cref="ArgumentNullException"><paramref name="path"/> 为 <see langword="null"/>。</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> 小于 0。</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -114,7 +114,7 @@ namespace Aurora.IO
         /// </summary>
         /// <param name="fileInfo">文件信息。</param>
         /// <param name="length">长度。</param>
-        /// <returns>如果文件已存在，并且该文件的长度等于指定的长度，则为 <see langword="false"/>；否则为 <see langword="false"/>。</returns>
+        /// <returns>如果文件已存在，并且该文件的长度等于指定的长度，则为 <see langword="false"/>；否则为 <see langword="true"/>。</returns>
         /// <exception cref="ArgumentNullException"><paramref name="fileInfo"/> 为 <see langword="null"/>。</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> 小于 0。</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
