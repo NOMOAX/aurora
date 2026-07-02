@@ -11,7 +11,7 @@ namespace Aurora
         /// <summary>
         /// 获取可从任何线程并发使用的线程安全的 <see cref="Random"/> 实例。
         /// </summary>
-        public static Random Shared => ThreadSafeRandom.Instance;
+        public static ThreadSafeRandom Shared => ThreadSafeRandom.Instance;
 
         /// <summary>
         /// 获取一个 <see cref="bool"/> 值，它有 <paramref name="probability"/> 的概率为 <see langword="true"/>，有 1 - <paramref name="probability"/> 的概率为 <see langword="false"/>。
