@@ -1,2 +1,3 @@
 # Aurora
-High-performance, low-memory-consumption toolkit for C#.
+
+High-performance, low-memory-consumption toolkit for `C#`.
