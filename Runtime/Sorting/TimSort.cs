@@ -316,9 +316,9 @@ namespace Aurora.Sorting
                  * 如果使用更小的值，并在合适的时候扩容，也是可以的，
                  * 但是，从栈顶到栈底的 run 的长度变化大概是以斐波那契数列的程度增长的，需要考虑多次扩容带来的性能影响
                  */
-                var temp = new T[count >> 1];
+                var temp            = new T[count >> 1];
                 // 最小的 run 长度
-                var minRunCount = GetMinRunCount(count);
+                var minRunCount     = GetMinRunCount(count);
                 do
                 {
                     var runCount = CountRunAndMakeAscending(collection, index, count, comparer);
@@ -367,10 +367,10 @@ namespace Aurora.Sorting
                  * 如果使用更小的值，并在合适的时候扩容，也是可以的，
                  * 但是，从栈顶到栈底的 run 的长度变化大概是以斐波那契数列的程度增长的，需要考虑多次扩容带来的性能影响
                  */
-                var tempKeys   = new TKey[count >> 1];
-                var tempValues = new TValue[count >> 1];
+                var tempKeys        = new TKey[count >> 1];
+                var tempValues      = new TValue[count >> 1];
                 // 最小的 run 长度
-                var minRunCount = GetMinRunCount(count);
+                var minRunCount     = GetMinRunCount(count);
                 do
                 {
                     var runCount = CountRunAndMakeAscending(keys, values, index, count, comparer);
@@ -421,7 +421,7 @@ namespace Aurora.Sorting
             // 比较前两个元素，判断是升序序列还是严格降序序列
             var isAscending = comparer.Compare(collection[index], collection[index + 1]) <= 0;
             // 将指针指向第三个元素，此后，每轮比较指针之前一个元素和指针所在的元素
-            var i = index + 2;
+            var i           = index + 2;
             if (isAscending)
             {
                 while (i < index + count && comparer.Compare(collection[i - 1], collection[i]) <= 0)
@@ -458,7 +458,7 @@ namespace Aurora.Sorting
             // 比较前两个元素，判断是升序序列还是严格降序序列
             var isAscending = comparer.Compare(keys[index], keys[index + 1]) <= 0;
             // 将指针指向第三个元素，此后，每轮比较指针之前一个元素和指针所在的元素
-            var i = index + 2;
+            var i           = index + 2;
             if (isAscending)
             {
                 while (i < index + count && comparer.Compare(keys[i - 1], keys[i]) <= 0)
@@ -598,9 +598,9 @@ namespace Aurora.Sorting
             IComparer<T> comparer)
         {
             // [runIndex] 中需要参与合并的第一个元素的索引
-            var index = runs[runIndex].Index;
+            var index  = runs[runIndex].Index;
             // [runIndex] 中需要参与合并的元素数量
-            var count = runs[runIndex].Count;
+            var count  = runs[runIndex].Count;
             // [runIndex + 1] 中需要参与合并的第一个元素的索引
             var index1 = runs[runIndex + 1].Index;
             // [runIndex + 1] 中需要参与合并的元素数量
@@ -673,9 +673,9 @@ namespace Aurora.Sorting
             IComparer<TKey> comparer)
         {
             // [runIndex] 中需要参与合并的第一个元素的索引
-            var index = runs[runIndex].Index;
+            var index  = runs[runIndex].Index;
             // [runIndex] 中需要参与合并的元素数量
-            var count = runs[runIndex].Count;
+            var count  = runs[runIndex].Count;
             // [runIndex + 1] 中需要参与合并的第一个元素的索引
             var index1 = runs[runIndex + 1].Index;
             // [runIndex + 1] 中需要参与合并的元素数量

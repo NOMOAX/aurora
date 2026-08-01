@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Aurora.Collections;
 
 namespace Aurora.Pooling
 {
@@ -37,5 +38,10 @@ namespace Aurora.Pooling
         /// 栈池。
         /// </summary>
         public static readonly IPool<Stack<T>> Stack = new Pool<Stack<T>>(new PooledStackPolicy<T>());
+
+        /// <summary>
+        /// 双端队列池。
+        /// </summary>
+        public static readonly IPool<Deque<T>> Deque = new Pool<Deque<T>>(new PooledDequePolicy<T>());
     }
 }
