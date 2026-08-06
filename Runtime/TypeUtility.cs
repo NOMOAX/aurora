@@ -325,5 +325,16 @@ namespace Aurora
             }
             return nameWithoutGenericPart;
         }
+
+        /// <summary>
+        /// 确保指定类型的静态构造函数已执行。
+        /// </summary>
+        /// <typeparam name="T">应执行静态构造函数的类型。</typeparam>
+        /// <seealso cref="RuntimeHelpers.RunClassConstructor"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void RunStaticConstructor<T>()
+        {
+            RuntimeHelpers.RunClassConstructor(typeof(T).TypeHandle);
+        }
     }
 }
