@@ -16,7 +16,7 @@ namespace Aurora
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int UnsignedRightShift(int value, int shiftCount)
         {
-            return (int) InternalUnsignedRightShift((uint) value, shiftCount);
+            return (int)InternalUnsignedRightShift((uint)value, shiftCount);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace Aurora
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static long UnsignedRightShift(long value, int shiftCount)
         {
-            return (long) InternalUnsignedRightShift((ulong) value, shiftCount);
+            return (long)InternalUnsignedRightShift((ulong)value, shiftCount);
         }
 
         /// <summary>

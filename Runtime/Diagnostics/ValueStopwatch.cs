@@ -8,7 +8,7 @@ namespace Aurora.Diagnostics
     /// </summary>
     public struct ValueStopwatch
     {
-        private static readonly double TickFrequency = (double) TimeSpan.TicksPerSecond / Stopwatch.Frequency;
+        private static readonly double TickFrequency = (double)TimeSpan.TicksPerSecond / Stopwatch.Frequency;
 
         private long _elapsed;
 
@@ -100,7 +100,7 @@ namespace Aurora.Diagnostics
 
         private readonly long GetElapsedDateTimeTicks()
         {
-            return (long) (GetRawElapsedTicks() * TickFrequency);
+            return (long)(GetRawElapsedTicks() * TickFrequency);
         }
 
         private readonly long GetRawElapsedTicks()

@@ -75,7 +75,7 @@ namespace Aurora
                 {
                     base.NextBytes(array);
                     var uintValue = BitConverter.ToUInt32(array, 0);
-                    return uintValue / (double) uint.MaxValue;
+                    return uintValue / (double)uint.MaxValue;
                 }
                 finally
                 {

@@ -28,7 +28,7 @@ namespace Aurora
             {
                 return;
             }
-            CopyImpl((byte*) destination, (byte*) source, length);
+            CopyImpl((byte*)destination, (byte*)source, length);
         }
 
         private static unsafe void CopyImpl(byte* destination, byte* source, ulong length)
@@ -60,12 +60,12 @@ namespace Aurora
             {
                 return;
             }
-            MoveImpl((byte*) destination, (byte*) source, length);
+            MoveImpl((byte*)destination, (byte*)source, length);
         }
 
         private static unsafe void MoveImpl(byte* destination, byte* source, ulong length)
         {
-            if ((ulong) destination <= (ulong) source || (ulong) destination >= (ulong) source + length)
+            if ((ulong)destination <= (ulong)source || (ulong)destination >= (ulong)source + length)
             {
                 CopyImpl(destination, source, length);
             }
@@ -93,7 +93,7 @@ namespace Aurora
             {
                 throw new ArgumentNullException(nameof(destination));
             }
-            SetImpl((byte*) destination, value, length);
+            SetImpl((byte*)destination, value, length);
         }
 
         private static unsafe void SetImpl(byte* destination, byte value, ulong length)
@@ -116,7 +116,7 @@ namespace Aurora
             {
                 throw new ArgumentNullException(nameof(destination));
             }
-            SetImpl((byte*) destination, 0, length);
+            SetImpl((byte*)destination, 0, length);
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace Aurora
             {
                 throw new ArgumentNullException(nameof(pointer2));
             }
-            return CompareImpl((byte*) pointer1, (byte*) pointer2, length);
+            return CompareImpl((byte*)pointer1, (byte*)pointer2, length);
         }
 
         private static unsafe int CompareImpl(byte* pointer1, byte* pointer2, ulong length)

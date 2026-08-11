@@ -20,7 +20,7 @@ namespace Aurora.IO
                 throw new ArgumentNullException(nameof(textReader));
             }
             int nextChar;
-            while ((nextChar = textReader.Peek()) != -1 && char.IsWhiteSpace((char) nextChar))
+            while ((nextChar = textReader.Peek()) != -1 && char.IsWhiteSpace((char)nextChar))
             {
                 textReader.Read();
             }

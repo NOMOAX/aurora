@@ -38,7 +38,7 @@ namespace Aurora
         static EnumUtility()
         {
             Names          = typeof(TEnum).GetEnumNames();
-            Values         = (TEnum[]) typeof(TEnum).GetEnumValues();
+            Values         = (TEnum[])typeof(TEnum).GetEnumValues();
             Count          = Values.Length;
             UnderlyingType = typeof(TEnum).GetEnumUnderlyingType();
             IsBitwise      = typeof(TEnum).GetCustomAttributes(typeof(FlagsAttribute), false).Length == 1;

@@ -69,7 +69,7 @@ namespace Aurora.Threading
 
         private static void Cancel(object state)
         {
-            Cancel((State) state);
+            Cancel((State)state);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

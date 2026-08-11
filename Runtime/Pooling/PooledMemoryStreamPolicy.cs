@@ -25,7 +25,7 @@ namespace Aurora.Pooling
 
         private static bool IsExpandable(MemoryStream memoryStream)
         {
-            return (bool) MemoryStreamIsExpandableFieldInfo.GetValue(memoryStream);
+            return (bool)MemoryStreamIsExpandableFieldInfo.GetValue(memoryStream);
         }
 
         /// <inheritdoc />

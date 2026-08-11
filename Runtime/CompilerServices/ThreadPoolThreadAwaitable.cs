@@ -27,7 +27,7 @@ namespace Aurora.CompilerServices
 
         private readonly struct Awaiter : IAwaiter
         {
-            private static readonly WaitCallback RunAction = state => ((Action) state)();
+            private static readonly WaitCallback RunAction = state => ((Action)state)();
 
             private readonly CancellationToken _cancellationToken;
 

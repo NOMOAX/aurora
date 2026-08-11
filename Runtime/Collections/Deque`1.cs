@@ -794,7 +794,7 @@ namespace Aurora.Collections
         /// </summary>
         public void TrimExcess()
         {
-            var threshold = (int) (_array.Length * 0.9);
+            var threshold = (int)(_array.Length * 0.9);
             if (_size < threshold)
             {
                 SetCapacity(_size);
@@ -937,7 +937,7 @@ namespace Aurora.Collections
         {
             var head     = _head;
             var capacity = _array.Length;
-            return (uint) head + (uint) logicalIndex < (uint) capacity
+            return (uint)head + (uint)logicalIndex < (uint)capacity
                        ? head + logicalIndex
                        : head + logicalIndex - capacity;
         }
@@ -946,7 +946,7 @@ namespace Aurora.Collections
         {
             var head     = _head;
             var capacity = _array.Length;
-            return (uint) head + (uint) logicalIndex <= (uint) capacity
+            return (uint)head + (uint)logicalIndex <= (uint)capacity
                        ? head + logicalIndex
                        : head + logicalIndex - capacity;
         }

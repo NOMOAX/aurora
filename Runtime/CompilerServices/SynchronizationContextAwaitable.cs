@@ -43,7 +43,7 @@ namespace Aurora.CompilerServices
 
         private readonly struct Awaiter : IAwaiter
         {
-            private static readonly SendOrPostCallback RunAction = state => ((Action) state)();
+            private static readonly SendOrPostCallback RunAction = state => ((Action)state)();
 
             private readonly SynchronizationContext _synchronizationContext;
 

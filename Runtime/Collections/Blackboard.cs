@@ -45,7 +45,7 @@ namespace Aurora.Collections
                 throw new ArgumentNullException(nameof(key));
             }
             var value = _dictionary[key];
-            return (TValue) value;
+            return (TValue)value;
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Aurora.Collections
             }
             if (_dictionary.TryGetValue(key, out var value1))
             {
-                value = (TValue) value1;
+                value = (TValue)value1;
                 return true;
             }
             value = default;

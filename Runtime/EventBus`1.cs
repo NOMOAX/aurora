@@ -38,7 +38,7 @@ namespace Aurora
         /// </summary>
         public EventBus()
         {
-            _tryRemoveInternal = (TryRemoveInternalMethodSignature) Delegate.CreateDelegate(
+            _tryRemoveInternal = (TryRemoveInternalMethodSignature)Delegate.CreateDelegate(
                 typeof(TryRemoveInternalMethodSignature),
                 _delegates,
                 typeof(ConcurrentDictionary<T, Delegate>).GetMethod(

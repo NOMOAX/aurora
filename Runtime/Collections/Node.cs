@@ -104,7 +104,7 @@ namespace Aurora.Collections
 
         private static bool ValidateVersion(Node node, object state)
         {
-            return node.Version == (int) state;
+            return node.Version == (int)state;
         }
 
         /// <summary>
