@@ -10,6 +10,11 @@ namespace Aurora.Pooling
     public static class PredefinedPools<T>
     {
         /// <summary>
+        /// 长度为 2 的数组池。
+        /// </summary>
+        public static readonly IPool<T[]> ArrayLength2 = new Pool<T[]>(new PooledArrayLength2Policy<T>());
+
+        /// <summary>
         /// 长度为 4 的数组池。
         /// </summary>
         public static readonly IPool<T[]> ArrayLength4 = new Pool<T[]>(new PooledArrayLength4Policy<T>());
