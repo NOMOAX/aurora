@@ -1,0 +1,295 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace Aurora.Collections
+{
+    /// <summary>
+    /// 为 <see cref="IList{T}"/> 接口提供扩展方法。
+    /// </summary>
+    public static class ListExtensions
+    {
+        /// <summary>
+        /// 打乱当前 <see cref="IList{T}"/> 中元素的顺序。
+        /// </summary>
+        /// <param name="collection">要被打乱的集合。</param>
+        /// <typeparam name="T">集合中元素的类型。</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 为 <see langword="null"/>。</exception>
+        public static void ShuffleInPlace<T>(this IList<T> collection)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+            collection.ShuffleInPlace(0, collection.Count);
+        }
+
+        /// <summary>
+        /// 打乱当前 <see cref="IList{T}"/> 的指定范围中元素的顺序。
+        /// </summary>
+        /// <param name="collection">要被打乱的集合。</param>
+        /// <param name="index">打乱顺序范围的起始索引。</param>
+        /// <param name="count">打乱顺序范围内的元素数。</param>
+        /// <typeparam name="T">集合中元素的类型。</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 为 <see langword="null"/>。</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> 小于 0，或 <paramref name="count"/> 小于 0。</exception>
+        /// <exception cref="ArgumentException"><paramref name="index"/> 和 <paramref name="count"/> 不能指定 <paramref name="collection"/> 中的合理范围。</exception>
+        public static void ShuffleInPlace<T>(this IList<T> collection, int index, int count)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+            if (index < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), index, null);
+            }
+            if (count < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(count), count, null);
+            }
+            if (collection.Count - index < count)
+            {
+                throw new ArgumentException();
+            }
+            for (var i = index + count - 1; i > index; i--)
+            {
+                var j = RandomUtility.Shared.Next(index, i + 1);
+                if (i == j)
+                {
+                    continue;
+                }
+                (collection[i], collection[j]) = (collection[j], collection[i]);
+            }
+        }
+
+        /// <summary>
+        /// 搜索与指定条件相匹配的元素，返回当前 <see cref="IList{T}"/> 中第一个匹配元素。
+        /// </summary>
+        /// <param name="collection">要搜索的集合。</param>
+        /// <param name="match">条件。</param>
+        /// <param name="state">将传递给 <paramref name="match"/> 的第二个形参。</param>
+        /// <typeparam name="TSource">集合中元素的类型。</typeparam>
+        /// <typeparam name="TState"><paramref name="state"/> 的类型。</typeparam>
+        /// <returns>如果找到与 <paramref name="match"/> 定义的条件相匹配的第一个元素，则为该元素；否则为类型 <typeparamref name="TSource"/> 的默认值。</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 或 <paramref name="match"/> 为 <see langword="null"/>。</exception>
+        public static TSource Find<TSource, TState>(
+            this IList<TSource>                     collection,
+            ParameterizedPredicate<TSource, TState> match,
+            TState                                  state)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+            if (match == null)
+            {
+                throw new ArgumentNullException(nameof(match));
+            }
+            foreach (var item in collection)
+            {
+                if (match(item, state))
+                {
+                    return item;
+                }
+            }
+            return default;
+        }
+
+        /// <summary>
+        /// 搜索与指定条件相匹配的元素，返回当前 <see cref="IList{T}"/> 中第一个匹配元素的从零开始的索引。
+        /// </summary>
+        /// <param name="collection">要搜索的集合。</param>
+        /// <param name="match">条件。</param>
+        /// <param name="state">将传递给 <paramref name="match"/> 的第二个形参。</param>
+        /// <typeparam name="TSource">集合中元素的类型。</typeparam>
+        /// <typeparam name="TState"><paramref name="state"/> 的类型。</typeparam>
+        /// <returns>如果找到与 <paramref name="match"/> 定义的条件相匹配的第一个元素，则为该元素的从零开始的索引；否则为 -1。</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 或 <paramref name="match"/> 为 <see langword="null"/>。</exception>
+        public static int FindIndex<TSource, TState>(
+            this IList<TSource>                     collection,
+            ParameterizedPredicate<TSource, TState> match,
+            TState                                  state)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+            if (match == null)
+            {
+                throw new ArgumentNullException(nameof(match));
+            }
+            for (var i = 0; i < collection.Count; i++)
+            {
+                if (match(collection[i], state))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// 搜索与指定条件相匹配的元素，返回当前 <see cref="IList{T}"/> 中最后一个匹配元素。
+        /// </summary>
+        /// <param name="collection">要搜索的集合。</param>
+        /// <param name="match">条件。</param>
+        /// <param name="state">将传递给 <paramref name="match"/> 的第二个形参。</param>
+        /// <typeparam name="TSource">集合中元素的类型。</typeparam>
+        /// <typeparam name="TState"><paramref name="state"/> 的类型。</typeparam>
+        /// <returns>如果找到与 <paramref name="match"/> 定义的条件相匹配的最后一个元素，则为该元素；否则为类型 <typeparamref name="TSource"/> 的默认值。</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 或 <paramref name="match"/> 为 <see langword="null"/>。</exception>
+        public static TSource FindLast<TSource, TState>(
+            this IList<TSource>                     collection,
+            ParameterizedPredicate<TSource, TState> match,
+            TState                                  state)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+            if (match == null)
+            {
+                throw new ArgumentNullException(nameof(match));
+            }
+            for (var i = collection.Count - 1; i >= 0; i--)
+            {
+                var item = collection[i];
+                if (match(item, state))
+                {
+                    return item;
+                }
+            }
+            return default;
+        }
+
+        /// <summary>
+        /// 搜索与指定条件相匹配的元素，返回当前 <see cref="IList{T}"/> 中最后一个匹配元素的从零开始的索引。
+        /// </summary>
+        /// <param name="collection">要搜索的集合。</param>
+        /// <param name="match">条件。</param>
+        /// <param name="state">将传递给 <paramref name="match"/> 的第二个形参。</param>
+        /// <typeparam name="TSource">集合中元素的类型。</typeparam>
+        /// <typeparam name="TState"><paramref name="state"/> 的类型。</typeparam>
+        /// <returns>如果找到与 <paramref name="match"/> 定义的条件相匹配的最后一个元素，则为该元素的从零开始的索引；否则为 -1。</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 或 <paramref name="match"/> 为 <see langword="null"/>。</exception>
+        public static int FindLastIndex<TSource, TState>(
+            this IList<TSource>                     collection,
+            ParameterizedPredicate<TSource, TState> match,
+            TState                                  state)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+            if (match == null)
+            {
+                throw new ArgumentNullException(nameof(match));
+            }
+            for (var i = collection.Count - 1; i >= 0; i--)
+            {
+                if (match(collection[i], state))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// 将当前 <see cref="IList{T}"/> 转换为另一种类型的 <see cref="List{T}"/>。
+        /// </summary>
+        /// <param name="collection">要转换为目标类型的集合。</param>
+        /// <param name="converter">转换器。</param>
+        /// <param name="state">传入转换器的第二个参数。</param>
+        /// <typeparam name="TInput">源 <see cref="IList{T}"/> 元素的类型。</typeparam>
+        /// <typeparam name="TOutput">目标 <see cref="List{T}"/> 元素的类型。</typeparam>
+        /// <returns>目标类型的 <see cref="List{T}"/>，包含从源 <see cref="IList{T}"/> 转换而来的元素。</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 或 <paramref name="converter"/> 为 <see langword="null"/>。</exception>
+        public static List<TOutput> ConvertAll<TInput, TOutput>(
+            this IList<TInput>            collection,
+            Func<TInput, object, TOutput> converter,
+            object                        state)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+            if (converter == null)
+            {
+                throw new ArgumentNullException(nameof(converter));
+            }
+            var count      = collection.Count;
+            var outputList = new List<TOutput>(count);
+            for (var i = 0; i < count; i++)
+            {
+                outputList.Add(converter(collection[i], state));
+            }
+            return outputList;
+        }
+
+        /// <summary>
+        /// 移除当前 <see cref="IList{T}"/> 中所有与指定条件相匹配的元素。
+        /// </summary>
+        /// <param name="collection">要移除其元素的集合。</param>
+        /// <param name="match">条件。</param>
+        /// <param name="state">将传递给 <paramref name="match"/> 的第二个形参。</param>
+        /// <typeparam name="TSource">集合中元素的类型。</typeparam>
+        /// <typeparam name="TState"><paramref name="state"/> 的类型。</typeparam>
+        /// <returns>从 <see cref="IList{T}"/> 中移除的元素数。</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 或 <paramref name="match"/> 为 <see langword="null"/>。</exception>
+        /// <exception cref="ArgumentException"><paramref name="collection"/> 是只读的。</exception>
+        public static int RemoveAll<TSource, TState>(
+            this IList<TSource>                     collection,
+            ParameterizedPredicate<TSource, TState> match,
+            TState                                  state)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+            if (collection.IsReadOnly)
+            {
+                throw new ArgumentException();
+            }
+            if (match == null)
+            {
+                throw new ArgumentNullException(nameof(match));
+            }
+            var freeIndex = 0;
+            var count     = collection.Count;
+            while (freeIndex < count && !match(collection[freeIndex], state))
+            {
+                freeIndex++;
+            }
+            if (freeIndex == count)
+            {
+                return 0;
+            }
+            var current = freeIndex + 1;
+            while (current < count)
+            {
+                while (current < count && match(collection[current], state))
+                {
+                    current++;
+                }
+                if (current < count)
+                {
+                    collection[freeIndex++] = collection[current++];
+                }
+            }
+            if (collection is List<TSource> list)
+            {
+                list.RemoveRange(freeIndex, count - freeIndex);
+            }
+            else
+            {
+                var count1 = count;
+                while (count1-- > freeIndex)
+                {
+                    collection.RemoveAt(count1);
+                }
+            }
+            return count - freeIndex;
+        }
+    }
+}

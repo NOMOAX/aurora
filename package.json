@@ -1,0 +1,15 @@
+{
+  "name": "com.kevin-games.aurora",
+  "displayName": "Aurora",
+  "version": "1.0.0",
+  "unity": "2021.2",
+  "description": "High-performance, low-memory-consumption C# toolkit for Unity.",
+  "keywords": [
+    "aurora"
+  ],
+  "author": {
+    "name": "Kevin Games",
+    "email": "844038603@qq.com",
+    "url": "https://github.com/NOMOAX"
+  }
+}
