@@ -4,16 +4,16 @@ using System.Threading;
 namespace Aurora.Threading
 {
     /// <summary>
-    /// 为 <see cref="CancellationTokenSource"/> 提供工具方法。
+    /// Provides utility methods for the <see cref="CancellationTokenSource"/> class.
     /// </summary>
     public static class CancellationTokenSourceUtility
     {
         /// <summary>
-        /// 判断指定的 <see cref="CancellationTokenSource"/> 是否已释放。
+        /// Determines whether the specified <see cref="CancellationTokenSource"/> has been disposed.
         /// </summary>
-        /// <param name="cancellationTokenSource">取消令牌源。</param>
-        /// <returns>如果 <paramref name="cancellationTokenSource"/> 已释放，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="cancellationTokenSource"/> 为 <see langword="null"/>。</exception>
+        /// <param name="cancellationTokenSource">The cancellation token source.</param>
+        /// <returns><see langword="true"/> if <paramref name="cancellationTokenSource"/> has been disposed; otherwise, <see langword="false"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="cancellationTokenSource"/> is <see langword="null"/>.</exception>
         public static bool IsDisposed(CancellationTokenSource cancellationTokenSource)
         {
             if (cancellationTokenSource == null)

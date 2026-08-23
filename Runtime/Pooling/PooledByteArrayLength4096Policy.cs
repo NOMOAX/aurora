@@ -3,7 +3,7 @@
 namespace Aurora.Pooling
 {
     /// <summary>
-    /// 管理池中的长度为 4096 的字节数组的策略。
+    /// A strategy for managing byte arrays of length 4096 in the pool.
     /// </summary>
     public class PooledByteArrayLength4096Policy : IPooledObjectPolicy<byte[]>
     {

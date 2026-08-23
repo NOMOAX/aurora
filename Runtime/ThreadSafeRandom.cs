@@ -4,7 +4,7 @@ using Aurora.Pooling;
 namespace Aurora
 {
     /// <summary>
-    /// 线程安全的 <see cref="Random"/>。
+    /// A thread-safe <see cref="Random"/>.
     /// </summary>
     public sealed class ThreadSafeRandom : Random
     {
@@ -62,10 +62,10 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 返回一个大于等于 0 并且小于等于 1 的随机浮点数。
+        /// Returns a random floating-point number greater than or equal to 0 and less than or equal to 1.
         /// </summary>
-        /// <returns>一个大于等于 0 并且小于等于 1 的随机浮点数。</returns>
-        /// <remarks>与 <see cref="Random.NextDouble"/> 的行为不同，此方法返回的随机数可能等于 1。</remarks>
+        /// <returns>A random floating-point number greater than or equal to 0 and less than or equal to 1.</returns>
+        /// <remarks>Unlike <see cref="Random.NextDouble"/>, the random number returned by this method may equal 1.</remarks>
         public double NextDoubleIncludingOne()
         {
             lock (_lock)

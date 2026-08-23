@@ -1,11 +1,11 @@
-using System;
+﻿using System;
 
 namespace Aurora.Pooling
 {
     /// <summary>
-    /// 管理池中的长度为 8 的数组的策略。
+    /// A strategy for managing arrays of length 8 in the pool.
     /// </summary>
-    /// <typeparam name="T">数组的元素的类型。</typeparam>
+    /// <typeparam name="T">The type of the array's elements.</typeparam>
     public class PooledArrayLength8Policy<T> : IPooledObjectPolicy<T[]>
     {
         private const int Length = 8;

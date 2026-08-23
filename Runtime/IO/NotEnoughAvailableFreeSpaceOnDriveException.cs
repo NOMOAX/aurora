@@ -1,11 +1,11 @@
-using System;
+﻿using System;
 using System.IO;
 using Aurora.Pooling;
 
 namespace Aurora.IO
 {
     /// <summary>
-    /// 当驱动器上没有足够的可用空闲空间时引发的异常。
+    /// The exception thrown when there is not enough available free space on a drive.
     /// </summary>
     public sealed class NotEnoughAvailableFreeSpaceOnDriveException : IOException
     {
@@ -16,7 +16,7 @@ namespace Aurora.IO
         private readonly long? _availableFreeSpaceOnDrive;
 
         /// <summary>
-        /// 初始化 <see cref="NotEnoughAvailableFreeSpaceOnDriveException"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="NotEnoughAvailableFreeSpaceOnDriveException"/> class.
         /// </summary>
         public NotEnoughAvailableFreeSpaceOnDriveException()
         {
@@ -25,9 +25,9 @@ namespace Aurora.IO
         }
 
         /// <summary>
-        /// 使用指定的驱动器信息初始化 <see cref="NotEnoughAvailableFreeSpaceOnDriveException"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="NotEnoughAvailableFreeSpaceOnDriveException"/> class with the specified drive information.
         /// </summary>
-        /// <param name="driveInfo">驱动器信息。</param>
+        /// <param name="driveInfo">The drive information.</param>
         public NotEnoughAvailableFreeSpaceOnDriveException(DriveInfo driveInfo)
         {
             _driveInfo                 = driveInfo;
@@ -35,11 +35,11 @@ namespace Aurora.IO
         }
 
         /// <summary>
-        /// 使用指定的驱动器信息和可用空闲空间初始化 <see cref="NotEnoughAvailableFreeSpaceOnDriveException"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="NotEnoughAvailableFreeSpaceOnDriveException"/> class with the specified drive information and available free space.
         /// </summary>
-        /// <param name="driveInfo">驱动器信息。</param>
-        /// <param name="availableFreeSpaceOnDrive">可用空闲空间（以字节为单位）。</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="availableFreeSpaceOnDrive"/> 小于 0。</exception>
+        /// <param name="driveInfo">The drive information.</param>
+        /// <param name="availableFreeSpaceOnDrive">The available free space (in bytes).</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="availableFreeSpaceOnDrive"/> is less than 0.</exception>
         public NotEnoughAvailableFreeSpaceOnDriveException(DriveInfo driveInfo, long availableFreeSpaceOnDrive)
         {
             if (availableFreeSpaceOnDrive < 0L)
@@ -55,12 +55,12 @@ namespace Aurora.IO
         }
 
         /// <summary>
-        /// 获取从构造函数传入的驱动器信息。
+        /// Gets the drive information passed into the constructor.
         /// </summary>
         public DriveInfo DriveInfo => _driveInfo;
 
         /// <summary>
-        /// 获取从构造函数传入的驱动器可用空闲空间，若没有传入，则为 <see langword="null"/>。
+        /// Gets the drive's available free space passed into the constructor; if none was passed, it is <see langword="null"/>.
         /// </summary>
         public long? AvailableFreeSpaceOnDrive => _availableFreeSpaceOnDrive;
 

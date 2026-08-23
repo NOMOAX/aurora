@@ -1,42 +1,42 @@
 ﻿namespace Aurora.Collections
 {
     /// <summary>
-    /// 枚举树结构的顺序。
+    /// The order in which a tree structure is enumerated.
     /// </summary>
     public enum TreeEnumOrder
     {
         /// <summary>
-        /// 仅执行简单枚举，即枚举直接子结点。
+        /// Performs only a simple enumeration, i.e. enumerates direct child nodes.
         /// </summary>
         Default,
 
         /// <summary>
-        /// 广度优先地，从上层到下层，然后每层中枚举各结点。
+        /// Breadth-first, from upper levels to lower levels, then enumerates each node within each level.
         /// </summary>
         BreadthFirstLr,
 
         /// <summary>
-        /// 广度优先地，从上层到下层，然后每层中倒序枚举各结点。
+        /// Breadth-first, from upper levels to lower levels, then enumerates each node in reverse order within each level.
         /// </summary>
         BreadthFirstRl,
 
         /// <summary>
-        /// 深度优先、递归地，先枚举根结点，后枚举各个子结点。
+        /// Depth-first, recursively enumerates the root node first, then each child node.
         /// </summary>
         DepthFirstDlr,
 
         /// <summary>
-        /// 深度优先、递归地，先枚举根结点，后倒序枚举各个子结点。
+        /// Depth-first, recursively enumerates the root node first, then each child node in reverse order.
         /// </summary>
         DepthFirstDrl,
 
         /// <summary>
-        /// 深度优先、递归地，先枚举各个子结点，后枚举根结点。
+        /// Depth-first, recursively enumerates each child node first, then the root node.
         /// </summary>
         DepthFirstLrd,
 
         /// <summary>
-        /// 深度优先、递归地，先倒序枚举各个子结点，后枚举根结点。
+        /// Depth-first, recursively enumerates each child node in reverse order first, then the root node.
         /// </summary>
         DepthFirstRld
     }

@@ -4,17 +4,17 @@ using System.Threading;
 namespace Aurora
 {
     /// <summary>
-    /// 对另一个 <see cref="Invocation"/> 进行包装，确保仅第一次的对 <see cref="Invoke"/> 的调用会实际执行。
+    /// Wraps another <see cref="Invocation"/> to ensure that only the first call to <see cref="Invoke"/> is actually executed.
     /// </summary>
     public sealed class OneTimeInvocation : Invocation
     {
         private Invocation _invocation;
 
         /// <summary>
-        /// 初始化 <see cref="OneTimeInvocation"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="OneTimeInvocation"/> class.
         /// </summary>
-        /// <param name="invocation">一个 <see cref="Invocation"/>。</param>
-        /// <exception cref="ArgumentNullException"><paramref name="invocation"/> 为 <see langword="null"/>。</exception>
+        /// <param name="invocation">An <see cref="Invocation"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="invocation"/> is <see langword="null"/>.</exception>
         public OneTimeInvocation(Invocation invocation)
         {
             if (invocation == null)

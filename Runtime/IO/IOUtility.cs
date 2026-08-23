@@ -5,19 +5,19 @@ using System.Runtime.CompilerServices;
 namespace Aurora.IO
 {
     /// <summary>
-    /// 提供一组 IO 方法。
+    /// Provides a set of IO methods.
     /// </summary>
     public static class IOUtility
     {
         /// <summary>
-        /// 获取驱动器的可用空闲空间。
+        /// Gets the drive's available free space.
         /// </summary>
-        /// <param name="path">路径。</param>
-        /// <returns>指定的路径所属的驱动器的可用空闲空间。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="path"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentException">找不到 <paramref name="path"/> 所属的驱动器，或者 <paramref name="path"/> 是 UNC（例如 \\server\share）路径。</exception>
-        /// <exception cref="UnauthorizedAccessException">对驱动器信息的访问被拒绝。</exception>
-        /// <exception cref="IOException">驱动器错误。</exception>
+        /// <param name="path">The path.</param>
+        /// <returns>The available free space of the drive that contains the specified path.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="path"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">The drive containing <paramref name="path"/> cannot be found, or <paramref name="path"/> is a UNC (for example \\server\share) path.</exception>
+        /// <exception cref="UnauthorizedAccessException">Access to the drive information is denied.</exception>
+        /// <exception cref="IOException">A drive error.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static long GetAvailableFreeSpaceOnDrive(string path)
         {
@@ -50,15 +50,15 @@ namespace Aurora.IO
         }
 
         /// <summary>
-        /// 如果驱动器的可用空闲空间小于指定的值，则抛出 <see cref="NotEnoughAvailableFreeSpaceOnDriveException"/>。
+        /// Throws <see cref="NotEnoughAvailableFreeSpaceOnDriveException"/> if the drive's available free space is less than the specified value.
         /// </summary>
-        /// <param name="path">路径。</param>
-        /// <param name="neededAvailableFreeSpace">需要的可用空闲空间。</param>
-        /// <exception cref="ArgumentNullException"><paramref name="path"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="neededAvailableFreeSpace"/> 小于 0。</exception>
-        /// <exception cref="ArgumentException">找不到 <paramref name="path"/> 所属的驱动器，或者 <paramref name="path"/> 是 UNC（例如 \\server\share）路径。</exception>
-        /// <exception cref="NotEnoughAvailableFreeSpaceOnDriveException">驱动器的可用空闲空间小于 <paramref name="neededAvailableFreeSpace"/>。</exception>
-        /// <exception cref="IOException">驱动器错误。</exception>
+        /// <param name="path">The path.</param>
+        /// <param name="neededAvailableFreeSpace">The required available free space.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="path"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="neededAvailableFreeSpace"/> is less than 0.</exception>
+        /// <exception cref="ArgumentException">The drive containing <paramref name="path"/> cannot be found, or <paramref name="path"/> is a UNC (for example \\server\share) path.</exception>
+        /// <exception cref="NotEnoughAvailableFreeSpaceOnDriveException">The drive's available free space is less than <paramref name="neededAvailableFreeSpace"/>.</exception>
+        /// <exception cref="IOException">A drive error.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ThrowIfNotEnoughAvailableFreeSpaceOnDrive(string path, long neededAvailableFreeSpace)
         {
@@ -87,13 +87,13 @@ namespace Aurora.IO
         }
 
         /// <summary>
-        /// 创建具有指定长度的文件。
+        /// Creates a file with the specified length.
         /// </summary>
-        /// <param name="path">路径。</param>
-        /// <param name="length">长度。</param>
-        /// <returns>如果文件已存在，并且该文件的长度等于指定的长度，则为 <see langword="false"/>；否则为 <see langword="true"/>。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="path"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> 小于 0。</exception>
+        /// <param name="path">The path.</param>
+        /// <param name="length">The length.</param>
+        /// <returns><see langword="false"/> if the file already exists and its length equals the specified length; otherwise, <see langword="true"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="path"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> is less than 0.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool CreateEmptyFile(string path, long length)
         {
@@ -110,13 +110,13 @@ namespace Aurora.IO
         }
 
         /// <summary>
-        /// 创建具有指定长度的文件。
+        /// Creates a file with the specified length.
         /// </summary>
-        /// <param name="fileInfo">文件信息。</param>
-        /// <param name="length">长度。</param>
-        /// <returns>如果文件已存在，并且该文件的长度等于指定的长度，则为 <see langword="false"/>；否则为 <see langword="true"/>。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="fileInfo"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> 小于 0。</exception>
+        /// <param name="fileInfo">The file info.</param>
+        /// <param name="length">The length.</param>
+        /// <returns><see langword="false"/> if the file already exists and its length equals the specified length; otherwise, <see langword="true"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="fileInfo"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> is less than 0.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool CreateEmptyFile(FileInfo fileInfo, long length)
         {

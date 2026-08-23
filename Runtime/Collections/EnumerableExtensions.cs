@@ -4,18 +4,18 @@ using System.Collections.Generic;
 namespace Aurora.Collections
 {
     /// <summary>
-    /// 为 <see cref="IEnumerable{T}"/> 接口提供扩展方法。
+    /// Provides extension methods for the <see cref="IEnumerable{T}"/> interface.
     /// </summary>
     public static class EnumerableExtensions
     {
         /// <summary>
-        /// 使用默认的相等性比较器，在当前 <see cref="IEnumerable{T}"/> 中搜索指定对象，并返回其首个匹配项的索引。
+        /// Searches the current <see cref="IEnumerable{T}"/> for the specified object using the default equality comparer, and returns the index of its first match.
         /// </summary>
-        /// <param name="source">要搜索的序列。</param>
-        /// <param name="value">要在 <paramref name="source"/> 中搜索的对象。</param>
-        /// <typeparam name="TSource">序列中成员的类型。</typeparam>
-        /// <returns>如果在整个 <paramref name="source"/> 中找到了 <paramref name="value"/> 的第一个匹配项，则为该项的从零开始的索引；否则为负数。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> 为 <see langword="null"/>。</exception>
+        /// <param name="source">The sequence to search.</param>
+        /// <param name="value">The object to search for in <paramref name="source"/>.</param>
+        /// <typeparam name="TSource">The type of the members in the sequence.</typeparam>
+        /// <returns>The zero-based index of the first match of <paramref name="value"/> in the whole <paramref name="source"/>, if found; otherwise, a negative number.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
         public static int IndexOf<TSource>(this IEnumerable<TSource> source, TSource value)
         {
             switch (source)
@@ -55,14 +55,14 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 使用指定的相等性比较器，在当前 <see cref="IEnumerable{T}"/> 中搜索指定对象，并返回其首个匹配项的索引。
+        /// Searches the current <see cref="IEnumerable{T}"/> for the specified object using the specified equality comparer, and returns the index of its first match.
         /// </summary>
-        /// <param name="source">要搜索的序列。</param>
-        /// <param name="value">要在 <paramref name="source"/> 中搜索的对象。</param>
-        /// <param name="equalityComparer">用于比较两个 <typeparamref name="TSource"/> 对象是否相等的比较器。</param>
-        /// <typeparam name="TSource">序列中成员的类型。</typeparam>
-        /// <returns>如果在整个 <paramref name="source"/> 中找到了 <paramref name="value"/> 的第一个匹配项，则为该项的索引；否则为负数。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> 为 <see langword="null"/>。</exception>
+        /// <param name="source">The sequence to search.</param>
+        /// <param name="value">The object to search for in <paramref name="source"/>.</param>
+        /// <param name="equalityComparer">A comparer used to determine whether two <typeparamref name="TSource"/> objects are equal.</param>
+        /// <typeparam name="TSource">The type of the members in the sequence.</typeparam>
+        /// <returns>The index of the first match of <paramref name="value"/> in the whole <paramref name="source"/>, if found; otherwise, a negative number.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
         public static int IndexOf<TSource>(
             this IEnumerable<TSource>  source,
             TSource                    value,
@@ -97,13 +97,13 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 使用默认的相等性比较器，在当前 <see cref="IEnumerable{T}"/> 中搜索指定对象，并返回其最后一个匹配项的索引。
+        /// Searches the current <see cref="IEnumerable{T}"/> for the specified object using the default equality comparer, and returns the index of its last match.
         /// </summary>
-        /// <param name="source">要搜索的序列。</param>
-        /// <param name="value">要在 <paramref name="source"/> 中搜索的对象。</param>
-        /// <typeparam name="TSource">序列中成员的类型。</typeparam>
-        /// <returns>如果在整个 <paramref name="source"/> 中找到了 <paramref name="value"/> 的最后一个匹配项，则为该项的从零开始的索引；否则为负数。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> 为 <see langword="null"/>。</exception>
+        /// <param name="source">The sequence to search.</param>
+        /// <param name="value">The object to search for in <paramref name="source"/>.</param>
+        /// <typeparam name="TSource">The type of the members in the sequence.</typeparam>
+        /// <returns>The zero-based index of the last match of <paramref name="value"/> in the whole <paramref name="source"/>, if found; otherwise, a negative number.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
         public static int LastIndexOf<TSource>(this IEnumerable<TSource> source, TSource value)
         {
             switch (source)
@@ -142,14 +142,14 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 使用指定的相等性比较器，在当前 <see cref="IEnumerable{T}"/> 中搜索指定对象，并返回其最后一个匹配项的索引。
+        /// Searches the current <see cref="IEnumerable{T}"/> for the specified object using the specified equality comparer, and returns the index of its last match.
         /// </summary>
-        /// <param name="source">要搜索的序列。</param>
-        /// <param name="value">要在 <paramref name="source"/> 中搜索的对象。</param>
-        /// <param name="equalityComparer">用于比较两个 <typeparamref name="TSource"/> 对象是否相等的比较器。</param>
-        /// <typeparam name="TSource">序列中成员的类型。</typeparam>
-        /// <returns>如果在整个 <paramref name="source"/> 中找到了 <paramref name="value"/> 的最后一个匹配项，则为该项的从零开始的索引；否则为负数。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> 为 <see langword="null"/>。</exception>
+        /// <param name="source">The sequence to search.</param>
+        /// <param name="value">The object to search for in <paramref name="source"/>.</param>
+        /// <param name="equalityComparer">A comparer used to determine whether two <typeparamref name="TSource"/> objects are equal.</param>
+        /// <typeparam name="TSource">The type of the members in the sequence.</typeparam>
+        /// <returns>The zero-based index of the last match of <paramref name="value"/> in the whole <paramref name="source"/>, if found; otherwise, a negative number.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
         public static int LastIndexOf<TSource>(
             this IEnumerable<TSource>  source,
             TSource                    value,
@@ -183,13 +183,13 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 使用指定的条件，在当前 <see cref="IEnumerable{T}"/> 中搜索匹配的成员，并返回其首个匹配项的索引。
+        /// Searches the current <see cref="IEnumerable{T}"/> for matching members using the specified condition, and returns the index of its first match.
         /// </summary>
-        /// <param name="source">要搜索的序列。</param>
-        /// <param name="match">搜索 <paramref name="source"/> 中的成员的条件。</param>
-        /// <typeparam name="TSource">序列中成员的类型。</typeparam>
-        /// <returns>如果在整个 <paramref name="source"/> 中找到了满足 <paramref name="match"/> 的第一个匹配项，则为该项的索引；否则为负数。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> 或 <paramref name="match"/> 为 <see langword="null"/>。</exception>
+        /// <param name="source">The sequence to search.</param>
+        /// <param name="match">The condition used to search the members of <paramref name="source"/>.</param>
+        /// <typeparam name="TSource">The type of the members in the sequence.</typeparam>
+        /// <returns>The index of the first match satisfying <paramref name="match"/> in the whole <paramref name="source"/>, if found; otherwise, a negative number.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="match"/> is <see langword="null"/>.</exception>
         public static int FindIndex<TSource>(this IEnumerable<TSource> source, Predicate<TSource> match)
         {
             if (source == null)
@@ -224,13 +224,13 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 使用指定的条件，在当前 <see cref="IEnumerable{T}"/> 中搜索匹配的成员，并返回其最后一个匹配项的索引。
+        /// Searches the current <see cref="IEnumerable{T}"/> for matching members using the specified condition, and returns the index of its last match.
         /// </summary>
-        /// <param name="source">要搜索的序列。</param>
-        /// <param name="match">搜索 <paramref name="source"/> 中的对象的条件。</param>
-        /// <typeparam name="TSource">序列中成员的类型。</typeparam>
-        /// <returns>如果在整个 <paramref name="source"/> 中找到了满足 <paramref name="match"/> 的最后一个匹配项，则为该项的索引；否则为负数。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> 或 <paramref name="match"/> 为 <see langword="null"/>。</exception>
+        /// <param name="source">The sequence to search.</param>
+        /// <param name="match">The condition used to search the objects of <paramref name="source"/>.</param>
+        /// <typeparam name="TSource">The type of the members in the sequence.</typeparam>
+        /// <returns>The index of the last match satisfying <paramref name="match"/> in the whole <paramref name="source"/>, if found; otherwise, a negative number.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="match"/> is <see langword="null"/>.</exception>
         public static int FindLastIndex<TSource>(this IEnumerable<TSource> source, Predicate<TSource> match)
         {
             if (source == null)

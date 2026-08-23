@@ -5,16 +5,16 @@ using System.Threading;
 namespace Aurora.Pooling
 {
     /// <summary>
-    /// 使用内存流范围。
+    /// A using scope for a memory stream.
     /// </summary>
     public sealed class MemoryStreamUsingScope : IDisposable
     {
         private MemoryStream _memoryStream;
 
         /// <summary>
-        /// 初始化 <see cref="MemoryStreamUsingScope"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="MemoryStreamUsingScope"/> class.
         /// </summary>
-        /// <param name="memoryStream">此输出参数将被赋值为一个空内存流。</param>
+        /// <param name="memoryStream">This output parameter is assigned an empty memory stream.</param>
         public MemoryStreamUsingScope(out MemoryStream memoryStream)
         {
             _memoryStream = PredefinedPools.MemoryStream.Get();

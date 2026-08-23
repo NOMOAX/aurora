@@ -1,18 +1,18 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace Aurora.Collections
 {
     /// <summary>
-    /// 深度优先、递归地，按照“先枚举各个子结点，后枚举根结点”的规则，枚举树的结点。
+    /// Depth-first, recursively enumerates the tree's nodes following the rule "enumerate each child node first, then enumerate the root node".
     /// </summary>
-    /// <typeparam name="T">树的结点的类型。</typeparam>
-    /// <remarks>此枚举器将在构造函数中和 <see cref="IEnumerator.Reset"/> 中计算完每一步的枚举结果，请注意此行为导致的性能消耗。</remarks>
+    /// <typeparam name="T">The type of the tree's nodes.</typeparam>
+    /// <remarks>This enumerator computes the enumeration result of every step in the constructor and in <see cref="IEnumerator.Reset"/>. Be aware of the performance cost caused by this behavior.</remarks>
     public sealed class LrdEnumerator<T> : DepthFirstDataLastEnumerator<T> where T : class
     {
         /// <summary>
-        /// 初始化 <see cref="LrdEnumerator{T}"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="LrdEnumerator{T}"/> class.
         /// </summary>
         /// <inheritdoc />
         public LrdEnumerator(

@@ -3,19 +3,19 @@
 namespace Aurora.Pooling
 {
     /// <summary>
-    /// 管理池中的哈希集的策略。
+    /// A strategy for managing hash sets in the pool.
     /// </summary>
-    /// <typeparam name="T">哈希集的成员的类型。</typeparam>
+    /// <typeparam name="T">The type of the hash set's members.</typeparam>
     public class PooledHashSetPolicy<T> : IPooledObjectPolicy<HashSet<T>>
     {
         /// <summary>
-        /// 获取或设置池化的哈希集的初始容量。
+        /// Gets or sets the initial capacity of pooled hash sets.
         /// </summary>
-        /// <remarks>由于目标框架设置为 .NET Framework 4.7.1，因此这个值暂时无法使用。</remarks>
+        /// <remarks>Because the target framework is set to .NET Framework 4.7.1, this value is temporarily unusable.</remarks>
         public int InitialCapacity { get; set; } = 17;
 
         /// <summary>
-        /// 获取或设置允许被放入池的哈希集的最大长度。
+        /// Gets or sets the maximum length of hash sets allowed into the pool.
         /// </summary>
         public int MaximumRetainedCount { get; set; } = 293;
 

@@ -5,17 +5,17 @@ using System.Threading;
 namespace Aurora.Pooling
 {
     /// <summary>
-    /// 使用列表范围。
+    /// A using scope for a list.
     /// </summary>
-    /// <typeparam name="T">列表的成员的类型。</typeparam>
+    /// <typeparam name="T">The type of the list's members.</typeparam>
     public sealed class ListUsingScope<T> : IDisposable
     {
         private List<T> _list;
 
         /// <summary>
-        /// 初始化 <see cref="ListUsingScope{T}"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="ListUsingScope{T}"/> class.
         /// </summary>
-        /// <param name="list">此输出参数将被赋值为一个空列表。</param>
+        /// <param name="list">This output parameter is assigned an empty list.</param>
         public ListUsingScope(out List<T> list)
         {
             _list = PredefinedPools<T>.List.Get();

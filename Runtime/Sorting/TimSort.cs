@@ -5,7 +5,7 @@ using Aurora.Pooling;
 namespace Aurora.Sorting
 {
     /// <summary>
-    /// Tim Peters 排序算法。
+    /// The Tim Peters sort algorithm.
     /// </summary>
     public static class TimSort
     {
@@ -14,11 +14,11 @@ namespace Aurora.Sorting
         private const int MinGallop = 7;
 
         /// <summary>
-        /// 对集合中的元素进行排序。
+        /// Sorts the elements in the collection.
         /// </summary>
-        /// <param name="collection">集合。</param>
-        /// <typeparam name="T">集合中元素的类型。</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 为 <see langword="null"/>。</exception>
+        /// <param name="collection">The collection.</param>
+        /// <typeparam name="T">The type of the elements in the collection.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
         public static void Sort<T>(IList<T> collection)
         {
             if (collection == null)
@@ -34,12 +34,12 @@ namespace Aurora.Sorting
         }
 
         /// <summary>
-        /// 使用指定的比较器，对集合中的元素进行排序。
+        /// Sorts the elements in the collection using the specified comparer.
         /// </summary>
-        /// <param name="collection">集合。</param>
-        /// <param name="comparer">比较元素时使用的比较器。如果为 <see langword="null"/>，则使用默认的比较器（<see cref="Comparer{T}.Default"/>）。</param>
-        /// <typeparam name="T">集合中元素的类型。</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 为 <see langword="null"/>。</exception>
+        /// <param name="collection">The collection.</param>
+        /// <param name="comparer">The comparer used to compare elements. If it is <see langword="null"/>, the default comparer (<see cref="Comparer{T}.Default"/>) is used.</param>
+        /// <typeparam name="T">The type of the elements in the collection.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
         public static void Sort<T>(IList<T> collection, IComparer<T> comparer)
         {
             if (collection == null)
@@ -55,15 +55,15 @@ namespace Aurora.Sorting
         }
 
         /// <summary>
-        /// 使用指定的比较器，对集合中的部分元素进行排序。
+        /// Sorts part of the elements in the collection using the specified comparer.
         /// </summary>
-        /// <param name="collection">集合。</param>
-        /// <param name="index">排序范围的起始索引。</param>
-        /// <param name="count">排序范围内的元素数。</param>
-        /// <typeparam name="T">集合中元素的类型。</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> 小于 0，或者 <paramref name="count"/> 小于 0。</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> 加上 <paramref name="count"/> 大于 <paramref name="collection"/> 中包含的元素数。</exception>
+        /// <param name="collection">The collection.</param>
+        /// <param name="index">The starting index of the sort range.</param>
+        /// <param name="count">The number of elements in the sort range.</param>
+        /// <typeparam name="T">The type of the elements in the collection.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
+        /// <exception cref="ArgumentException"><paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="collection"/>.</exception>
         public static void Sort<T>(IList<T> collection, int index, int count)
         {
             if (collection == null)
@@ -80,7 +80,9 @@ namespace Aurora.Sorting
             }
             if (index + count > collection.Count)
             {
-                throw new ArgumentException($"{nameof(index)} 加上 {nameof(count)} 大于 {nameof(collection)} 中包含的元素数");
+                throw new ArgumentException(
+                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(collection)}'s number of elements"
+                );
             }
             if (count < 2)
             {
@@ -90,16 +92,16 @@ namespace Aurora.Sorting
         }
 
         /// <summary>
-        /// 使用指定的比较器，对集合中的部分元素进行排序。
+        /// Sorts part of the elements in the collection using the specified comparer.
         /// </summary>
-        /// <param name="collection">集合。</param>
-        /// <param name="index">排序范围的起始索引。</param>
-        /// <param name="count">排序范围内的元素数。</param>
-        /// <param name="comparer">比较元素时使用的比较器。如果为 <see langword="null"/>，则使用默认的比较器（<see cref="Comparer{T}.Default"/>）。</param>
-        /// <typeparam name="T">集合中元素的类型。</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> 小于 0，或者 <paramref name="count"/> 小于 0。</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> 加上 <paramref name="count"/> 大于 <paramref name="collection"/> 中包含的元素数。</exception>
+        /// <param name="collection">The collection.</param>
+        /// <param name="index">The starting index of the sort range.</param>
+        /// <param name="count">The number of elements in the sort range.</param>
+        /// <param name="comparer">The comparer used to compare elements. If it is <see langword="null"/>, the default comparer (<see cref="Comparer{T}.Default"/>) is used.</param>
+        /// <typeparam name="T">The type of the elements in the collection.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
+        /// <exception cref="ArgumentException"><paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="collection"/>.</exception>
         public static void Sort<T>(IList<T> collection, int index, int count, IComparer<T> comparer)
         {
             if (collection == null)
@@ -116,7 +118,9 @@ namespace Aurora.Sorting
             }
             if (index + count > collection.Count)
             {
-                throw new ArgumentException($"{nameof(index)} 加上 {nameof(count)} 大于 {nameof(collection)} 中包含的元素数");
+                throw new ArgumentException(
+                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(collection)}'s number of elements"
+                );
             }
             if (count < 2)
             {
@@ -126,14 +130,14 @@ namespace Aurora.Sorting
         }
 
         /// <summary>
-        /// 使用指定的排序器。对键集合中的元素进行排序，并对应地修改值集合中的元素的顺序。
+        /// Uses the specified sorter. Sorts the elements in the key collection and correspondingly changes the order of the elements in the value collection.
         /// </summary>
-        /// <param name="keys">键集合。</param>
-        /// <param name="values">值集合。</param>
-        /// <typeparam name="TKey">键集合中元素的类型。</typeparam>
-        /// <typeparam name="TValue">值集合中元素的类型。</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="keys"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentException"><paramref name="values"/> 不为 <see langword="null"/>，并且 <paramref name="values"/> 中包含的元素数小于 <paramref name="keys"/> 中包含的元素数。</exception>
+        /// <param name="keys">The key collection.</param>
+        /// <param name="values">The value collection.</param>
+        /// <typeparam name="TKey">The type of the elements in the key collection.</typeparam>
+        /// <typeparam name="TValue">The type of the elements in the value collection.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="keys"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="values"/> is not <see langword="null"/>, and the number of elements in <paramref name="values"/> is less than the number of elements in <paramref name="keys"/>.</exception>
         public static void Sort<TKey, TValue>(IList<TKey> keys, IList<TValue> values)
         {
             if (keys == null)
@@ -143,7 +147,10 @@ namespace Aurora.Sorting
             var count = keys.Count;
             if (values != null && values.Count < count)
             {
-                throw new ArgumentException($"{nameof(values)} 中包含的元素数小于 {nameof(keys)} 中包含的元素数", nameof(values));
+                throw new ArgumentException(
+                    $"{nameof(values)}'s number of elements is less than {nameof(keys)}'s number of elements",
+                    nameof(values)
+                );
             }
             if (count < 2)
             {
@@ -160,15 +167,15 @@ namespace Aurora.Sorting
         }
 
         /// <summary>
-        /// 使用指定的排序器。对键集合中的元素进行排序，并对应地修改值集合中的元素的顺序。
+        /// Uses the specified sorter. Sorts the elements in the key collection and correspondingly changes the order of the elements in the value collection.
         /// </summary>
-        /// <param name="keys">键集合。</param>
-        /// <param name="values">值集合。</param>
-        /// <param name="comparer">比较元素时使用的比较器。如果为 <see langword="null"/>，则使用默认的比较器（<see cref="Comparer{T}.Default"/>）。</param>
-        /// <typeparam name="TKey">键集合中元素的类型。</typeparam>
-        /// <typeparam name="TValue">值集合中元素的类型。</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="keys"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentException"><paramref name="values"/> 不为 <see langword="null"/>，并且 <paramref name="values"/> 中包含的元素数小于 <paramref name="keys"/> 中包含的元素数。</exception>
+        /// <param name="keys">The key collection.</param>
+        /// <param name="values">The value collection.</param>
+        /// <param name="comparer">The comparer used to compare elements. If it is <see langword="null"/>, the default comparer (<see cref="Comparer{T}.Default"/>) is used.</param>
+        /// <typeparam name="TKey">The type of the elements in the key collection.</typeparam>
+        /// <typeparam name="TValue">The type of the elements in the value collection.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="keys"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="values"/> is not <see langword="null"/>, and the number of elements in <paramref name="values"/> is less than the number of elements in <paramref name="keys"/>.</exception>
         public static void Sort<TKey, TValue>(IList<TKey> keys, IList<TValue> values, IComparer<TKey> comparer)
         {
             if (keys == null)
@@ -178,7 +185,10 @@ namespace Aurora.Sorting
             var count = keys.Count;
             if (values != null && values.Count < count)
             {
-                throw new ArgumentException($"{nameof(values)} 中包含的元素数小于 {nameof(keys)} 中包含的元素数", nameof(values));
+                throw new ArgumentException(
+                    $"{nameof(values)}'s number of elements is less than {nameof(keys)}'s number of elements",
+                    nameof(values)
+                );
             }
             if (count < 2)
             {
@@ -195,17 +205,17 @@ namespace Aurora.Sorting
         }
 
         /// <summary>
-        /// 使用指定的排序器。对键集合中的部分元素进行排序，并对应地修改值集合中的元素的顺序。
+        /// Uses the specified sorter. Sorts part of the elements in the key collection and correspondingly changes the order of the elements in the value collection.
         /// </summary>
-        /// <param name="keys">键集合。</param>
-        /// <param name="values">值集合。</param>
-        /// <param name="index">排序范围的起始索引。</param>
-        /// <param name="count">排序范围内的元素数。</param>
-        /// <typeparam name="TKey">键集合中元素的类型。</typeparam>
-        /// <typeparam name="TValue">值集合中元素的类型。</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="keys"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> 小于 0，或者 <paramref name="count"/> 小于 0。</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> 加上 <paramref name="count"/> 大于 <paramref name="keys"/> 中包含的元素数，或者 <paramref name="values"/> 不为 <see langword="null"/> 并且 <paramref name="index"/> 加上 <paramref name="count"/> 大于 <paramref name="values"/> 中包含的元素数。</exception>
+        /// <param name="keys">The key collection.</param>
+        /// <param name="values">The value collection.</param>
+        /// <param name="index">The starting index of the sort range.</param>
+        /// <param name="count">The number of elements in the sort range.</param>
+        /// <typeparam name="TKey">The type of the elements in the key collection.</typeparam>
+        /// <typeparam name="TValue">The type of the elements in the value collection.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="keys"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
+        /// <exception cref="ArgumentException"><paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="keys"/>, or <paramref name="values"/> is not <see langword="null"/> and <paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="values"/>.</exception>
         public static void Sort<TKey, TValue>(IList<TKey> keys, IList<TValue> values, int index, int count)
         {
             if (keys == null)
@@ -222,11 +232,15 @@ namespace Aurora.Sorting
             }
             if (index + count > keys.Count)
             {
-                throw new ArgumentException($"{nameof(index)} 加上 {nameof(count)} 大于 {nameof(keys)} 中包含的元素数");
+                throw new ArgumentException(
+                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(keys)}'s number of elements"
+                );
             }
             if (values != null && index + count > values.Count)
             {
-                throw new ArgumentException($"{nameof(index)} 加上 {nameof(count)} 大于 {nameof(values)} 中包含的元素数");
+                throw new ArgumentException(
+                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(values)}'s number of elements"
+                );
             }
             if (count < 2)
             {
@@ -243,18 +257,18 @@ namespace Aurora.Sorting
         }
 
         /// <summary>
-        /// 使用指定的排序器。对键集合中的部分元素进行排序，并对应地修改值集合中的元素的顺序。
+        /// Uses the specified sorter. Sorts part of the elements in the key collection and correspondingly changes the order of the elements in the value collection.
         /// </summary>
-        /// <param name="keys">键集合。</param>
-        /// <param name="values">值集合。</param>
-        /// <param name="index">排序范围的起始索引。</param>
-        /// <param name="count">排序范围内的元素数。</param>
-        /// <param name="comparer">比较元素时使用的比较器。如果为 <see langword="null"/>，则使用默认的比较器（<see cref="Comparer{T}.Default"/>）。</param>
-        /// <typeparam name="TKey">键集合中元素的类型。</typeparam>
-        /// <typeparam name="TValue">值集合中元素的类型。</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="keys"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> 小于 0，或者 <paramref name="count"/> 小于 0。</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> 加上 <paramref name="count"/> 大于 <paramref name="keys"/> 中包含的元素数，或者 <paramref name="values"/> 不为 <see langword="null"/> 并且 <paramref name="index"/> 加上 <paramref name="count"/> 大于 <paramref name="values"/> 中包含的元素数。</exception>
+        /// <param name="keys">The key collection.</param>
+        /// <param name="values">The value collection.</param>
+        /// <param name="index">The starting index of the sort range.</param>
+        /// <param name="count">The number of elements in the sort range.</param>
+        /// <param name="comparer">The comparer used to compare elements. If it is <see langword="null"/>, the default comparer (<see cref="Comparer{T}.Default"/>) is used.</param>
+        /// <typeparam name="TKey">The type of the elements in the key collection.</typeparam>
+        /// <typeparam name="TValue">The type of the elements in the value collection.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="keys"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
+        /// <exception cref="ArgumentException"><paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="keys"/>, or <paramref name="values"/> is not <see langword="null"/> and <paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="values"/>.</exception>
         public static void Sort<TKey, TValue>(
             IList<TKey>     keys,
             IList<TValue>   values,
@@ -276,11 +290,15 @@ namespace Aurora.Sorting
             }
             if (index + count > keys.Count)
             {
-                throw new ArgumentException($"{nameof(index)} 加上 {nameof(count)} 大于 {nameof(keys)} 中包含的元素数");
+                throw new ArgumentException(
+                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(keys)}'s number of elements"
+                );
             }
             if (values != null && index + count > values.Count)
             {
-                throw new ArgumentException($"{nameof(index)} 加上 {nameof(count)} 大于 {nameof(values)} 中包含的元素数");
+                throw new ArgumentException(
+                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(values)}'s number of elements"
+                );
             }
             if (count < 2)
             {
@@ -310,19 +328,19 @@ namespace Aurora.Sorting
             {
                 var globalMinGallop = MinGallop;
                 /*
-                 * MergeLow 和 MergeHigh 需要使用额外的空间来合并两个 run
-                 * 将使用两个 run 的长度的较短者
-                 * 最坏情况下，两个 run 的长度相等，并且是最后一轮合并，因此这里直接初始化一个长度为 count 的一半的数组，作为额外空间
-                 * 如果使用更小的值，并在合适的时候扩容，也是可以的，
-                 * 但是，从栈顶到栈底的 run 的长度变化大概是以斐波那契数列的程度增长的，需要考虑多次扩容带来的性能影响
+                 * MergeLow and MergeHigh need extra space to merge two runs
+                 * Uses the shorter of the two run lengths
+                 * In the worst case, the two runs have equal lengths and it is the final merge, so an array of half the count length is directly initialized here as extra space
+                 * Using a smaller value and growing it when appropriate is also fine,
+                 * However, the run lengths from the top to the bottom of the stack roughly grow at a Fibonacci-sequence rate, so the performance impact of multiple reallocations must be considered
                  */
                 var temp            = new T[count >> 1];
-                // 最小的 run 长度
+                // The minimum run length
                 var minRunCount     = GetMinRunCount(count);
                 do
                 {
                     var runCount = CountRunAndMakeAscending(collection, index, count, comparer);
-                    // run 的长度不足，扩充到 minRunCount，但不要超过剩余的元素数量
+                    // The run length is not enough; grow it to minRunCount, but do not exceed the remaining element count
                     if (runCount < minRunCount)
                     {
                         var forceRunCount = Math.Min(minRunCount, count);
@@ -361,20 +379,20 @@ namespace Aurora.Sorting
             {
                 var globalMinGallop = MinGallop;
                 /*
-                 * MergeLow 和 MergeHigh 需要使用额外的空间来合并两个 run
-                 * 将使用两个 run 的长度的较短者
-                 * 最坏情况下，两个 run 的长度相等，并且是最后一轮合并，因此这里直接初始化一个长度为 count 的一半的数组，作为额外空间
-                 * 如果使用更小的值，并在合适的时候扩容，也是可以的，
-                 * 但是，从栈顶到栈底的 run 的长度变化大概是以斐波那契数列的程度增长的，需要考虑多次扩容带来的性能影响
+                 * MergeLow and MergeHigh need extra space to merge two runs
+                 * Uses the shorter of the two run lengths
+                 * In the worst case, the two runs have equal lengths and it is the final merge, so an array of half the count length is directly initialized here as extra space
+                 * Using a smaller value and growing it when appropriate is also fine,
+                 * However, the run lengths from the top to the bottom of the stack roughly grow at a Fibonacci-sequence rate, so the performance impact of multiple reallocations must be considered
                  */
                 var tempKeys        = new TKey[count >> 1];
                 var tempValues      = new TValue[count >> 1];
-                // 最小的 run 长度
+                // The minimum run length
                 var minRunCount     = GetMinRunCount(count);
                 do
                 {
                     var runCount = CountRunAndMakeAscending(keys, values, index, count, comparer);
-                    // run 的长度不足，扩充到 minRunCount，但不要超过剩余的元素数量
+                    // The run length is not enough; grow it to minRunCount, but do not exceed the remaining element count
                     if (runCount < minRunCount)
                     {
                         var forceRunCount = Math.Min(minRunCount, count);
@@ -418,9 +436,9 @@ namespace Aurora.Sorting
             {
                 return count;
             }
-            // 比较前两个元素，判断是升序序列还是严格降序序列
+            // Compare the first two elements to determine whether the sequence is ascending or strictly descending
             var isAscending = comparer.Compare(collection[index], collection[index + 1]) <= 0;
-            // 将指针指向第三个元素，此后，每轮比较指针之前一个元素和指针所在的元素
+            // Move the pointer to the third element; from then on, each round compares the element before the pointer and the element at the pointer
             var i           = index + 2;
             if (isAscending)
             {
@@ -436,8 +454,8 @@ namespace Aurora.Sorting
                     i++;
                 }
                 /*
-                 * 将严格降序序列反转，使其成为严格升序序列
-                 * 由于严格降序序列中不存在相等的元素，因此该操作不会破坏排序的稳定性
+                 * Reverse the strictly descending sequence to make it strictly ascending
+                 * Since a strictly descending sequence has no equal elements, this operation does not break the stability of the sort
                  */
                 ReverseRange(collection, index, i - index);
             }
@@ -455,9 +473,9 @@ namespace Aurora.Sorting
             {
                 return count;
             }
-            // 比较前两个元素，判断是升序序列还是严格降序序列
+            // Compare the first two elements to determine whether the sequence is ascending or strictly descending
             var isAscending = comparer.Compare(keys[index], keys[index + 1]) <= 0;
-            // 将指针指向第三个元素，此后，每轮比较指针之前一个元素和指针所在的元素
+            // Move the pointer to the third element; from then on, each round compares the element before the pointer and the element at the pointer
             var i           = index + 2;
             if (isAscending)
             {
@@ -473,8 +491,8 @@ namespace Aurora.Sorting
                     i++;
                 }
                 /*
-                 * 将严格降序序列反转，使其成为严格升序序列
-                 * 由于严格降序序列中不存在相等的元素，因此该操作不会破坏排序的稳定性
+                 * Reverse the strictly descending sequence to make it strictly ascending
+                 * Since a strictly descending sequence has no equal elements, this operation does not break the stability of the sort
                  */
                 ReverseRange(keys, values, index, i - index);
             }
@@ -587,7 +605,7 @@ namespace Aurora.Sorting
         }
 
         /// <summary>
-        /// 合并 <paramref name="runs"/>.[<paramref name="runIndex"/>] 和 <paramref name="runs"/>.[<paramref name="runIndex"/> + 1]。
+        /// Merges <paramref name="runs"/>.[<paramref name="runIndex"/>] and <paramref name="runs"/>.[<paramref name="runIndex"/> + 1].
         /// </summary>
         private static void MergeAt<T>(
             IList<T>     collection,
@@ -597,20 +615,20 @@ namespace Aurora.Sorting
             T[]          temp,
             IComparer<T> comparer)
         {
-            // [runIndex] 中需要参与合并的第一个元素的索引
+            // The index of the first element in [runIndex] that needs to be merged
             var index  = runs[runIndex].Index;
-            // [runIndex] 中需要参与合并的元素数量
+            // The number of elements in [runIndex] that need to be merged
             var count  = runs[runIndex].Count;
-            // [runIndex + 1] 中需要参与合并的第一个元素的索引
+            // The index of the first element in [runIndex + 1] that needs to be merged
             var index1 = runs[runIndex + 1].Index;
-            // [runIndex + 1] 中需要参与合并的元素数量
+            // The number of elements in [runIndex + 1] that need to be merged
             var count1 = runs[runIndex + 1].Count;
 
             /*
-             * 要合并 [runIndex] 和 [runIndex + 1]
-             * 将他们两个作为一个整体存到 [runIndex]
-             * 如果 [runIndex + 2] 存在的话，将 [runIndex + 2] 存到 [runIndex + 1]
-             * 移除末尾处的 run
+             * To merge [runIndex] and [runIndex + 1]
+             * store the two as a whole into [runIndex]
+             * if [runIndex + 2] exists, store [runIndex + 2] into [runIndex + 1]
+             * remove the run at the end
              */
             runs[runIndex] = new Run(runs[runIndex].Index, runs[runIndex].Count + runs[runIndex + 1].Count);
             if (runIndex == runs.Count - 3)
@@ -618,36 +636,36 @@ namespace Aurora.Sorting
                 runs[runIndex + 1] = runs[runIndex + 2];
             }
             /*
-             * 移除末尾处的 run，因为它的数据已经被存放在新的地方：
+             * Remove the run at the end because its data has already been stored in a new place:
              *
-             * 如果它是 [runIndex + 1]，那么它的数据已经和 [runIndex] 一起作为整体存放在 [runIndex]
-             * 如果它是 [runIndex + 2]，那么它已经存放在 [runIndex + 1]
+             * if it is [runIndex + 1], its data has been stored together with [runIndex] as a whole into [runIndex]
+             * if it is [runIndex + 2], it has already been stored into [runIndex + 1]
              */
             runs.RemoveAt(runs.Count - 1);
 
-            // [runIndex + 1] 的第一个元素应该放到 [runIndex] 的什么索引处
+            // At which index of [runIndex] the first element of [runIndex + 1] should be placed
             var indexOfRun1FirstElementOfRun = GallopRight(collection[index1], collection, index, count, 0, comparer);
-            // [runIndex] 中该索引处之前的元素可以被忽略，因此调整 index 和 count 的值
+            // The elements before that index in [runIndex] can be ignored, so adjust the index and count values
             index += indexOfRun1FirstElementOfRun;
             count -= indexOfRun1FirstElementOfRun;
-            // [runIndex] 与 [runIndex + 1] 已经有序，无需合并
+            // [runIndex] and [runIndex + 1] are already ordered, so no merge is needed
             if (count == 0)
             {
                 return;
             }
 
-            // 类似的，寻找 [runIndex] 的最后一个元素应该放到 [runIndex + 1] 的什么索引处，并调整 count1 的值
+            // Similarly, find at which index of [runIndex + 1] the last element of [runIndex] should be placed, and adjust the count1 value
             count1 = GallopLeft(collection[index + count - 1], collection, index1, count1, count1 - 1, comparer);
-            // [runIndex] 与 [runIndex + 1] 已经有序，无需合并
+            // [runIndex] and [runIndex + 1] are already ordered, so no merge is needed
             if (count1 == 0)
             {
                 return;
             }
 
             /*
-             * 合并 [runIndex] 和 [runIndex + 1] 中未被忽略的部分
-             * 将使用临时内存空间来帮助合并
-             * 使用的临时内存空间的大小为 Math.Min(count0, count1)
+             * Merge the non-ignored parts of [runIndex] and [runIndex + 1]
+             * Temporary memory will be used to help with the merge
+             * The size of the temporary memory used is Math.Min(count0, count1)
              */
             if (count <= count1)
             {
@@ -660,7 +678,7 @@ namespace Aurora.Sorting
         }
 
         /// <summary>
-        /// 合并 <paramref name="runs"/>.[<paramref name="runIndex"/>] 和 <paramref name="runs"/>.[<paramref name="runIndex"/> + 1]。
+        /// Merges <paramref name="runs"/>.[<paramref name="runIndex"/>] and <paramref name="runs"/>.[<paramref name="runIndex"/> + 1].
         /// </summary>
         private static void MergeAt<TKey, TValue>(
             IList<TKey>     keys,
@@ -672,20 +690,20 @@ namespace Aurora.Sorting
             TValue[]        tempValues,
             IComparer<TKey> comparer)
         {
-            // [runIndex] 中需要参与合并的第一个元素的索引
+            // The index of the first element in [runIndex] that needs to be merged
             var index  = runs[runIndex].Index;
-            // [runIndex] 中需要参与合并的元素数量
+            // The number of elements in [runIndex] that need to be merged
             var count  = runs[runIndex].Count;
-            // [runIndex + 1] 中需要参与合并的第一个元素的索引
+            // The index of the first element in [runIndex + 1] that needs to be merged
             var index1 = runs[runIndex + 1].Index;
-            // [runIndex + 1] 中需要参与合并的元素数量
+            // The number of elements in [runIndex + 1] that need to be merged
             var count1 = runs[runIndex + 1].Count;
 
             /*
-             * 要合并 [runIndex] 和 [runIndex + 1]
-             * 将他们两个作为一个整体存到 [runIndex]
-             * 如果 [runIndex + 2] 存在的话，将 [runIndex + 2] 存到 [runIndex + 1]
-             * 移除末尾处的 run
+             * To merge [runIndex] and [runIndex + 1]
+             * store the two as a whole into [runIndex]
+             * if [runIndex + 2] exists, store [runIndex + 2] into [runIndex + 1]
+             * remove the run at the end
              */
             runs[runIndex] = new Run(runs[runIndex].Index, runs[runIndex].Count + runs[runIndex + 1].Count);
             if (runIndex == runs.Count - 3)
@@ -693,36 +711,36 @@ namespace Aurora.Sorting
                 runs[runIndex + 1] = runs[runIndex + 2];
             }
             /*
-             * 移除末尾处的 run，因为它的数据已经被存放在新的地方：
+             * Remove the run at the end because its data has already been stored in a new place:
              *
-             * 如果它是 [runIndex + 1]，那么它的数据已经和 [runIndex] 一起作为整体存放在 [runIndex]
-             * 如果它是 [runIndex + 2]，那么它已经存放在 [runIndex + 1]
+             * if it is [runIndex + 1], its data has been stored together with [runIndex] as a whole into [runIndex]
+             * if it is [runIndex + 2], it has already been stored into [runIndex + 1]
              */
             runs.RemoveAt(runs.Count - 1);
 
-            // [runIndex + 1] 的第一个元素应该放到 [runIndex] 的什么索引处
+            // At which index of [runIndex] the first element of [runIndex + 1] should be placed
             var indexOfRun1FirstElementOfRun = GallopRight(keys[index1], keys, index, count, 0, comparer);
-            // [runIndex] 中该索引处之前的元素可以被忽略，因此调整 index 和 count 的值
+            // The elements before that index in [runIndex] can be ignored, so adjust the index and count values
             index += indexOfRun1FirstElementOfRun;
             count -= indexOfRun1FirstElementOfRun;
-            // [runIndex] 与 [runIndex + 1] 已经有序，无需合并
+            // [runIndex] and [runIndex + 1] are already ordered, so no merge is needed
             if (count == 0)
             {
                 return;
             }
 
-            // 类似的，寻找 [runIndex] 的最后一个元素应该放到 [runIndex + 1] 的什么索引处，并调整 count1 的值
+            // Similarly, find at which index of [runIndex + 1] the last element of [runIndex] should be placed, and adjust the count1 value
             count1 = GallopLeft(keys[index + count - 1], keys, index1, count1, count1 - 1, comparer);
-            // [runIndex] 与 [runIndex + 1] 已经有序，无需合并
+            // [runIndex] and [runIndex + 1] are already ordered, so no merge is needed
             if (count1 == 0)
             {
                 return;
             }
 
             /*
-             * 合并 [runIndex] 和 [runIndex + 1] 中未被忽略的部分
-             * 将使用临时内存空间来帮助合并
-             * 使用的临时内存空间的大小为 Math.Min(count0, count1)
+             * Merge the non-ignored parts of [runIndex] and [runIndex + 1]
+             * Temporary memory will be used to help with the merge
+             * The size of the temporary memory used is Math.Min(count0, count1)
              */
             if (count <= count1)
             {
@@ -1289,7 +1307,7 @@ namespace Aurora.Sorting
                 {
                     lastOffset = offset;
                     offset     = (offset << 1) + 1;
-                    // 溢出
+                    // Overflow
                     if (offset <= 0)
                     {
                         offset = maxOffset;
@@ -1299,7 +1317,7 @@ namespace Aurora.Sorting
                 {
                     offset = maxOffset;
                 }
-                // 让 offset 变成相对于 index 的值
+                // Make offset a value relative to index
                 lastOffset += hint;
                 offset     += hint;
             }
@@ -1310,7 +1328,7 @@ namespace Aurora.Sorting
                 {
                     lastOffset = offset;
                     offset     = (offset << 1) + 1;
-                    // 溢出
+                    // Overflow
                     if (offset <= 0)
                     {
                         offset = maxOffset;
@@ -1320,7 +1338,7 @@ namespace Aurora.Sorting
                 {
                     offset = maxOffset;
                 }
-                // 让 offset 变成相对于 index 的值
+                // Make offset a value relative to index
                 var tmp = lastOffset;
                 lastOffset = hint - offset;
                 offset     = hint - tmp;
@@ -1358,7 +1376,7 @@ namespace Aurora.Sorting
                 {
                     lastOffset = offset;
                     offset     = (offset << 1) + 1;
-                    // 溢出
+                    // Overflow
                     if (offset <= 0)
                     {
                         offset = maxOffset;
@@ -1368,7 +1386,7 @@ namespace Aurora.Sorting
                 {
                     offset = maxOffset;
                 }
-                // 让 offset 变成相对于 index 的值
+                // Make offset a value relative to index
                 var tmp = lastOffset;
                 lastOffset = hint - offset;
                 offset     = hint - tmp;
@@ -1380,7 +1398,7 @@ namespace Aurora.Sorting
                 {
                     lastOffset = offset;
                     offset     = (offset << 1) + 1;
-                    // 溢出
+                    // Overflow
                     if (offset <= 0)
                     {
                         offset = maxOffset;
@@ -1390,7 +1408,7 @@ namespace Aurora.Sorting
                 {
                     offset = maxOffset;
                 }
-                // 让 offset 变成相对于 index 的值
+                // Make offset a value relative to index
                 lastOffset += hint;
                 offset     += hint;
             }

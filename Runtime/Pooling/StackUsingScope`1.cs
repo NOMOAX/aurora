@@ -5,17 +5,17 @@ using System.Threading;
 namespace Aurora.Pooling
 {
     /// <summary>
-    /// 使用栈范围。
+    /// A using scope for a stack.
     /// </summary>
-    /// <typeparam name="T">栈的成员的类型。</typeparam>
+    /// <typeparam name="T">The type of the stack's members.</typeparam>
     public sealed class StackUsingScope<T> : IDisposable
     {
         private Stack<T> _stack;
 
         /// <summary>
-        /// 初始化 <see cref="StackUsingScope{T}"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="StackUsingScope{T}"/> class.
         /// </summary>
-        /// <param name="stack">此输出参数将被赋值为一个空栈。</param>
+        /// <param name="stack">This output parameter is assigned an empty stack.</param>
         public StackUsingScope(out Stack<T> stack)
         {
             _stack = PredefinedPools<T>.Stack.Get();

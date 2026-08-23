@@ -3,19 +3,19 @@
 namespace Aurora
 {
     /// <summary>
-    /// 在遇到了意外情况时引发的异常。
+    /// The exception thrown when an unexpected situation is encountered.
     /// </summary>
     public class UnexpectedException : Exception
     {
         /// <summary>
-        /// 初始化 <see cref="UnexpectedException"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="UnexpectedException"/> class.
         /// </summary>
-        public UnexpectedException() : base("遇到了意外情况")
+        public UnexpectedException() : base("An unexpected situation was encountered")
         {
         }
 
         /// <summary>
-        /// 用指定的错误消息初始化 <see cref="UnexpectedException"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="UnexpectedException"/> class with the specified error message.
         /// </summary>
         /// <inheritdoc />
         public UnexpectedException(string message) : base(message)
@@ -23,7 +23,7 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 使用指定的错误消息和对作为此异常原因的内部异常的引用来初始化 <see cref="UnexpectedException"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="UnexpectedException"/> class with the specified error message and a reference to the inner exception that is the cause of this exception.
         /// </summary>
         /// <inheritdoc />
         public UnexpectedException(string message, Exception innerException) : base(message, innerException)

@@ -1,25 +1,25 @@
 ﻿namespace Aurora.Pooling
 {
     /// <summary>
-    /// 对象池。
+    /// An object pool.
     /// </summary>
-    /// <typeparam name="T">对象池中成员的类型。</typeparam>
+    /// <typeparam name="T">The type of the members in the object pool.</typeparam>
     public interface IPool<T> where T : class
     {
         /// <summary>
-        /// 如果对象池中有可用的成员，则取出该成员；否则创建一个新对象。
+        /// If the pool has an available member, retrieves it; otherwise, creates a new object.
         /// </summary>
-        /// <returns>从对象池中取出的成员或创建的新对象。</returns>
+        /// <returns>A member retrieved from the pool or a newly created object.</returns>
         T Get();
 
         /// <summary>
-        /// 将对象放入对象池。
+        /// Returns an object to the pool.
         /// </summary>
-        /// <param name="obj">要放入对象池的对象。</param>
+        /// <param name="obj">The object to return to the pool.</param>
         void Return(T obj);
 
         /// <summary>
-        /// 移除对象池中的所有成员。
+        /// Removes all members from the pool.
         /// </summary>
         void Clear();
     }

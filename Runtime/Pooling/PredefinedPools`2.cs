@@ -3,14 +3,14 @@
 namespace Aurora.Pooling
 {
     /// <summary>
-    /// 提供一组预定义的具有 2 个类型参数的公共对象池。
+    /// Provides a set of predefined public object pools with 2 type parameters.
     /// </summary>
-    /// <typeparam name="T1">对象池的成员所需要的第 1 个类型参数。</typeparam>
-    /// <typeparam name="T2">对象池的成员所需要的第 2 个类型参数。</typeparam>
+    /// <typeparam name="T1">The first type parameter required by the pool's members.</typeparam>
+    /// <typeparam name="T2">The second type parameter required by the pool's members.</typeparam>
     public static class PredefinedPools<T1, T2>
     {
         /// <summary>
-        /// 字典池。
+        /// A pool of dictionaries.
         /// </summary>
         public static readonly IPool<Dictionary<T1, T2>> Dictionary =
             new Pool<Dictionary<T1, T2>>(new PooledDictionaryPolicy<T1, T2>());

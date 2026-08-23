@@ -4,9 +4,9 @@ using System.Threading;
 namespace Aurora
 {
     /// <summary>
-    /// 对另一个 <see cref="Invocation{TResult}"/> 进行包装，确保仅第一次的对 <see cref="Invoke"/> 的调用会实际执行。
+    /// Wraps another <see cref="Invocation{TResult}"/> to ensure that only the first call to <see cref="Invoke"/> is actually executed.
     /// </summary>
-    /// <typeparam name="TResult">返回值的类型。</typeparam>
+    /// <typeparam name="TResult">The type of the return value.</typeparam>
     public sealed class OneTimeInvocation<TResult> : Invocation<TResult>
     {
         private Invocation<TResult> _invocation;
@@ -14,10 +14,10 @@ namespace Aurora
         private TResult _result;
 
         /// <summary>
-        /// 初始化 <see cref="OneTimeInvocation{TResult}"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="OneTimeInvocation{TResult}"/> class.
         /// </summary>
-        /// <param name="invocation">一个 <see cref="Invocation{TResult}"/>。</param>
-        /// <exception cref="ArgumentNullException"><paramref name="invocation"/> 为 <see langword="null"/>。</exception>
+        /// <param name="invocation">An <see cref="Invocation{TResult}"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="invocation"/> is <see langword="null"/>.</exception>
         public OneTimeInvocation(Invocation<TResult> invocation)
         {
             if (invocation == null)

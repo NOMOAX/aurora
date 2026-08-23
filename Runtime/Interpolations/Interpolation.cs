@@ -1,162 +1,162 @@
 ﻿namespace Aurora.Interpolations
 {
     /// <summary>
-    /// 插值方式。
+    /// Interpolation modes.
     /// </summary>
     public enum Interpolation
     {
         /// <summary>
-        /// 线性插值。
+        /// Linear interpolation.
         /// </summary>
         Linear,
 
         /// <summary>
-        /// 缓入正弦插值。
+        /// In-sine interpolation.
         /// </summary>
         InSine,
 
         /// <summary>
-        /// 缓出正弦插值。
+        /// Out-sine interpolation.
         /// </summary>
         OutSine,
 
         /// <summary>
-        /// 缓入缓出正弦插值。
+        /// In-out-sine interpolation.
         /// </summary>
         InOutSine,
 
         /// <summary>
-        /// 缓入二次插值。
+        /// In-quadratic interpolation.
         /// </summary>
         InQuad,
 
         /// <summary>
-        /// 缓出二次插值。
+        /// Out-quadratic interpolation.
         /// </summary>
         OutQuad,
 
         /// <summary>
-        /// 缓入缓出二次插值。
+        /// In-out-quadratic interpolation.
         /// </summary>
         InOutQuad,
 
         /// <summary>
-        /// 缓入三次插值。
+        /// In-cubic interpolation.
         /// </summary>
         InCubic,
 
         /// <summary>
-        /// 缓出三次插值。
+        /// Out-cubic interpolation.
         /// </summary>
         OutCubic,
 
         /// <summary>
-        /// 缓入缓出三次插值。
+        /// In-out-cubic interpolation.
         /// </summary>
         InOutCubic,
 
         /// <summary>
-        /// 缓入四次插值。
+        /// In-quartic interpolation.
         /// </summary>
         InQuart,
 
         /// <summary>
-        /// 缓出四次插值。
+        /// Out-quartic interpolation.
         /// </summary>
         OutQuart,
 
         /// <summary>
-        /// 缓入缓出四次插值。
+        /// In-out-quartic interpolation.
         /// </summary>
         InOutQuart,
 
         /// <summary>
-        /// 缓入五次插值。
+        /// In-quintic interpolation.
         /// </summary>
         InQuint,
 
         /// <summary>
-        /// 缓出五次插值。
+        /// Out-quintic interpolation.
         /// </summary>
         OutQuint,
 
         /// <summary>
-        /// 缓入缓出五次插值。
+        /// In-out-quintic interpolation.
         /// </summary>
         InOutQuint,
 
         /// <summary>
-        /// 缓入指数插值。
+        /// In-exponential interpolation.
         /// </summary>
         InExpo,
 
         /// <summary>
-        /// 缓出指数插值。
+        /// Out-exponential interpolation.
         /// </summary>
         OutExpo,
 
         /// <summary>
-        /// 缓入缓出指数插值。
+        /// In-out-exponential interpolation.
         /// </summary>
         InOutExpo,
 
         /// <summary>
-        /// 缓入圆形插值。
+        /// In-circular interpolation.
         /// </summary>
         InCirc,
 
         /// <summary>
-        /// 缓出圆形插值。
+        /// Out-circular interpolation.
         /// </summary>
         OutCirc,
 
         /// <summary>
-        /// 缓入缓出圆形插值。
+        /// In-out-circular interpolation.
         /// </summary>
         InOutCirc,
 
         /// <summary>
-        /// 缓入回弹插值。
+        /// In-back interpolation.
         /// </summary>
         InBack,
 
         /// <summary>
-        /// 缓出回弹插值。
+        /// Out-back interpolation.
         /// </summary>
         OutBack,
 
         /// <summary>
-        /// 缓入缓出回弹插值。
+        /// In-out-back interpolation.
         /// </summary>
         InOutBack,
 
         /// <summary>
-        /// 缓入弹性插值。
+        /// In-elastic interpolation.
         /// </summary>
         InElastic,
 
         /// <summary>
-        /// 缓出弹性插值。
+        /// Out-elastic interpolation.
         /// </summary>
         OutElastic,
 
         /// <summary>
-        /// 缓入缓出弹性插值。
+        /// In-out-elastic interpolation.
         /// </summary>
         InOutElastic,
 
         /// <summary>
-        /// 缓入弹跳插值。
+        /// In-bounce interpolation.
         /// </summary>
         InBounce,
 
         /// <summary>
-        /// 缓出弹跳插值。
+        /// Out-bounce interpolation.
         /// </summary>
         OutBounce,
 
         /// <summary>
-        /// 缓入缓出弹跳插值。
+        /// In-out-bounce interpolation.
         /// </summary>
         InOutBounce
     }

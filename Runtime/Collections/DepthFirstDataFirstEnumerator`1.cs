@@ -5,9 +5,9 @@ using Aurora.Pooling;
 namespace Aurora.Collections
 {
     /// <summary>
-    /// 深度优先、递归地，按照“先枚举根结点”的规则，枚举树的结点。
+    /// Depth-first, recursively enumerates the tree's nodes following the rule "enumerate the root node first".
     /// </summary>
-    /// <typeparam name="T">树的结点的类型。</typeparam>
+    /// <typeparam name="T">The type of the tree's nodes.</typeparam>
     public abstract class DepthFirstDataFirstEnumerator<T> : TreeEnumerator<T> where T : class
     {
         private Stack<T> _stack;
@@ -15,7 +15,7 @@ namespace Aurora.Collections
         private T _current;
 
         /// <summary>
-        /// 初始化 <see cref="DepthFirstDataFirstEnumerator{T}"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="DepthFirstDataFirstEnumerator{T}"/> class.
         /// </summary>
         /// <inheritdoc />
         protected DepthFirstDataFirstEnumerator(
@@ -75,10 +75,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 将当前结点经 <see cref="TreeEnumerator{T}.FuncGetChildren"/> 计算后得到的子结点集合添加到内部栈的顶部。
+        /// Adds the children of the current node, computed by <see cref="TreeEnumerator{T}.FuncGetChildren"/>, to the top of the internal stack.
         /// </summary>
-        /// <param name="stack">栈。</param>
-        /// <param name="children">当前结点的子结点集合。</param>
+        /// <param name="stack">The stack.</param>
+        /// <param name="children">The children of the current node.</param>
         protected abstract void PushChildren(Stack<T> stack, IEnumerable<T> children);
 
         /// <inheritdoc />

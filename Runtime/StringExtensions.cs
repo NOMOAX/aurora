@@ -3,16 +3,16 @@
 namespace Aurora
 {
     /// <summary>
-    /// 为 <see cref="string"/> 类提供扩展方法。
+    /// Provides extension methods for the <see cref="string"/> class.
     /// </summary>
     public static class StringExtensions
     {
         /// <summary>
-        /// 将字符串中的反斜线号（“\”）替换为斜线号（“/”）。
+        /// Replaces backslashes ("\\") in the string with slashes ("/").
         /// </summary>
-        /// <param name="value">字符串。</param>
-        /// <returns>一个新的字符串，它是将 <paramref name="value"/> 中的反斜线号（“\”）替换为斜线号（“/”）后的结果。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="value"/> 为 <see langword="null"/>。</exception>
+        /// <param name="value">The string.</param>
+        /// <returns>A new string that is the result of replacing backslashes ("\\") in <paramref name="value"/> with slashes ("/").</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
         public static string ReplaceBackslashWithSlash(this string value)
         {
             if (value == null)

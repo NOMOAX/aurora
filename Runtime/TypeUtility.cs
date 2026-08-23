@@ -6,7 +6,7 @@ using Aurora.Pooling;
 namespace Aurora
 {
     /// <summary>
-    /// 为 <see cref="Type"/> 类提供工具方法。
+    /// Provides utility methods for the <see cref="Type"/> class.
     /// </summary>
     public static class TypeUtility
     {
@@ -55,11 +55,11 @@ namespace Aurora
             CreateNicelyFormattedTypeNameCallback = CreateNicelyFormattedTypeName;
 
         /// <summary>
-        /// 获取指定类型的字符串表现形式。
+        /// Gets the string representation of the specified type.
         /// </summary>
-        /// <param name="type">类型。</param>
-        /// <returns><paramref name="type"/> 的字符串表现形式。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="type"/> 为 <see langword="null"/>。</exception>
+        /// <param name="type">The type.</param>
+        /// <returns>The string representation of <paramref name="type"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="type"/> is <see langword="null"/>.</exception>
         public static string GetNicelyFormattedName(Type type)
         {
             if (type == null)

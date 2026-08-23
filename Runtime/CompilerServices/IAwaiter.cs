@@ -3,24 +3,24 @@
 namespace Aurora.CompilerServices
 {
     /// <summary>
-    /// 用于切换到目标环境的等待器。
+    /// An awaiter used to switch to the target environment.
     /// </summary>
     public interface IAwaiter : ICriticalNotifyCompletion
     {
         /// <summary>
-        /// 获取一个值，这个值指示等待操作是否已完成。
+        /// Gets a value that indicates whether the wait operation has completed.
         /// </summary>
         /// <remarks>
-        /// 根据 C# 规范“可等待表达式”的规定，请隐式实现此接口成员。
+        /// According to the C# specification on "awaitable expressions", please implement this interface member explicitly.
         /// </remarks>
         /// <seealso href="https://learn.microsoft.com/dotnet/csharp/language-reference/language-specification/expressions"/>
         bool IsCompleted { get; }
 
         /// <summary>
-        /// 处理结果。
+        /// Processes the result.
         /// </summary>
         /// <remarks>
-        /// 根据 C# 规范“可等待表达式”的规定，请隐式实现此接口成员。
+        /// According to the C# specification on "awaitable expressions", please implement this interface member explicitly.
         /// </remarks>
         /// <seealso href="https://learn.microsoft.com/dotnet/csharp/language-reference/language-specification/expressions"/>
         void GetResult();

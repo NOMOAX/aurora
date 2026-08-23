@@ -5,16 +5,16 @@ using System.Threading;
 namespace Aurora.Pooling
 {
     /// <summary>
-    /// 使用秒表范围。
+    /// A using scope for a stopwatch.
     /// </summary>
     public sealed class StopwatchUsingScope : IDisposable
     {
         private Stopwatch _stopwatch;
 
         /// <summary>
-        /// 初始化 <see cref="StopwatchUsingScope"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="StopwatchUsingScope"/> class.
         /// </summary>
-        /// <param name="stopwatch">此输出参数将被赋值为一个空秒表。</param>
+        /// <param name="stopwatch">This output parameter is assigned an empty stopwatch.</param>
         public StopwatchUsingScope(out Stopwatch stopwatch)
         {
             _stopwatch = PredefinedPools.Stopwatch.Get();

@@ -5,17 +5,17 @@ using System.Threading;
 namespace Aurora.Pooling
 {
     /// <summary>
-    /// 使用哈希集范围。
+    /// A using scope for a hash set.
     /// </summary>
-    /// <typeparam name="T">哈希集的成员的类型。</typeparam>
+    /// <typeparam name="T">The type of the hash set's members.</typeparam>
     public sealed class HashSetUsingScope<T> : IDisposable
     {
         private HashSet<T> _hashSet;
 
         /// <summary>
-        /// 初始化 <see cref="HashSetUsingScope{T}"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="HashSetUsingScope{T}"/> class.
         /// </summary>
-        /// <param name="hashSet">此输出参数将被赋值为一个空哈希集。</param>
+        /// <param name="hashSet">This output parameter is assigned an empty hash set.</param>
         public HashSetUsingScope(out HashSet<T> hashSet)
         {
             _hashSet = PredefinedPools<T>.HashSet.Get();

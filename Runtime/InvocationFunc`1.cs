@@ -3,7 +3,7 @@
 namespace Aurora
 {
     /// <summary>
-    /// 无参数且返回值的调用。
+    /// An invocation that takes no parameters and returns a value.
     /// </summary>
     /// <typeparam name="TResult"></typeparam>
     public sealed class InvocationFunc<TResult> : Invocation<TResult>
@@ -11,10 +11,10 @@ namespace Aurora
         private readonly Func<TResult> _func;
 
         /// <summary>
-        /// 初始化 <see cref="InvocationFunc{TResult}"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="InvocationFunc{TResult}"/> class.
         /// </summary>
-        /// <param name="func">无参数且返回值的方法。</param>
-        /// <exception cref="ArgumentNullException"><paramref name="func"/> 为 <see langword="null"/>。</exception>
+        /// <param name="func">A method that takes no parameters and returns a value.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="func"/> is <see langword="null"/>.</exception>
         public InvocationFunc(Func<TResult> func)
         {
             _func = func ?? throw new ArgumentNullException(nameof(func));

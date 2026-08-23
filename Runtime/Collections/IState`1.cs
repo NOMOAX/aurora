@@ -1,29 +1,29 @@
 ﻿namespace Aurora.Collections
 {
     /// <summary>
-    /// （有限状态机中的）状态。
+    /// A state (in a finite state machine).
     /// </summary>
-    /// <typeparam name="T">状态的标识符的类型。</typeparam>
+    /// <typeparam name="T">The type of the state's identifier.</typeparam>
     public interface IState<T>
     {
         /// <summary>
-        /// 获取这个 <see cref="IState{T}"/> 的标识符。
+        /// Gets the identifier of this <see cref="IState{T}"/>.
         /// </summary>
-        /// <remarks>返回值不应该为 <see langword="null"/>。</remarks>
+        /// <remarks>The return value should not be <see langword="null"/>.</remarks>
         T Id { get; }
 
         /// <summary>
-        /// 有限状态机进入这个状态。
+        /// The finite state machine enters this state.
         /// </summary>
-        /// <param name="stateMachine">有限状态机。</param>
-        /// <param name="from">上一个状态。</param>
+        /// <param name="stateMachine">The finite state machine.</param>
+        /// <param name="from">The previous state.</param>
         void OnEnter(StateMachine<T> stateMachine, IState<T> from);
 
         /// <summary>
-        /// 有限状态机退出这个状态。
+        /// The finite state machine exits this state.
         /// </summary>
-        /// <param name="stateMachine">有限状态机。</param>
-        /// <param name="to">下一个状态。</param>
+        /// <param name="stateMachine">The finite state machine.</param>
+        /// <param name="to">The next state.</param>
         void OnExit(StateMachine<T> stateMachine, IState<T> to);
     }
 }

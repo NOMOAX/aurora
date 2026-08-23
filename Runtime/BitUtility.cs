@@ -3,16 +3,16 @@
 namespace Aurora
 {
     /// <summary>
-    /// 提供一组位运算方法。
+    /// Provides a set of bit-operation methods.
     /// </summary>
     public static class BitUtility
     {
         /// <summary>
-        /// 执行无符号右移运算。
+        /// Performs an unsigned right-shift operation.
         /// </summary>
-        /// <param name="value">要执行无符号右移运算的值。</param>
-        /// <param name="shiftCount">移动的位数。</param>
-        /// <returns>无符号右移运算的结果。</returns>
+        /// <param name="value">The value to shift right without sign extension.</param>
+        /// <param name="shiftCount">The number of bits to shift.</param>
+        /// <returns>The result of the unsigned right-shift operation.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int UnsignedRightShift(int value, int shiftCount)
         {
@@ -20,11 +20,11 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 执行无符号右移运算。
+        /// Performs an unsigned right-shift operation.
         /// </summary>
-        /// <param name="value">要执行无符号右移运算的值。</param>
-        /// <param name="shiftCount">移动的位数。</param>
-        /// <returns>无符号右移运算的结果。</returns>
+        /// <param name="value">The value to shift right without sign extension.</param>
+        /// <param name="shiftCount">The number of bits to shift.</param>
+        /// <returns>The result of the unsigned right-shift operation.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint UnsignedRightShift(uint value, int shiftCount)
         {
@@ -32,11 +32,11 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 执行无符号右移运算。
+        /// Performs an unsigned right-shift operation.
         /// </summary>
-        /// <param name="value">要执行无符号右移运算的值。</param>
-        /// <param name="shiftCount">移动的位数。</param>
-        /// <returns>无符号右移运算的结果。</returns>
+        /// <param name="value">The value to shift right without sign extension.</param>
+        /// <param name="shiftCount">The number of bits to shift.</param>
+        /// <returns>The result of the unsigned right-shift operation.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static long UnsignedRightShift(long value, int shiftCount)
         {
@@ -44,11 +44,11 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 执行无符号右移运算。
+        /// Performs an unsigned right-shift operation.
         /// </summary>
-        /// <param name="value">要执行无符号右移运算的值。</param>
-        /// <param name="shiftCount">移动的位数。</param>
-        /// <returns>无符号右移运算的结果。</returns>
+        /// <param name="value">The value to shift right without sign extension.</param>
+        /// <param name="shiftCount">The number of bits to shift.</param>
+        /// <returns>The result of the unsigned right-shift operation.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong UnsignedRightShift(ulong value, int shiftCount)
         {

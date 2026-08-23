@@ -5,16 +5,16 @@ using System.Threading;
 namespace Aurora.Pooling
 {
     /// <summary>
-    /// 使用可变字符串范围。
+    /// A using scope for a mutable string.
     /// </summary>
     public sealed class StringBuilderUsingScope : IDisposable
     {
         private StringBuilder _stringBuilder;
 
         /// <summary>
-        /// 初始化 <see cref="StringBuilderUsingScope"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="StringBuilderUsingScope"/> class.
         /// </summary>
-        /// <param name="stringBuilder">此输出参数将被赋值为一个空可变字符串。</param>
+        /// <param name="stringBuilder">This output parameter is assigned an empty mutable string.</param>
         public StringBuilderUsingScope(out StringBuilder stringBuilder)
         {
             _stringBuilder = PredefinedPools.StringBuilder.Get();

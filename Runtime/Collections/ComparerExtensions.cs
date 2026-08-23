@@ -4,17 +4,17 @@ using System.Collections.Generic;
 namespace Aurora.Collections
 {
     /// <summary>
-    /// 为 <see cref="IComparer{T}"/> 接口提供扩展方法。
+    /// Provides extension methods for the <see cref="IComparer{T}"/> interface.
     /// </summary>
     public static class ComparerExtensions
     {
         /// <summary>
-        /// 获取与当前 <see cref="IComparer{T}"/> 的比较结果相反的比较器。
+        /// Gets a comparer that reverses the comparison result of the current <see cref="IComparer{T}"/>.
         /// </summary>
-        /// <param name="comparer">比较器。</param>
-        /// <typeparam name="T">比较的对象的类型。</typeparam>
-        /// <returns>与当前 <see cref="IComparer{T}"/> 的比较结果相反的比较器。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="comparer"/> 为 <see langword="null"/>。</exception>
+        /// <param name="comparer">The comparer.</param>
+        /// <typeparam name="T">The type of objects to compare.</typeparam>
+        /// <returns>A comparer that reverses the comparison result of the current <see cref="IComparer{T}"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="comparer"/> is <see langword="null"/>.</exception>
         public static IComparer<T> Reversed<T>(this IComparer<T> comparer)
         {
             if (comparer == null)

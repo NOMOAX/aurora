@@ -5,9 +5,9 @@ using System.Collections.Generic;
 namespace Aurora.Collections
 {
     /// <summary>
-    /// 二叉堆。
+    /// A binary heap.
     /// </summary>
-    /// <typeparam name="T">二叉堆中的成员的类型。</typeparam>
+    /// <typeparam name="T">The type of the members in the binary heap.</typeparam>
     public sealed class BinaryHeap<T> : IEnumerable<T>
     {
         private readonly IComparer<T> _comparer;
@@ -19,37 +19,37 @@ namespace Aurora.Collections
         private int _version;
 
         /// <summary>
-        /// 初始化 <see cref="BinaryHeap{T}"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="BinaryHeap{T}"/> class.
         /// </summary>
         public BinaryHeap() : this(0)
         {
         }
 
         /// <summary>
-        /// 使用指定的初始容量初始化 <see cref="BinaryHeap{T}"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="BinaryHeap{T}"/> class with the specified initial capacity.
         /// </summary>
-        /// <param name="capacity">初始容量。</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="capacity"/> 小于 0。</exception>
+        /// <param name="capacity">The initial capacity.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="capacity"/> is less than 0.</exception>
         public BinaryHeap(int capacity) : this(capacity, Comparer<T>.Default)
         {
         }
 
         /// <summary>
-        /// 使用指定的比较器初始化 <see cref="BinaryHeap{T}"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="BinaryHeap{T}"/> class with the specified comparer.
         /// </summary>
-        /// <param name="comparer">比较器。</param>
-        /// <exception cref="ArgumentNullException"><paramref name="comparer"/> 为 <see langword="null"/>。</exception>
+        /// <param name="comparer">The comparer.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="comparer"/> is <see langword="null"/>.</exception>
         public BinaryHeap(IComparer<T> comparer) : this(0, comparer)
         {
         }
 
         /// <summary>
-        /// 使用指定的初始容量和指定的比较器初始化 <see cref="BinaryHeap{T}"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="BinaryHeap{T}"/> class with the specified initial capacity and comparer.
         /// </summary>
-        /// <param name="capacity">初始容量。</param>
-        /// <param name="comparer">比较器。</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="capacity"/> 小于 0。</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="comparer"/> 为 <see langword="null"/>。</exception>
+        /// <param name="capacity">The initial capacity.</param>
+        /// <param name="comparer">The comparer.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="capacity"/> is less than 0.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="comparer"/> is <see langword="null"/>.</exception>
         public BinaryHeap(int capacity, IComparer<T> comparer)
         {
             if (capacity < 0)
@@ -63,15 +63,15 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 获取这个二叉堆中的成员的数量。
+        /// Gets the number of members in this binary heap.
         /// </summary>
         public int Count => _size;
 
         /// <summary>
-        /// 向这个二叉堆添加一个成员。
+        /// Adds a member to this binary heap.
         /// </summary>
-        /// <param name="t">要添加到这个二叉堆的对象。</param>
-        /// <exception cref="OverflowException">这个二叉堆的容量不足以容纳将要添加的对象，需要进行扩容，但是又无法进行扩容（容量已经达到了 <see cref="int"/> 的最大值）。</exception>
+        /// <param name="t">The object to add to this binary heap.</param>
+        /// <exception cref="OverflowException">The capacity of this binary heap is not enough to hold the object to add and needs to grow, but it cannot grow (the capacity has reached the maximum value of <see cref="int"/>).</exception>
         public void Add(T t)
         {
             var length = _array.Length;
@@ -92,11 +92,11 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 向 <see cref="BinaryHeap{T}"/> 添加指定的序列中的所有成员。
+        /// Adds all members of the specified sequence to the <see cref="BinaryHeap{T}"/>.
         /// </summary>
-        /// <param name="enumerable">要将其中所有成员添加到这个二叉堆的序列。</param>
-        /// <exception cref="ArgumentNullException"><paramref name="enumerable"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="OverflowException">这个二叉堆的容量不足以容纳将要添加的对象，需要进行扩容，但是又无法进行扩容（容量已经达到了 <see cref="int"/> 的最大值）。</exception>
+        /// <param name="enumerable">The sequence whose members are all added to this binary heap.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="enumerable"/> is <see langword="null"/>.</exception>
+        /// <exception cref="OverflowException">The capacity of this binary heap is not enough to hold the object to add and needs to grow, but it cannot grow (the capacity has reached the maximum value of <see cref="int"/>).</exception>
         public void AddRange(IEnumerable<T> enumerable)
         {
             if (enumerable == null)
@@ -110,15 +110,15 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 移除并返回这个二叉堆中（根据比较器比较的结果）最小的成员。
+        /// Removes and returns the smallest member (per the comparer) in this binary heap.
         /// </summary>
-        /// <returns>这个二叉堆中（根据比较器比较的结果）最小的成员。</returns>
-        /// <exception cref="InvalidOperationException">这个二叉堆的成员数为 0。</exception>
+        /// <returns>The smallest member (per the comparer) in this binary heap.</returns>
+        /// <exception cref="InvalidOperationException">This binary heap has no members.</exception>
         public T Take()
         {
             if (_size == 0)
             {
-                throw new InvalidOperationException("二叉堆的成员数为 0");
+                throw new InvalidOperationException("This binary heap has no members");
             }
             var t = _array[0];
             _array[0] = _array[--_size];
@@ -128,24 +128,24 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 返回这个二叉堆中（根据比较器比较的结果）最小的成员。
+        /// Returns the smallest member (per the comparer) in this binary heap.
         /// </summary>
-        /// <returns>这个二叉堆中（根据比较器比较的结果）最小的成员。</returns>
-        /// <exception cref="InvalidOperationException">这个二叉堆的成员数为 0。</exception>
+        /// <returns>The smallest member (per the comparer) in this binary heap.</returns>
+        /// <exception cref="InvalidOperationException">This binary heap has no members.</exception>
         public T Peek()
         {
             if (_size == 0)
             {
-                throw new InvalidOperationException("二叉堆的成员数为 0 .");
+                throw new InvalidOperationException("This binary heap has no members.");
             }
             return _array[0];
         }
 
         /// <summary>
-        /// 确定某个对象是否在这个二叉堆中。
+        /// Determines whether an object is in this binary heap.
         /// </summary>
-        /// <param name="t">要确定是否在这个二叉堆中的对象。</param>
-        /// <returns>如果在这个二叉堆中找到了 <paramref name="t"/>。则返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
+        /// <param name="t">The object to determine whether it is in this binary heap.</param>
+        /// <returns><see langword="true"/> if <paramref name="t"/> is found in this binary heap; otherwise, <see langword="false"/>.</returns>
         public bool Contains(T t)
         {
             return IndexOf(t) >= 0;
@@ -165,10 +165,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 从这个二叉堆中移除某个成员。
+        /// Removes a member from this binary heap.
         /// </summary>
-        /// <param name="t">要从这个二叉堆中移除的对象。</param>
-        /// <returns>如果在这个二叉堆中找到了 <paramref name="t"/>，则为 <see langword="true"/> ；否则为 <see langword="false"/>。</returns>
+        /// <param name="t">The object to remove from this binary heap.</param>
+        /// <returns><see langword="true"/> if <paramref name="t"/> is found in this binary heap; otherwise, <see langword="false"/>.</returns>
         public bool Remove(T t)
         {
             var index = IndexOf(t);
@@ -188,7 +188,7 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 移除这个二叉堆中的所有成员。
+        /// Removes all members from this binary heap.
         /// </summary>
         public void Clear()
         {
@@ -261,9 +261,9 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 获取可用于枚举这个二叉堆的成员的枚举器。
+        /// Gets an enumerator that can enumerate the members of this binary heap.
         /// </summary>
-        /// <returns>可用于枚举这个二叉堆的成员的枚举器。</returns>
+        /// <returns>An enumerator that can enumerate the members of this binary heap.</returns>
         public IEnumerator<T> GetEnumerator()
         {
             return new Enumerator(this);
@@ -310,7 +310,7 @@ namespace Aurora.Collections
                 }
                 if (_version != _binaryHeap._version)
                 {
-                    throw new InvalidOperationException("在枚举期间修改了二叉堆");
+                    throw new InvalidOperationException("The binary heap was modified during enumeration");
                 }
                 if (_index == -2)
                 {
@@ -338,9 +338,13 @@ namespace Aurora.Collections
                     }
                     return _index switch
                     {
-                        -2 => throw new InvalidOperationException("枚举器位于二叉堆的第一个成员之前"),
-                        -1 => throw new InvalidOperationException("枚举器位于二叉堆的最后一个成员之后"),
-                        _  => _currentElement
+                        -2 => throw new InvalidOperationException(
+                                  "The enumerator is positioned before the first member of the binary heap"
+                              ),
+                        -1 => throw new InvalidOperationException(
+                                  "The enumerator is positioned after the last member of the binary heap"
+                              ),
+                        _ => _currentElement
                     };
                 }
             }
@@ -355,7 +359,7 @@ namespace Aurora.Collections
                 }
                 if (_version != _binaryHeap._version)
                 {
-                    throw new InvalidOperationException("在枚举期间修改了二叉堆");
+                    throw new InvalidOperationException("The binary heap was modified during enumeration");
                 }
                 _index          = -1;
                 _currentElement = default;

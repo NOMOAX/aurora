@@ -4,7 +4,7 @@ using System.Reflection;
 namespace Aurora.Pooling
 {
     /// <summary>
-    /// 管理池中的内存流的策略。
+    /// A strategy for managing memory streams in the pool.
     /// </summary>
     public class PooledMemoryStreamPolicy : IPooledObjectPolicy<MemoryStream>
     {
@@ -14,12 +14,12 @@ namespace Aurora.Pooling
         );
 
         /// <summary>
-        /// 获取或设置池化的内存流的初始容量。
+        /// Gets or sets the initial capacity of pooled memory streams.
         /// </summary>
         public int InitialCapacity { get; set; } = 256;
 
         /// <summary>
-        /// 获取或设置允许被放入池的内存流的最大容量。
+        /// Gets or sets the maximum capacity of memory streams allowed into the pool.
         /// </summary>
         public int MaximumRetainedCapacity { get; set; } = 4096;
 

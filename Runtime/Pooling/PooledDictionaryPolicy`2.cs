@@ -3,19 +3,19 @@
 namespace Aurora.Pooling
 {
     /// <summary>
-    /// 管理池中的字典的策略。
+    /// A strategy for managing dictionaries in the pool.
     /// </summary>
-    /// <typeparam name="TKey">字典的键的类型。</typeparam>
-    /// <typeparam name="TValue">字典的值的类型。</typeparam>
+    /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+    /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
     public class PooledDictionaryPolicy<TKey, TValue> : IPooledObjectPolicy<Dictionary<TKey, TValue>>
     {
         /// <summary>
-        /// 获取或设置池化的字典的初始容量。
+        /// Gets or sets the initial capacity of pooled dictionaries.
         /// </summary>
         public int InitialCapacity { get; set; } = 17;
 
         /// <summary>
-        /// 获取或设置允许被放入池的字典的最大长度。
+        /// Gets or sets the maximum length of dictionaries allowed into the pool.
         /// </summary>
         public int MaximumRetainedCount { get; set; } = 293;
 

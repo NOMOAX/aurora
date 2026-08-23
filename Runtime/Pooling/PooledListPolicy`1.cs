@@ -3,18 +3,18 @@
 namespace Aurora.Pooling
 {
     /// <summary>
-    /// 管理池中的列表的策略。
+    /// A strategy for managing lists in the pool.
     /// </summary>
-    /// <typeparam name="T">列表的成员的类型。</typeparam>
+    /// <typeparam name="T">The type of the list's members.</typeparam>
     public class PooledListPolicy<T> : IPooledObjectPolicy<List<T>>
     {
         /// <summary>
-        /// 获取或设置池化的列表的初始容量。
+        /// Gets or sets the initial capacity of pooled lists.
         /// </summary>
         public int InitialCapacity { get; set; } = 16;
 
         /// <summary>
-        /// 获取或设置允许被放入池的列表的最大容量。
+        /// Gets or sets the maximum capacity of lists allowed into the pool.
         /// </summary>
         public int MaximumRetainedCapacity { get; set; } = 256;
 

@@ -3,20 +3,20 @@
 namespace Aurora.Collections
 {
     /// <summary>
-    /// 表示比较结果与原比较器的比较结果相反的比较器。
+    /// Represents a comparer whose comparison result is the reverse of the original comparer's.
     /// </summary>
-    /// <typeparam name="T">比较的对象的类型。</typeparam>
+    /// <typeparam name="T">The type of objects to compare.</typeparam>
     public sealed class ReversedComparer<T> : IComparer<T>
     {
         /// <summary>
-        /// 获取比较结果与 <typeparamref name="T"/> 的默认比较器相反的比较器。
+        /// Gets a comparer whose comparison result is the reverse of the default comparer for <typeparamref name="T"/>.
         /// </summary>
         public static ReversedComparer<T> Default { get; } = new(Comparer<T>.Default);
 
         private readonly IComparer<T> _comparer;
 
         /// <summary>
-        /// 使用默认的原比较器初始化 <see cref="ReversedComparer{T}"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="ReversedComparer{T}"/> class using the default original comparer.
         /// </summary>
         public ReversedComparer()
         {
@@ -24,9 +24,9 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 使用指定的原比较器初始化 <see cref="ReversedComparer{T}"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="ReversedComparer{T}"/> class using the specified original comparer.
         /// </summary>
-        /// <param name="comparer">原比较器，如果为 <see langword="null"/>，则使用默认的原比较器。</param>
+        /// <param name="comparer">The original comparer; if it is <see langword="null"/>, the default original comparer is used.</param>
         public ReversedComparer(IComparer<T> comparer)
         {
             _comparer = comparer ?? Comparer<T>.Default;

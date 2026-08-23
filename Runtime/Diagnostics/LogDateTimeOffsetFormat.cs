@@ -1,22 +1,22 @@
 ﻿namespace Aurora.Diagnostics
 {
     /// <summary>
-    /// 记录日期和时间时使用的格式。
+    /// The format used when logging the date and time.
     /// </summary>
     public enum LogDateTimeOffsetFormat
     {
         /// <summary>
-        /// 不记录日期时间。
+        /// Do not log the date and time.
         /// </summary>
         None,
 
         /// <summary>
-        /// 使用标准日期和时间格式字符串“s”。
+        /// Uses the standard date-and-time format string "s".
         /// </summary>
         S,
 
         /// <summary>
-        /// 使用标准日期和时间格式字符串“O”。
+        /// Uses the standard date-and-time format string "O".
         /// </summary>
         O
     }

@@ -5,13 +5,13 @@ using System.Collections.Generic;
 namespace Aurora.Collections
 {
     /// <summary>
-    /// 使用空对象模式实现 <see cref="IEnumerator{T}"/>。
+    /// Implements <see cref="IEnumerator{T}"/> using the null-object pattern.
     /// </summary>
-    /// <typeparam name="T">要枚举的对象的类型。</typeparam>
+    /// <typeparam name="T">The type of objects to enumerate.</typeparam>
     public sealed class NullEnumerator<T> : IEnumerator<T>
     {
         /// <summary>
-        /// 获取单一实例。
+        /// Gets the singleton instance.
         /// </summary>
         public static NullEnumerator<T> Instance { get; } = new();
 

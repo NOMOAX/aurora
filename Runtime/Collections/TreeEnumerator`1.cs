@@ -1,24 +1,24 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace Aurora.Collections
 {
     /// <summary>
-    /// 枚举树的结点。
+    /// Enumerates the tree's nodes.
     /// </summary>
-    /// <typeparam name="T">树的结点的类型。</typeparam>
+    /// <typeparam name="T">The type of the tree's nodes.</typeparam>
     public abstract class TreeEnumerator<T> : IEnumerator<T> where T : class
     {
         /// <summary>
-        /// 根结点。
+        /// The root node.
         /// </summary>
         protected T RootNode;
 
         /// <summary>
-        /// 获取指定结点的所有子结点的集合的方法。
+        /// A method that gets the collection of all children of a specified node.
         /// <br/>
-        /// （特别地，如果该方法的返回值为 <see cref="IReadOnlyList{T}"/> 或 <see cref="IList{T}"/>，有助于提升此枚举器的效率。）
+        /// (In particular, if the return value of this method is <see cref="IReadOnlyList{T}"/> or <see cref="IList{T}"/>, it helps improve the efficiency of this enumerator.)
         /// </summary>
         protected readonly Func<T, IEnumerable<T>> FuncGetChildren;
 
@@ -27,31 +27,31 @@ namespace Aurora.Collections
         private readonly object _validateState;
 
         /// <summary>
-        /// 初始化 <see cref="TreeEnumerator{T}"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="TreeEnumerator{T}"/> class.
         /// </summary>
         /// <param name="rootNode">
-        /// 根结点。
+        /// The root node.
         /// <br/>
-        /// （它将传递给 <paramref name="funcValidate"/> 的第 1 个参数。）
+        /// (It will be passed as the 1st argument to <paramref name="funcValidate"/>.)
         /// </param>
         /// <param name="funcGetChildren">
-        /// 获取指定结点的所有子结点的集合的方法。
+        /// A method that gets the collection of all children of a specified node.
         /// <br/>
-        /// （特别地，如果该方法的返回值为 <see cref="IReadOnlyList{T}"/> 或 <see cref="IList{T}"/>，有助于提升此枚举器的效率。）
+        /// (In particular, if the return value of this method is <see cref="IReadOnlyList{T}"/> or <see cref="IList{T}"/>, it helps improve the efficiency of this enumerator.)
         /// </param>
         /// <param name="funcValidate">
-        /// 用于校验的方法。
+        /// The validation method.
         /// <br/>
-        /// 如果返回值为 <see langword="true"/>，则表示校验通过，否则表示检验失败。
+        /// If the return value is <see langword="true"/>, the validation passes; otherwise, it fails.
         /// <br/>
-        /// （将在 <see cref="IEnumerator.MoveNext"/> 和 <see cref="IEnumerator.Reset"/> 时调用。第 1 个参数将传入 <paramref name="rootNode"/>，第 2 个参数将传入 <paramref name="validateState"/>。）
+        /// (It will be called in <see cref="IEnumerator.MoveNext"/> and <see cref="IEnumerator.Reset"/>. The 1st argument will be <paramref name="rootNode"/>, and the 2nd will be <paramref name="validateState"/>.)
         /// </param>
         /// <param name="validateState">
-        /// 自定义数据。
+        /// Custom data.
         /// <br/>
-        /// （它将传递给 <paramref name="funcValidate"/> 的第 2 个参数。）
+        /// (It will be passed as the 2nd argument to <paramref name="funcValidate"/>.)
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="rootNode"/> 或 <paramref name="funcGetChildren"/> 为 <see langword="null"/>。</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="rootNode"/> or <paramref name="funcGetChildren"/> is <see langword="null"/>.</exception>
         protected TreeEnumerator(
             T                       rootNode,
             Func<T, IEnumerable<T>> funcGetChildren,
@@ -65,9 +65,9 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 如果校验失败，则抛出 <see cref="InvalidOperationException"/>。
+        /// Throws <see cref="InvalidOperationException"/> if the validation fails.
         /// </summary>
-        /// <exception cref="InvalidOperationException">校验失败。</exception>
+        /// <exception cref="InvalidOperationException">The validation failed.</exception>
         protected void ThrowIfInvalid()
         {
             if (_funcValidate == null)

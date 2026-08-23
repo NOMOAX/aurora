@@ -3,12 +3,12 @@
 namespace Aurora
 {
     /// <summary>
-    /// 使用空对象模式实现 <see cref="IDisposable"/>。
+    /// Implements <see cref="IDisposable"/> using the null-object pattern.
     /// </summary>
     public sealed class NullDisposable : IDisposable
     {
         /// <summary>
-        /// 获取单一实例。
+        /// Gets the singleton instance.
         /// </summary>
         public static NullDisposable Instance { get; } = new();
 

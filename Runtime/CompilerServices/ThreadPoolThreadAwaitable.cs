@@ -4,16 +4,16 @@ using System.Threading;
 namespace Aurora.CompilerServices
 {
     /// <summary>
-    /// 提供用于切换到线程池线程的可等待上下文。
+    /// Provides an awaitable context for switching to a thread-pool thread.
     /// </summary>
     public readonly struct ThreadPoolThreadAwaitable : IAwaitable
     {
         private readonly CancellationToken _cancellationToken;
 
         /// <summary>
-        /// 初始化 <see cref="ThreadPoolThreadAwaitable"/> 结构的新实例。
+        /// Initializes a new instance of the <see cref="ThreadPoolThreadAwaitable"/> struct.
         /// </summary>
-        /// <param name="cancellationToken">取消令牌。</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
         public ThreadPoolThreadAwaitable(CancellationToken cancellationToken)
         {
             _cancellationToken = cancellationToken;

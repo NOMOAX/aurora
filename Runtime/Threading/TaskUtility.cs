@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 namespace Aurora.Threading
 {
     /// <summary>
-    /// 为 <see cref="Task"/> 类提供工具方法。
+    /// Provides utility methods for the <see cref="Task"/> class.
     /// </summary>
     public static class TaskUtility
     {
         /// <summary>
-        /// 在新的上下文中等待 <see cref="Task"/>。
+        /// Awaits the <see cref="Task"/> in a new context.
         /// </summary>
-        /// <param name="task">任务。</param>
-        /// <exception cref="ArgumentNullException"><paramref name="task"/> 为 <see langword="null"/>。</exception>
+        /// <param name="task">The task.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="task"/> is <see langword="null"/>.</exception>
         public static async void BeginAwait(Task task)
         {
             if (task == null)
@@ -25,11 +25,11 @@ namespace Aurora.Threading
         }
 
         /// <summary>
-        /// 如果 <see cref="Task"/> 处于错误状态，则抛出导致其处于错误状态的根本异常；如果 <see cref="Task"/> 处于取消状态，则抛出 <see cref="TaskCanceledException"/>。
+        /// If the <see cref="Task"/> is faulted, throws the underlying exception that caused the fault; if the <see cref="Task"/> is canceled, throws <see cref="TaskCanceledException"/>.
         /// </summary>
-        /// <param name="task">任务。</param>
-        /// <exception cref="ArgumentNullException"><paramref name="task"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="TaskCanceledException"><paramref name="task"/> 处于取消状态。</exception>
+        /// <param name="task">The task.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="task"/> is <see langword="null"/>.</exception>
+        /// <exception cref="TaskCanceledException"><paramref name="task"/> is canceled.</exception>
         public static void ThrowIfFaultedOrCanceled(Task task)
         {
             if (task == null)
@@ -47,11 +47,11 @@ namespace Aurora.Threading
         }
 
         /// <summary>
-        /// 如果 <see cref="Task"/> 处于错误状态，则返回导致其处于错误状态的根本异常；否则返回 <see langword="null"/>。
+        /// If the <see cref="Task"/> is faulted, returns the underlying exception that caused the fault; otherwise, returns <see langword="null"/>.
         /// </summary>
-        /// <param name="task">任务。</param>
-        /// <returns>如果 <see cref="Task"/> 处于错误状态，则为导致其处于错误状态的根本异常；否则为 <see langword="null"/>。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="task"/> 为 <see langword="null"/>。</exception>
+        /// <param name="task">The task.</param>
+        /// <returns>If the <see cref="Task"/> is faulted, the underlying exception that caused the fault; otherwise, <see langword="null"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="task"/> is <see langword="null"/>.</exception>
         public static Exception GetBaseException(Task task)
         {
             if (task == null)
@@ -68,13 +68,13 @@ namespace Aurora.Threading
         }
 
         /// <summary>
-        /// 如果目标任务处于错误状态或取消状态，则对应地设置任务完成源错误或取消，并返回 <see langword="true"/>；否则返回 <see langword="false"/>。
+        /// If the target task is faulted or canceled, correspondingly faults or cancels the task completion source and returns <see langword="true"/>; otherwise, returns <see langword="false"/>.
         /// </summary>
-        /// <param name="task">任务。</param>
-        /// <param name="taskCompletionSource">任务完成源。</param>
-        /// <typeparam name="TResult">任务完成源的类型参数。</typeparam>
-        /// <returns>如果目标任务处于错误状态或取消状态，则对应地设置任务完成源为错误或取消状态，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="task"/> 或 <paramref name="taskCompletionSource"/> 为 <see langword="null"/>。</exception>
+        /// <param name="task">The task.</param>
+        /// <param name="taskCompletionSource">The task completion source.</param>
+        /// <typeparam name="TResult">The type parameter of the task completion source.</typeparam>
+        /// <returns><see langword="true"/> if the target task is faulted or canceled and the task completion source is correspondingly set to faulted or canceled; otherwise, <see langword="false"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="task"/> or <paramref name="taskCompletionSource"/> is <see langword="null"/>.</exception>
         public static bool HandleFaultsAndCancellation<TResult>(
             Task                          task,
             TaskCompletionSource<TResult> taskCompletionSource)
@@ -83,14 +83,14 @@ namespace Aurora.Threading
         }
 
         /// <summary>
-        /// 如果目标任务处于错误状态或取消状态，则对应地设置任务完成源错误或取消，并返回 <see langword="true"/>；否则返回 <see langword="false"/>。
+        /// If the target task is faulted or canceled, correspondingly faults or cancels the task completion source and returns <see langword="true"/>; otherwise, returns <see langword="false"/>.
         /// </summary>
-        /// <param name="task">任务。</param>
-        /// <param name="taskCompletionSource">任务完成源。</param>
-        /// <param name="cancellationToken">取消令牌。它是目标任务处于取消状态的原因。</param>
-        /// <typeparam name="TResult">任务完成源的类型参数。</typeparam>
-        /// <returns>如果目标任务处于错误状态或取消状态，则对应地设置任务完成源为错误或取消状态，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="task"/> 或 <paramref name="taskCompletionSource"/> 为 <see langword="null"/>。</exception>
+        /// <param name="task">The task.</param>
+        /// <param name="taskCompletionSource">The task completion source.</param>
+        /// <param name="cancellationToken">The cancellation token. It is the reason the target task is canceled.</param>
+        /// <typeparam name="TResult">The type parameter of the task completion source.</typeparam>
+        /// <returns><see langword="true"/> if the target task is faulted or canceled and the task completion source is correspondingly set to faulted or canceled; otherwise, <see langword="false"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="task"/> or <paramref name="taskCompletionSource"/> is <see langword="null"/>.</exception>
         public static bool HandleFaultsAndCancellation<TResult>(
             Task                          task,
             TaskCompletionSource<TResult> taskCompletionSource,
@@ -133,10 +133,10 @@ namespace Aurora.Threading
         }
 
         /// <summary>
-        /// 创建一个在任务完成时同步执行的延续任务。
+        /// Creates a continuation task that executes synchronously when the task completes.
         /// </summary>
-        /// <exception cref="ArgumentNullException"><paramref name="task"/> 为 <see langword="null"/>。</exception>
-        /// <remarks>如果任务已完成，则立即执行延续任务。</remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="task"/> is <see langword="null"/>.</exception>
+        /// <remarks>If the task has already completed, the continuation task executes immediately.</remarks>
         /// <seealso cref="Task.ContinueWith(System.Action{System.Threading.Tasks.Task})"/>
         public static Task ContinueWithSynchronously(Task task, Action<Task> continuationAction)
         {
@@ -153,10 +153,10 @@ namespace Aurora.Threading
         }
 
         /// <summary>
-        /// 创建一个在任务完成时同步执行的延续任务。
+        /// Creates a continuation task that executes synchronously when the task completes.
         /// </summary>
-        /// <exception cref="ArgumentNullException"><paramref name="task"/> 为 <see langword="null"/>。</exception>
-        /// <remarks>如果任务已完成，则立即执行延续任务。</remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="task"/> is <see langword="null"/>.</exception>
+        /// <remarks>If the task has already completed, the continuation task executes immediately.</remarks>
         /// <seealso cref="Task.ContinueWith(System.Action{System.Threading.Tasks.Task,object},object)"/>
         public static Task ContinueWithSynchronously(Task task, Action<Task, object> continuationAction, object state)
         {
@@ -174,10 +174,10 @@ namespace Aurora.Threading
         }
 
         /// <summary>
-        /// 创建一个在任务完成时同步执行的延续任务。
+        /// Creates a continuation task that executes synchronously when the task completes.
         /// </summary>
-        /// <exception cref="ArgumentNullException"><paramref name="task"/> 为 <see langword="null"/>。</exception>
-        /// <remarks>如果任务已完成，则立即执行延续任务。</remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="task"/> is <see langword="null"/>.</exception>
+        /// <remarks>If the task has already completed, the continuation task executes immediately.</remarks>
         /// <seealso cref="Task.ContinueWith{TResult}(System.Func{System.Threading.Tasks.Task,TResult})"/>
         public static Task<TResult> ContinueWithSynchronously<TResult>(
             Task                task,
@@ -196,10 +196,10 @@ namespace Aurora.Threading
         }
 
         /// <summary>
-        /// 创建一个在任务完成时同步执行的延续任务。
+        /// Creates a continuation task that executes synchronously when the task completes.
         /// </summary>
-        /// <exception cref="ArgumentNullException"><paramref name="task"/> 为 <see langword="null"/>。</exception>
-        /// <remarks>如果任务已完成，则立即执行延续任务。</remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="task"/> is <see langword="null"/>.</exception>
+        /// <remarks>If the task has already completed, the continuation task executes immediately.</remarks>
         /// <seealso cref="Task.ContinueWith{TResult}(System.Func{System.Threading.Tasks.Task,object,TResult},object)"/>
         public static Task<TResult> ContinueWithSynchronously<TResult>(
             Task                        task,
@@ -220,10 +220,10 @@ namespace Aurora.Threading
         }
 
         /// <summary>
-        /// 创建一个在任务完成时同步执行的延续任务。
+        /// Creates a continuation task that executes synchronously when the task completes.
         /// </summary>
-        /// <exception cref="ArgumentNullException"><paramref name="task"/> 为 <see langword="null"/>。</exception>
-        /// <remarks>如果任务已完成，则立即执行延续任务。</remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="task"/> is <see langword="null"/>.</exception>
+        /// <remarks>If the task has already completed, the continuation task executes immediately.</remarks>
         /// <seealso cref="Task{TResult}.ContinueWith(System.Action{System.Threading.Tasks.Task{TResult}})"/>
         public static Task ContinueWithSynchronously<TResult>(
             Task<TResult>         task,
@@ -242,10 +242,10 @@ namespace Aurora.Threading
         }
 
         /// <summary>
-        /// 创建一个在任务完成时同步执行的延续任务。
+        /// Creates a continuation task that executes synchronously when the task completes.
         /// </summary>
-        /// <exception cref="ArgumentNullException"><paramref name="task"/> 为 <see langword="null"/>。</exception>
-        /// <remarks>如果任务已完成，则立即执行延续任务。</remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="task"/> is <see langword="null"/>.</exception>
+        /// <remarks>If the task has already completed, the continuation task executes immediately.</remarks>
         /// <seealso cref="Task{TResult}.ContinueWith(System.Action{System.Threading.Tasks.Task{TResult},object},object)"/>
         public static Task ContinueWithSynchronously<TResult>(
             Task<TResult>                 task,
@@ -266,10 +266,10 @@ namespace Aurora.Threading
         }
 
         /// <summary>
-        /// 创建一个在任务完成时同步执行的延续任务。
+        /// Creates a continuation task that executes synchronously when the task completes.
         /// </summary>
-        /// <exception cref="ArgumentNullException"><paramref name="task"/> 为 <see langword="null"/>。</exception>
-        /// <remarks>如果任务已完成，则立即执行延续任务。</remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="task"/> is <see langword="null"/>.</exception>
+        /// <remarks>If the task has already completed, the continuation task executes immediately.</remarks>
         /// <seealso cref="Task{TResult}.ContinueWith{TNewResult}(System.Func{System.Threading.Tasks.Task{TResult},TNewResult})"/>
         public static Task<TNewResult> ContinueWithSynchronously<TResult, TNewResult>(
             Task<TResult>                   task,
@@ -288,10 +288,10 @@ namespace Aurora.Threading
         }
 
         /// <summary>
-        /// 创建一个在任务完成时同步执行的延续任务。
+        /// Creates a continuation task that executes synchronously when the task completes.
         /// </summary>
-        /// <exception cref="ArgumentNullException"><paramref name="task"/> 为 <see langword="null"/>。</exception>
-        /// <remarks>如果任务已完成，则立即执行延续任务。</remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="task"/> is <see langword="null"/>.</exception>
+        /// <remarks>If the task has already completed, the continuation task executes immediately.</remarks>
         /// <seealso cref="Task{TResult}.ContinueWith{TNewResult}(System.Func{System.Threading.Tasks.Task{TResult},object,TNewResult},object)"/>
         public static Task<TNewResult> ContinueWithSynchronously<TResult, TNewResult>(
             Task<TResult>                           task,

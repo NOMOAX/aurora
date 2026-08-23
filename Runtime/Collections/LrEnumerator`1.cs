@@ -1,16 +1,16 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Aurora.Collections
 {
     /// <summary>
-    /// 广度优先地，按照“从上层到下层，然后每层中枚举各结点“的规则，枚举树的结点。
+    /// Breadth-first, enumerates the tree's nodes following the rule "from upper levels to lower levels, then enumerate each node within each level".
     /// </summary>
-    /// <typeparam name="T">树的结点的类型。</typeparam>
+    /// <typeparam name="T">The type of the tree's nodes.</typeparam>
     public sealed class LrEnumerator<T> : BreadthFirstEnumerator<T> where T : class
     {
         /// <summary>
-        /// 初始化 <see cref="LrEnumerator{T}"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="LrEnumerator{T}"/> class.
         /// </summary>
         /// <inheritdoc />
         public LrEnumerator(

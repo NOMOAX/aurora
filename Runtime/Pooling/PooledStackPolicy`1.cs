@@ -3,18 +3,18 @@
 namespace Aurora.Pooling
 {
     /// <summary>
-    /// 管理池中的栈的策略。
+    /// A strategy for managing stacks in the pool.
     /// </summary>
-    /// <typeparam name="T">栈的成员的类型。</typeparam>
+    /// <typeparam name="T">The type of the stack's members.</typeparam>
     public class PooledStackPolicy<T> : IPooledObjectPolicy<Stack<T>>
     {
         /// <summary>
-        /// 获取或设置池化的栈的初始容量。
+        /// Gets or sets the initial capacity of pooled stacks.
         /// </summary>
         public int InitialCapacity { get; set; } = 16;
 
         /// <summary>
-        /// 获取或设置允许被放入池的栈的最大长度。
+        /// Gets or sets the maximum length of stacks allowed into the pool.
         /// </summary>
         public int MaximumRetainedCount { get; set; } = 256;
 

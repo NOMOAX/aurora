@@ -6,41 +6,41 @@ using System.Diagnostics;
 namespace Aurora.Collections
 {
     /// <summary>
-    /// 双端队列。
+    /// A deque.
     /// </summary>
-    /// <typeparam name="T">双端队列中元素的类型。</typeparam>
+    /// <typeparam name="T">The type of the elements in the deque.</typeparam>
     [DebuggerTypeProxy(typeof(DequeDebugView<>))]
     [DebuggerDisplay(nameof(Count) + " = {" + nameof(Count) + "}")]
     public class Deque<T> : IList<T>, IReadOnlyList<T>
     {
         /// <summary>
-        /// 存放元素的数组。
+        /// The array that stores the elements.
         /// </summary>
-        /// <remarks>它被视为是首尾循环的（第一个元素的上一个元素是最后一个元素，最后一个元素的下一个元素是第一个元素）。</remarks>
+        /// <remarks>It is treated as circular (the element before the first is the last, and the element after the last is the first).</remarks>
         private T[] _array;
 
         /// <summary>
-        /// 开头处元素的索引。
+        /// The index of the element at the head.
         /// </summary>
         private int _head;
 
         /// <summary>
-        /// 结尾处元素的下一个（如果是最后一个，则回到开头）元素的索引。
+        /// The index of the element after the tail (if it is the last, it wraps to the head).
         /// </summary>
         private int _tail;
 
         /// <summary>
-        /// 元素的数量。
+        /// The number of elements.
         /// </summary>
         private int _size;
 
         /// <summary>
-        /// 版本号，用于在枚举 <see cref="Deque{T}"/> 时确保 <see cref="Deque{T}"/> 没有被修改。
+        /// A version number used to ensure the <see cref="Deque{T}"/> is not modified during enumeration.
         /// </summary>
         private int _version;
 
         /// <summary>
-        /// 初始化容量为 0 的 <see cref="Deque{T}"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="Deque{T}"/> class with capacity 0.
         /// </summary>
         public Deque()
         {
@@ -48,10 +48,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 初始化具有指定容量的 <see cref="Deque{T}"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="Deque{T}"/> class with the specified capacity.
         /// </summary>
-        /// <param name="capacity">容量。</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="capacity"/> 小于 0。</exception>
+        /// <param name="capacity">The capacity.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="capacity"/> is less than 0.</exception>
         public Deque(int capacity)
         {
             if (capacity < 0)
@@ -62,10 +62,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 初始化拥有指定集合中所有元素的 <see cref="Deque{T}"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="Deque{T}"/> class that contains all elements of the specified collection.
         /// </summary>
-        /// <param name="collection">要向双端列表填充初始元素的集合。</param>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 为 <see langword="null"/>。</exception>
+        /// <param name="collection">The collection whose elements fill the initial elements of the deque.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
         public Deque(IEnumerable<T> collection)
         {
             if (collection == null)
@@ -80,22 +80,22 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 获取 <see cref="Deque{T}"/> 的内部数据结构在不调整大小的情况下能够容纳的元素总数。
+        /// Gets the total number of elements the <see cref="Deque{T}"/> internal data structure can hold without resizing.
         /// </summary>
         public int Capacity => _array.Length;
 
         /// <summary>
-        /// 获取 <see cref="Deque{T}"/> 中元素的数量。
+        /// Gets the number of elements in the <see cref="Deque{T}"/>.
         /// </summary>
         public int Count => _size;
 
         bool ICollection<T>.IsReadOnly => false;
 
         /// <summary>
-        /// 获取或设置 <see cref="Deque{T}"/> 中位于指定索引处的元素。
+        /// Gets or sets the element at the specified index in the <see cref="Deque{T}"/>.
         /// </summary>
         /// <param name="index"></param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> 小于 0，或者大于或等于 <see cref="Deque{T}"/> 中元素的数量。</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or is greater than or equal to the number of elements in the <see cref="Deque{T}"/>.</exception>
         public T this[int index]
         {
             get
@@ -118,9 +118,9 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 返回 <see cref="Deque{T}"/> 开头处的对象。
+        /// Returns the object at the head of the <see cref="Deque{T}"/>.
         /// </summary>
-        /// <returns><see cref="Deque{T}"/> 开头处的对象。</returns>
+        /// <returns><see cref="Deque{T}"/> The object at the head.</returns>
         public T PeekFirst()
         {
             if (_size == 0)
@@ -131,10 +131,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 将 <see cref="Deque{T}"/> 开头处的对象赋值给 <paramref name="result"/> 参数。
+        /// Assigns the object at the head of the <see cref="Deque{T}"/> to the <paramref name="result"/> parameter.
         /// </summary>
-        /// <param name="result"><see cref="Deque{T}"/> 开头处的对象。</param>
-        /// <returns>如果 <see cref="Deque{T}"/> 不为空，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
+        /// <param name="result"><see cref="Deque{T}"/> The object at the head.</param>
+        /// <returns><see langword="true"/> if the <see cref="Deque{T}"/> is not empty; otherwise, <see langword="false"/>.</returns>
         public bool TryPeekFirst(out T result)
         {
             if (_size == 0)
@@ -147,9 +147,9 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 返回 <see cref="Deque{T}"/> 结尾处的对象。
+        /// Returns the object at the tail of the <see cref="Deque{T}"/>.
         /// </summary>
-        /// <returns><see cref="Deque{T}"/> 结尾处的对象。</returns>
+        /// <returns><see cref="Deque{T}"/> The object at the tail.</returns>
         public T PeekLast()
         {
             if (_size == 0)
@@ -162,10 +162,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 将 <see cref="Deque{T}"/> 结尾处的对象赋值给 <paramref name="result"/> 参数。
+        /// Assigns the object at the tail of the <see cref="Deque{T}"/> to the <paramref name="result"/> parameter.
         /// </summary>
-        /// <param name="result"><see cref="Deque{T}"/> 结尾处的对象。</param>
-        /// <returns>如果 <see cref="Deque{T}"/> 不为空，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
+        /// <param name="result"><see cref="Deque{T}"/> The object at the tail.</param>
+        /// <returns><see langword="true"/> if the <see cref="Deque{T}"/> is not empty; otherwise, <see langword="false"/>.</returns>
         public bool TryPeekLast(out T result)
         {
             if (_size == 0)
@@ -180,9 +180,9 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 将对象添加到 <see cref="Deque{T}"/> 的开头处。
+        /// Adds an object to the head of the <see cref="Deque{T}"/>.
         /// </summary>
-        /// <param name="item">要添加的元素。</param>
+        /// <param name="item">The element to add.</param>
         public void EnqueueFirst(T item)
         {
             if (_size == _array.Length)
@@ -196,9 +196,9 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 将对象添加到 <see cref="Deque{T}"/> 的结尾处。
+        /// Adds an object to the tail of the <see cref="Deque{T}"/>.
         /// </summary>
-        /// <param name="item">要添加的元素。</param>
+        /// <param name="item">The element to add.</param>
         public void EnqueueLast(T item)
         {
             if (_size == _array.Length)
@@ -217,10 +217,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 插入对象到 <see cref="Deque{T}"/> 的指定索引处。
+        /// Inserts an object at the specified index in the <see cref="Deque{T}"/>.
         /// </summary>
-        /// <param name="index">插入 <paramref name="item"/> 的从零开始的索引。</param>
-        /// <param name="item">要插入的对象。</param>
+        /// <param name="index">The zero-based index at which to insert <paramref name="item"/>.</param>
+        /// <param name="item">The object to insert.</param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public void Insert(int index, T item)
         {
@@ -259,7 +259,7 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 移除 <see cref="Deque{T}"/> 中的所有元素。
+        /// Removes all elements from the <see cref="Deque{T}"/>.
         /// </summary>
         public void Clear()
         {
@@ -286,10 +286,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 移除 <see cref="Deque{T}"/> 指定索引处的元素。
+        /// Removes the element at the specified index in the <see cref="Deque{T}"/>.
         /// </summary>
-        /// <param name="index">要移除的元素的从零开始的索引。</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> 小于 0，或者大于或等于 <see cref="Deque{T}"/> 中元素的数量。</exception>
+        /// <param name="index">The zero-based index of the element to remove.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or is greater than or equal to the number of elements in the <see cref="Deque{T}"/>.</exception>
         public void RemoveAt(int index)
         {
             if (index < 0 || index >= _size)
@@ -343,10 +343,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 从 <see cref="Deque{T}"/> 中移除指定对象的第一个匹配项。
+        /// Removes the first occurrence of the specified object from the <see cref="Deque{T}"/>.
         /// </summary>
-        /// <param name="item">要移除的对象。</param>
-        /// <returns>如果成功移除，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
+        /// <param name="item">The object to remove.</param>
+        /// <returns><see langword="true"/> if removed successfully; otherwise, <see langword="false"/>.</returns>
         public bool Remove(T item)
         {
             var index = InternalIndexOf(item);
@@ -359,10 +359,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 从 <see cref="Deque{T}"/> 中移除指定对象的最后一个匹配项。
+        /// Removes the last occurrence of the specified object from the <see cref="Deque{T}"/>.
         /// </summary>
-        /// <param name="item">要移除的对象。</param>
-        /// <returns>如果成功移除，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
+        /// <param name="item">The object to remove.</param>
+        /// <returns><see langword="true"/> if removed successfully; otherwise, <see langword="false"/>.</returns>
         public bool RemoveLast(T item)
         {
             var index = InternalLastIndexOf(item);
@@ -375,10 +375,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 移除并返回 <see cref="Deque{T}"/> 开头处的对象。
+        /// Removes and returns the object at the head of the <see cref="Deque{T}"/>.
         /// </summary>
-        /// <returns>从 <see cref="Deque{T}"/> 开头处移除的对象。</returns>
-        /// <exception cref="InvalidOperationException"><see cref="Deque{T}"/> 为空。</exception>
+        /// <returns>The object removed from the head of the <see cref="Deque{T}"/>.</returns>
+        /// <exception cref="InvalidOperationException">The <see cref="Deque{T}"/> is empty.</exception>
         public T DequeueFirst()
         {
             if (_size == 0)
@@ -400,10 +400,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 移除 <see cref="Deque{T}"/> 开头处的对象，并将它赋值给 <paramref name="result"/> 参数。
+        /// Removes the object at the head of the <see cref="Deque{T}"/> and assigns it to the <paramref name="result"/> parameter.
         /// </summary>
-        /// <param name="result">从 <see cref="Deque{T}"/> 开头处移除的对象。</param>
-        /// <returns>如果成功移除，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
+        /// <param name="result">The object removed from the head of the <see cref="Deque{T}"/>.</param>
+        /// <returns><see langword="true"/> if removed successfully; otherwise, <see langword="false"/>.</returns>
         public bool TryDequeueFirst(out T result)
         {
             if (_size == 0)
@@ -426,10 +426,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 移除并返回 <see cref="Deque{T}"/> 结尾处的对象。
+        /// Removes and returns the object at the tail of the <see cref="Deque{T}"/>.
         /// </summary>
-        /// <returns>从 <see cref="Deque{T}"/> 结尾处移除的对象。</returns>
-        /// <exception cref="InvalidOperationException"><see cref="Deque{T}"/> 为空。</exception>
+        /// <returns>The object removed from the tail of the <see cref="Deque{T}"/>.</returns>
+        /// <exception cref="InvalidOperationException">The <see cref="Deque{T}"/> is empty.</exception>
         public T DequeueLast()
         {
             if (_size == 0)
@@ -451,10 +451,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 移除 <see cref="Deque{T}"/> 结尾处的对象，并将它赋值给 <paramref name="result"/> 参数。
+        /// Removes the object at the tail of the <see cref="Deque{T}"/> and assigns it to the <paramref name="result"/> parameter.
         /// </summary>
-        /// <param name="result">从 <see cref="Deque{T}"/> 结尾处移除的对象。</param>
-        /// <returns>如果成功移除，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
+        /// <param name="result">The object removed from the tail of the <see cref="Deque{T}"/>.</param>
+        /// <returns><see langword="true"/> if removed successfully; otherwise, <see langword="false"/>.</returns>
         public bool TryDequeueLast(out T result)
         {
             if (_size == 0)
@@ -477,13 +477,13 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 将 <see cref="Deque{T}"/> 中的所有元素复制到指定数组中。
+        /// Copies all elements from the <see cref="Deque{T}"/> into the specified array.
         /// </summary>
-        /// <param name="array">要将 <see cref="Deque{T}"/> 中的元素复制到的数组。</param>
-        /// <param name="arrayIndex"><paramref name="array"/> 中从 0 开始的索引，从此处开始复制。</param>
-        /// <exception cref="ArgumentNullException"><paramref name="array"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="arrayIndex"/> 小于 0 或大于 <paramref name="array"/> 的长度。</exception>
-        /// <exception cref="ArgumentException"><see cref="Deque{T}"/> 中的元素个数大于 <paramref name="array"/> 从 <paramref name="arrayIndex"/> 到末尾之间的可用空间。</exception>
+        /// <param name="array">The array into which the elements of the <see cref="Deque{T}"/> are copied.</param>
+        /// <param name="arrayIndex"><paramref name="array"/> , the zero-based index at which copying begins.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="array"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="arrayIndex"/> is less than 0 or greater than the length of <paramref name="array"/>.</exception>
+        /// <exception cref="ArgumentException">The number of elements in the <see cref="Deque{T}"/> is greater than the available space in <paramref name="array"/> from <paramref name="arrayIndex"/> to the end.</exception>
         public void CopyTo(T[] array, int arrayIndex)
         {
             if (array == null)
@@ -496,7 +496,9 @@ namespace Aurora.Collections
             }
             if (array.Length - arrayIndex < _size)
             {
-                throw new ArgumentException($"源双端队列中的元素个数大于目标 {nameof(array)} 从 {nameof(arrayIndex)} 到末尾之间的可用空间");
+                throw new ArgumentException(
+                    $"The number of elements in the source deque is greater than the available space from {nameof(arrayIndex)} to the end of the target {nameof(array)}"
+                );
             }
             var numToCopy = _size;
             if (numToCopy == 0)
@@ -513,20 +515,20 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 确定某元素是否在 <see cref="Deque{T}"/> 中。
+        /// Determines whether an element is in the <see cref="Deque{T}"/>.
         /// </summary>
-        /// <param name="item">要在 <see cref="Deque{T}"/> 中定位的对象。</param>
-        /// <returns>如果在 <see cref="Deque{T}"/> 中找到 <paramref name="item"/>，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
+        /// <param name="item">The object to locate in the <see cref="Deque{T}"/>.</param>
+        /// <returns><see langword="true"/> if <paramref name="item"/> is found in the <see cref="Deque{T}"/>; otherwise, <see langword="false"/>.</returns>
         public bool Contains(T item)
         {
             return InternalIndexOf(item) >= 0;
         }
 
         /// <summary>
-        /// 搜索指定的对象，返回在 <see cref="Deque{T}"/> 中第一个匹配项的从零开始的索引。
+        /// Searches for the specified object and returns the zero-based index of the first match in the <see cref="Deque{T}"/>.
         /// </summary>
-        /// <param name="item">要在 <see cref="Deque{T}"/> 中定位的对象。</param>
-        /// <returns>如果找到，则为 <see cref="Deque{T}"/> 中第一个匹配项的从零开始的索引；否则为 -1。</returns>
+        /// <param name="item">The object to locate in the <see cref="Deque{T}"/>.</param>
+        /// <returns>The zero-based index of the first match in the <see cref="Deque{T}"/>, if found; otherwise, -1.</returns>
         public int IndexOf(T item)
         {
             var index = InternalIndexOf(item);
@@ -552,11 +554,11 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 搜索与指定条件相匹配的元素，返回在 <see cref="Deque{T}"/> 中第一个匹配元素的从零开始的索引。
+        /// Searches for an element matching the specified condition and returns the zero-based index of the first matching element in the <see cref="Deque{T}"/>.
         /// </summary>
-        /// <param name="match">条件。</param>
-        /// <returns>如果找到与 <paramref name="match"/> 相匹配的第一个元素，则为该元素的从零开始的索引；否则为 -1。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="match"/> 为 <see langword="null"/>。</exception>
+        /// <param name="match">The condition.</param>
+        /// <returns>The zero-based index of the first element matching <paramref name="match"/>, if found; otherwise, -1.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="match"/> is <see langword="null"/>.</exception>
         public int FindIndex(Predicate<T> match)
         {
             if (match == null)
@@ -586,13 +588,13 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 搜索与指定条件相匹配的元素，返回在 <see cref="Deque{T}"/> 中第一个匹配元素的从零开始的索引。
+        /// Searches for an element matching the specified condition and returns the zero-based index of the first matching element in the <see cref="Deque{T}"/>.
         /// </summary>
-        /// <param name="match">条件。</param>
-        /// <param name="state">由用户传入的状态参数。</param>
-        /// <typeparam name="TState">状态参数的类型。</typeparam>
-        /// <returns>如果找到与 <paramref name="match"/> 相匹配的第一个元素，则为该元素的从零开始的索引；否则为 -1。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="match"/> 为 <see langword="null"/>。</exception>
+        /// <param name="match">The condition.</param>
+        /// <param name="state">The state parameter passed by the user.</param>
+        /// <typeparam name="TState">The type of the state parameter.</typeparam>
+        /// <returns>The zero-based index of the first element matching <paramref name="match"/>, if found; otherwise, -1.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="match"/> is <see langword="null"/>.</exception>
         public int FindIndex<TState>(ParameterizedPredicate<T, TState> match, TState state)
         {
             if (match == null)
@@ -622,10 +624,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 搜索指定的对象，返回在 <see cref="Deque{T}"/> 中最后一个匹配项的从零开始的索引。
+        /// Searches for the specified object and returns the zero-based index of the last match in the <see cref="Deque{T}"/>.
         /// </summary>
-        /// <param name="item">要在 <see cref="Deque{T}"/> 中定位的对象。</param>
-        /// <returns>如果找到，则为 <see cref="Deque{T}"/> 中最后一个匹配项的从零开始的索引；否则为 -1。</returns>
+        /// <param name="item">The object to locate in the <see cref="Deque{T}"/>.</param>
+        /// <returns>The zero-based index of the last match in the <see cref="Deque{T}"/>, if found; otherwise, -1.</returns>
         public int LastIndexOf(T item)
         {
             var index = InternalLastIndexOf(item);
@@ -669,11 +671,11 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 搜索与指定条件相匹配的元素，返回在 <see cref="Deque{T}"/> 中最后一个匹配元素的从零开始的索引。
+        /// Searches for an element matching the specified condition and returns the zero-based index of the last matching element in the <see cref="Deque{T}"/>.
         /// </summary>
-        /// <param name="match">条件。</param>
-        /// <returns>如果找到与 <paramref name="match"/> 相匹配的最后一个元素，则为该元素的从零开始的索引；否则为 -1。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="match"/> 为 <see langword="null"/>。</exception>
+        /// <param name="match">The condition.</param>
+        /// <returns>The zero-based index of the last element matching <paramref name="match"/>, if found; otherwise, -1.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="match"/> is <see langword="null"/>.</exception>
         public int FindLastIndex(Predicate<T> match)
         {
             if (match == null)
@@ -703,13 +705,13 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 搜索与指定条件相匹配的元素，返回在 <see cref="Deque{T}"/> 中最后一个匹配元素的从零开始的索引。
+        /// Searches for an element matching the specified condition and returns the zero-based index of the last matching element in the <see cref="Deque{T}"/>.
         /// </summary>
-        /// <param name="match">条件。</param>
-        /// <param name="state">由用户传入的状态参数。</param>
-        /// <typeparam name="TState">状态参数的类型。</typeparam>
-        /// <returns>如果找到与 <paramref name="match"/> 相匹配的最后一个元素，则为该元素的从零开始的索引；否则为 -1。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="match"/> 为 <see langword="null"/>。</exception>
+        /// <param name="match">The condition.</param>
+        /// <param name="state">The state parameter passed by the user.</param>
+        /// <typeparam name="TState">The type of the state parameter.</typeparam>
+        /// <returns>The zero-based index of the last element matching <paramref name="match"/>, if found; otherwise, -1.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="match"/> is <see langword="null"/>.</exception>
         public int FindLastIndex<TState>(ParameterizedPredicate<T, TState> match, TState state)
         {
             if (match == null)
@@ -757,11 +759,11 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 确保 <see cref="Deque{T}"/> 的容量至少为指定值。
+        /// Ensures that the capacity of the <see cref="Deque{T}"/> is at least the specified value.
         /// </summary>
-        /// <param name="capacity">要确保的最小容量。</param>
-        /// <returns><see cref="Deque{T}"/> 的新容量。</returns>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="capacity"/> 小于 0。</exception>
+        /// <param name="capacity">The minimum capacity to ensure.</param>
+        /// <returns>The new capacity of the <see cref="Deque{T}"/>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="capacity"/> is less than 0.</exception>
         public int EnsureCapacity(int capacity)
         {
             if (capacity < 0)
@@ -790,7 +792,7 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 将 <see cref="Deque{T}"/> 的容量设置为 <see cref="Deque{T}"/> 中元素的数量（如果该数字小于当前容量的 90%）。
+        /// Sets the capacity of the <see cref="Deque{T}"/> to the number of elements in the <see cref="Deque{T}"/> (if that number is less than 90% of the current capacity).
         /// </summary>
         public void TrimExcess()
         {
@@ -802,10 +804,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 将 <see cref="Deque{T}"/> 的容量设置为指定值。
+        /// Sets the capacity of the <see cref="Deque{T}"/> to the specified value.
         /// </summary>
-        /// <param name="capacity">新容量。</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="capacity"/> 小于 <see cref="Deque{T}"/> 中元素的数量。</exception>
+        /// <param name="capacity">The new capacity.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="capacity"/> is less than the number of elements in the <see cref="Deque{T}"/>.</exception>
         public void TrimExcess(int capacity)
         {
             if (capacity < 0)
@@ -845,9 +847,9 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 将 <see cref="Deque{T}"/> 的所有元素复制到新数组。
+        /// Copies all elements of the <see cref="Deque{T}"/> into a new array.
         /// </summary>
-        /// <returns>包含从 <see cref="Deque{T}"/> 复制的所有元素的新数组。</returns>
+        /// <returns>A new array containing all elements copied from the <see cref="Deque{T}"/>.</returns>
         public T[] ToArray()
         {
             var size = _size;
@@ -882,7 +884,7 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 反转 <see cref="Deque{T}"/> 中元素的顺序。
+        /// Reverses the order of the elements in the <see cref="Deque{T}"/>.
         /// </summary>
         public void Reverse()
         {
@@ -953,13 +955,13 @@ namespace Aurora.Collections
 
         private static void ThrowForEmptyDeque()
         {
-            throw new InvalidOperationException("双端队列为空");
+            throw new InvalidOperationException("The deque is empty");
         }
 
         /// <summary>
-        /// 获取枚举 <see cref="Deque{T}"/> 所有元素的枚举器。
+        /// Gets an enumerator that enumerates all elements of the <see cref="Deque{T}"/>.
         /// </summary>
-        /// <returns>枚举 <see cref="Deque{T}"/> 所有元素的枚举器。</returns>
+        /// <returns>An enumerator that enumerates all elements of the <see cref="Deque{T}"/>.</returns>
         public Enumerator GetEnumerator()
         {
             return new Enumerator(this);
@@ -976,7 +978,7 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 用于枚举 <see cref="Deque{T}"/> 的枚举器。
+        /// An enumerator used to enumerate the <see cref="Deque{T}"/>.
         /// </summary>
         public struct Enumerator : IEnumerator<T>
         {
@@ -1040,7 +1042,9 @@ namespace Aurora.Collections
 
             private readonly void ThrowEnumerationNotStartedOrEnded()
             {
-                throw new InvalidOperationException(_index == -1 ? "枚举未开始" : "枚举已结束");
+                throw new InvalidOperationException(
+                    _index == -1 ? "Enumeration has not started" : "Enumeration has ended"
+                );
             }
 
             readonly object IEnumerator.Current => Current;

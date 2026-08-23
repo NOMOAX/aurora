@@ -4,21 +4,21 @@ using System.Runtime.CompilerServices;
 namespace Aurora.Diagnostics
 {
     /// <summary>
-    /// 记录。
+    /// Logging.
     /// </summary>
     public static class Log
     {
         /// <summary>
-        /// 获取或设置记录程序。
+        /// Gets or sets the logger.
         /// </summary>
         public static ILogger Logger { get; set; } = ConsoleLogger.Instance;
 
         private static LogLevel _level = LogLevel.V;
 
         /// <summary>
-        /// 获取或设置记录等级。
+        /// Gets or sets the log level.
         /// </summary>
-        /// <remarks>小于此值的记录不会执行。默认值为 <see cref="LogLevel.V"/>。</remarks>
+        /// <remarks>Logs lower than this value are not executed. The default is <see cref="LogLevel.V"/>.</remarks>
         public static LogLevel Level
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -35,14 +35,14 @@ namespace Aurora.Diagnostics
         }
 
         /// <summary>
-        /// 获取或设置是否记录当前线程 ID。
+        /// Gets or sets whether the current thread Id is logged.
         /// </summary>
         public static bool WithCurrentThreadId { get; set; } = true;
 
         private static LogDateTimeOffsetFormat _dateTimeOffsetFormat = LogDateTimeOffsetFormat.O;
 
         /// <summary>
-        /// 获取或设置记录日期和时间的格式。
+        /// Gets or sets the format used for logging the date and time.
         /// </summary>
         public static LogDateTimeOffsetFormat DateTimeOffsetFormat
         {
@@ -60,18 +60,18 @@ namespace Aurora.Diagnostics
         }
 
         /// <summary>
-        /// 记录指定对象的字符串表现形式（等级为 <see cref="LogLevel.V"/>）。
+        /// Logs the string representation of the specified object (level <see cref="LogLevel.V"/>).
         /// </summary>
-        /// <param name="value">要记录的对象。</param>
+        /// <param name="value">The object to log.</param>
         public static void V(object value)
         {
             Logger?.Log(value, LogLevel.V);
         }
 
         /// <summary>
-        /// 记录指定对象的字符串表现形式（等级为 <see cref="LogLevel.D"/>）。
+        /// Logs the string representation of the specified object (level <see cref="LogLevel.D"/>).
         /// </summary>
-        /// <param name="value">要记录的对象。</param>
+        /// <param name="value">The object to log.</param>
         [Conditional("DEBUG")]
         public static void D(object value)
         {
@@ -79,27 +79,27 @@ namespace Aurora.Diagnostics
         }
 
         /// <summary>
-        /// 记录指定对象的字符串表现形式（等级为 <see cref="LogLevel.I"/>）。
+        /// Logs the string representation of the specified object (level <see cref="LogLevel.I"/>).
         /// </summary>
-        /// <param name="value">要记录的对象。</param>
+        /// <param name="value">The object to log.</param>
         public static void I(object value)
         {
             Logger?.Log(value, LogLevel.I);
         }
 
         /// <summary>
-        /// 记录指定对象的字符串表现形式（等级为 <see cref="LogLevel.W"/>）。
+        /// Logs the string representation of the specified object (level <see cref="LogLevel.W"/>).
         /// </summary>
-        /// <param name="value">要记录的对象。</param>
+        /// <param name="value">The object to log.</param>
         public static void W(object value)
         {
             Logger?.Log(value, LogLevel.W);
         }
 
         /// <summary>
-        /// 记录指定对象的字符串表现形式（等级为 <see cref="LogLevel.E"/>）。
+        /// Logs the string representation of the specified object (level <see cref="LogLevel.E"/>).
         /// </summary>
-        /// <param name="value">要记录的对象。</param>
+        /// <param name="value">The object to log.</param>
         public static void E(object value)
         {
             Logger?.Log(value, LogLevel.E);

@@ -4,7 +4,7 @@ using System.Threading;
 namespace Aurora.Diagnostics
 {
     /// <summary>
-    /// 用于在执行无法准确预知执行次数的循环或递归时确保执行次数在一个合理的范围内。
+    /// Used to keep the execution count within a reasonable range when executing loops or recursions whose number of executions cannot be accurately predicted.
     /// </summary>
     public sealed class CountIncrementSafeHandler
     {
@@ -13,10 +13,10 @@ namespace Aurora.Diagnostics
         private int _count;
 
         /// <summary>
-        /// 初始化 <see cref="CountIncrementSafeHandler"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="CountIncrementSafeHandler"/> class.
         /// </summary>
-        /// <param name="maxCount">最大执行次数。</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="maxCount"/> 小于 0。</exception>
+        /// <param name="maxCount">The maximum execution count.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="maxCount"/> is less than 0.</exception>
         public CountIncrementSafeHandler(int maxCount)
         {
             if (maxCount < 0)
@@ -27,9 +27,9 @@ namespace Aurora.Diagnostics
         }
 
         /// <summary>
-        /// 递增执行次数，如果超过最大执行次数则抛出异常。
+        /// Increments the execution count and throws an exception if it exceeds the maximum execution count.
         /// </summary>
-        /// <exception cref="UnexpectedException">递增后的执行次数大于最大执行次数。</exception>
+        /// <exception cref="UnexpectedException">The incremented execution count is greater than the maximum execution count.</exception>
         public void Increment()
         {
             if (Interlocked.Increment(ref _count) is var count && (count > _maxCount || count < 0))

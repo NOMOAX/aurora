@@ -4,9 +4,9 @@ using Aurora.Diagnostics;
 namespace Aurora.CompilerServices
 {
     /// <summary>
-    /// 使用空对象模式实现 <see cref="IAwaitable"/>。该可等待上下文总是立即完成，不会对异步执行流程造成任何影响。
+    /// Implements <see cref="IAwaitable"/> using the null-object pattern. This awaitable context always completes immediately and has no effect on the asynchronous execution flow.
     /// </summary>
-    /// <remarks>用于消除在 <see langword="async"/> 方法中未使用 <see langword="await"/> 关键字时产生的编译器警告。</remarks>
+    /// <remarks>Used to eliminate the compiler warning produced when the <see langword="await"/> keyword is not used in an <see langword="async"/> method.</remarks>
     /// <example>
     /// <code>
     /// public async Task NotImplementedAsyncMethod(CancellationToken cancellationToken)
@@ -40,7 +40,9 @@ namespace Aurora.CompilerServices
 
             public void GetResult()
             {
-                Log.I($"请确保仅在开发阶段中使用 \"await new {nameof(NullAwaitable)}();\" 表达式消除编译器警告");
+                Log.I(
+                    $"Make sure to use the \"await new {nameof(NullAwaitable)}();\" expression only during development to eliminate the compiler warning"
+                );
             }
         }
     }

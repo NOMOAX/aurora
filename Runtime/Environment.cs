@@ -1,14 +1,14 @@
 ﻿namespace Aurora
 {
     /// <summary>
-    /// 运行环境。
+    /// The runtime environment.
     /// </summary>
     public static class Environment
     {
         /// <summary>
-        /// 指示当前环境是否为单线程环境。
+        /// Indicates whether the current environment is a single-threaded environment.
         /// </summary>
-        /// <remarks>这个值由用户自行设置（默认值为 <see langword="false"/>）。</remarks>
+        /// <remarks>This value is set by the user (the default is <see langword="false"/>).</remarks>
         public static bool IsSingleThreadEnvironment { get; set; } = false;
     }
 }

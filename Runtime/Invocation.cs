@@ -1,12 +1,12 @@
 ﻿namespace Aurora
 {
     /// <summary>
-    /// 不返回值的调用。
+    /// An invocation that returns no value.
     /// </summary>
     public abstract class Invocation
     {
         /// <summary>
-        /// 调用。
+        /// Invokes.
         /// </summary>
         public abstract void Invoke();
     }

@@ -1,13 +1,13 @@
-using System;
+﻿using System;
 using Aurora.Diagnostics;
 using Aurora.Pooling;
 
 namespace Aurora
 {
     /// <summary>
-    /// 临时 ID 生成器。
+    /// A temporary ID generator.
     /// </summary>
-    /// <remarks>生成的临时 ID 将具有指定的前缀（可为 <see langword="null"/>）和后缀（可为 <see langword="null"/>），中间部分为 <see cref="Guid.NewGuid"/> 的以 "N" 为格式的字符串表现形式。</remarks>
+    /// <remarks>The generated temporary ID has the specified prefix (which may be <see langword="null"/>) and postfix (which may be <see langword="null"/>); the middle part is the string representation of <see cref="Guid.NewGuid"/> formatted as "N".</remarks>
     public sealed class TempIdGenerator
     {
         private readonly string _prefix;
@@ -17,10 +17,10 @@ namespace Aurora
         private const string GuidFormat = "N";
 
         /// <summary>
-        /// 初始化 <see cref="TempIdGenerator"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="TempIdGenerator"/> class.
         /// </summary>
-        /// <param name="prefix">临时 ID 的前缀。</param>
-        /// <param name="postfix">临时 ID 的后缀。</param>
+        /// <param name="prefix">The prefix of the temporary ID.</param>
+        /// <param name="postfix">The postfix of the temporary ID.</param>
         public TempIdGenerator(string prefix, string postfix)
         {
             _prefix  = prefix;
@@ -28,7 +28,7 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 生成并获取新的临时 ID。
+        /// Generates and gets a new temporary ID.
         /// </summary>
         public string NewTempId
         {
@@ -50,10 +50,10 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 判断指定的 ID 是否从格式上匹配此 <see cref="TempIdGenerator"/>。
+        /// Determines whether the specified ID matches this <see cref="TempIdGenerator"/> in format.
         /// </summary>
-        /// <param name="id">要进行格式检测的 ID。</param>
-        /// <returns>如果 <paramref name="id"/> 从格式上匹配此实例，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
+        /// <param name="id">The ID whose format is to be checked.</param>
+        /// <returns><see langword="true"/> if <paramref name="id"/> matches this instance in format; otherwise, <see langword="false"/>.</returns>
         public bool Match(string id)
         {
             if (string.IsNullOrEmpty(id))

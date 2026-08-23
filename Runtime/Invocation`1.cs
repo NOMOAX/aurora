@@ -3,22 +3,22 @@
 namespace Aurora
 {
     /// <summary>
-    /// 返回值的调用。
+    /// An invocation that returns a value.
     /// </summary>
-    /// <typeparam name="TResult">返回值的类型。</typeparam>
+    /// <typeparam name="TResult">The type of the return value.</typeparam>
     public abstract class Invocation<TResult>
     {
         /// <summary>
-        /// 调用。
+        /// Invokes.
         /// </summary>
-        /// <returns>返回的值。</returns>
+        /// <returns>The returned value.</returns>
         public abstract TResult Invoke();
 
         /// <summary>
-        /// 创建一个 <see cref="Invocation{TResult}"/> 实例，调用它的 <see cref="Invoke"/> 方法将直接返回指定的值。
+        /// Creates an <see cref="Invocation{TResult}"/> instance whose <see cref="Invoke"/> method directly returns the specified value.
         /// </summary>
-        /// <param name="result"><see cref="Invocation{TResult}"/> 实例执行 <see cref="Invoke"/> 方法的返回值。</param>
-        /// <returns>调用 <see cref="Invoke"/> 方法直接返回指定值的 <see cref="Invocation{TResult}"/> 实例。</returns>
+        /// <param name="result">The value returned when the <see cref="Invoke"/> method of the <see cref="Invocation{TResult}"/> instance is executed.</param>
+        /// <returns>An <see cref="Invocation{TResult}"/> instance whose <see cref="Invoke"/> method directly returns the specified value.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Invocation<TResult> FromResult(TResult result)
         {

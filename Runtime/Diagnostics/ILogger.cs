@@ -1,15 +1,15 @@
 ﻿namespace Aurora.Diagnostics
 {
     /// <summary>
-    /// 记录程序。
+    /// A program logger.
     /// </summary>
     public interface ILogger
     {
         /// <summary>
-        /// 按照指定的记录等级，记录指定对象的字符串表现形式。
+        /// Logs the string representation of the specified object at the specified log level.
         /// </summary>
-        /// <param name="value">要记录的对象。</param>
-        /// <param name="logLevel">记录等级。</param>
+        /// <param name="value">The object to log.</param>
+        /// <param name="logLevel">The log level.</param>
         void Log(object value, LogLevel logLevel);
     }
 }

@@ -4,16 +4,16 @@ using System.Runtime.CompilerServices;
 namespace Aurora
 {
     /// <summary>
-    /// 提供一组与哈希值有关的工具方法。
+    /// Provides a set of utility methods related to hash codes.
     /// </summary>
     public static class HashHelper
     {
         /// <summary>
-        /// 合并哈希值。
+        /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">参与合并的第一个哈希值。</param>
-        /// <param name="h2">参与合并的第二个哈希值。</param>
-        /// <returns>两个哈希值的合并结果。</returns>
+        /// <param name="h1">The 1st hash code involved in the combination.</param>
+        /// <param name="h2">The 2nd hash code involved in the combination.</param>
+        /// <returns>The combined result of 2 hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(int h1, int h2)
         {
@@ -21,12 +21,12 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 合并哈希值。
+        /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">参与合并的第一个哈希值。</param>
-        /// <param name="h2">参与合并的第二个哈希值。</param>
-        /// <param name="h3">参与合并的第三个哈希值。</param>
-        /// <returns>三个哈希值的合并结果。</returns>
+        /// <param name="h1">The 1st hash code involved in the combination.</param>
+        /// <param name="h2">The 2nd hash code involved in the combination.</param>
+        /// <param name="h3">The 3rd hash code involved in the combination.</param>
+        /// <returns>The combined result of 3 hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(int h1, int h2, int h3)
         {
@@ -34,13 +34,13 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 合并哈希值。
+        /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">参与合并的第一个哈希值。</param>
-        /// <param name="h2">参与合并的第二个哈希值。</param>
-        /// <param name="h3">参与合并的第三个哈希值。</param>
-        /// <param name="h4">参与合并的第四个哈希值。</param>
-        /// <returns>四个哈希值的合并结果。</returns>
+        /// <param name="h1">The 1st hash code involved in the combination.</param>
+        /// <param name="h2">The 2nd hash code involved in the combination.</param>
+        /// <param name="h3">The 3rd hash code involved in the combination.</param>
+        /// <param name="h4">The 4th hash code involved in the combination.</param>
+        /// <returns>The combined result of 4 hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(int h1, int h2, int h3, int h4)
         {
@@ -48,14 +48,14 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 合并哈希值。
+        /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">参与合并的第一个哈希值。</param>
-        /// <param name="h2">参与合并的第二个哈希值。</param>
-        /// <param name="h3">参与合并的第三个哈希值。</param>
-        /// <param name="h4">参与合并的第四个哈希值。</param>
-        /// <param name="h5">参与合并的第五个哈希值。</param>
-        /// <returns>五个哈希值的合并结果。</returns>
+        /// <param name="h1">The 1st hash code involved in the combination.</param>
+        /// <param name="h2">The 2nd hash code involved in the combination.</param>
+        /// <param name="h3">The 3rd hash code involved in the combination.</param>
+        /// <param name="h4">The 4th hash code involved in the combination.</param>
+        /// <param name="h5">The 5th hash code involved in the combination.</param>
+        /// <returns>The combined result of 5 hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(int h1, int h2, int h3, int h4, int h5)
         {
@@ -63,15 +63,15 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 合并哈希值。
+        /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">参与合并的第一个哈希值。</param>
-        /// <param name="h2">参与合并的第二个哈希值。</param>
-        /// <param name="h3">参与合并的第三个哈希值。</param>
-        /// <param name="h4">参与合并的第四个哈希值。</param>
-        /// <param name="h5">参与合并的第五个哈希值。</param>
-        /// <param name="h6">参与合并的第六个哈希值。</param>
-        /// <returns>六个哈希值的合并结果。</returns>
+        /// <param name="h1">The 1st hash code involved in the combination.</param>
+        /// <param name="h2">The 2nd hash code involved in the combination.</param>
+        /// <param name="h3">The 3rd hash code involved in the combination.</param>
+        /// <param name="h4">The 4th hash code involved in the combination.</param>
+        /// <param name="h5">The 5th hash code involved in the combination.</param>
+        /// <param name="h6">The 6th hash code involved in the combination.</param>
+        /// <returns>The combined result of 6 hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(int h1, int h2, int h3, int h4, int h5, int h6)
         {
@@ -79,16 +79,16 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 合并哈希值。
+        /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">参与合并的第一个哈希值。</param>
-        /// <param name="h2">参与合并的第二个哈希值。</param>
-        /// <param name="h3">参与合并的第三个哈希值。</param>
-        /// <param name="h4">参与合并的第四个哈希值。</param>
-        /// <param name="h5">参与合并的第五个哈希值。</param>
-        /// <param name="h6">参与合并的第六个哈希值。</param>
-        /// <param name="h7">参与合并的第七个哈希值。</param>
-        /// <returns>七个哈希值的合并结果。</returns>
+        /// <param name="h1">The 1st hash code involved in the combination.</param>
+        /// <param name="h2">The 2nd hash code involved in the combination.</param>
+        /// <param name="h3">The 3rd hash code involved in the combination.</param>
+        /// <param name="h4">The 4th hash code involved in the combination.</param>
+        /// <param name="h5">The 5th hash code involved in the combination.</param>
+        /// <param name="h6">The 6th hash code involved in the combination.</param>
+        /// <param name="h7">The 7th hash code involved in the combination.</param>
+        /// <returns>The combined result of 7 hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(int h1, int h2, int h3, int h4, int h5, int h6, int h7)
         {
@@ -96,17 +96,17 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 合并哈希值。
+        /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">参与合并的第一个哈希值。</param>
-        /// <param name="h2">参与合并的第二个哈希值。</param>
-        /// <param name="h3">参与合并的第三个哈希值。</param>
-        /// <param name="h4">参与合并的第四个哈希值。</param>
-        /// <param name="h5">参与合并的第五个哈希值。</param>
-        /// <param name="h6">参与合并的第六个哈希值。</param>
-        /// <param name="h7">参与合并的第七个哈希值。</param>
-        /// <param name="h8">参与合并的第八个哈希值。</param>
-        /// <returns>八个哈希值的合并结果。</returns>
+        /// <param name="h1">The 1st hash code involved in the combination.</param>
+        /// <param name="h2">The 2nd hash code involved in the combination.</param>
+        /// <param name="h3">The 3rd hash code involved in the combination.</param>
+        /// <param name="h4">The 4th hash code involved in the combination.</param>
+        /// <param name="h5">The 5th hash code involved in the combination.</param>
+        /// <param name="h6">The 6th hash code involved in the combination.</param>
+        /// <param name="h7">The 7th hash code involved in the combination.</param>
+        /// <param name="h8">The 8th hash code involved in the combination.</param>
+        /// <returns>The combined result of 8 hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(int h1, int h2, int h3, int h4, int h5, int h6, int h7, int h8)
         {
@@ -114,18 +114,18 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 合并哈希值。
+        /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">参与合并的第一个哈希值。</param>
-        /// <param name="h2">参与合并的第二个哈希值。</param>
-        /// <param name="h3">参与合并的第三个哈希值。</param>
-        /// <param name="h4">参与合并的第四个哈希值。</param>
-        /// <param name="h5">参与合并的第五个哈希值。</param>
-        /// <param name="h6">参与合并的第六个哈希值。</param>
-        /// <param name="h7">参与合并的第七个哈希值。</param>
-        /// <param name="h8">参与合并的第八个哈希值。</param>
-        /// <param name="h9">参与合并的第九个哈希值。</param>
-        /// <returns>九个哈希值的合并结果。</returns>
+        /// <param name="h1">The 1st hash code involved in the combination.</param>
+        /// <param name="h2">The 2nd hash code involved in the combination.</param>
+        /// <param name="h3">The 3rd hash code involved in the combination.</param>
+        /// <param name="h4">The 4th hash code involved in the combination.</param>
+        /// <param name="h5">The 5th hash code involved in the combination.</param>
+        /// <param name="h6">The 6th hash code involved in the combination.</param>
+        /// <param name="h7">The 7th hash code involved in the combination.</param>
+        /// <param name="h8">The 8th hash code involved in the combination.</param>
+        /// <param name="h9">The 9th hash code involved in the combination.</param>
+        /// <returns>The combined result of 9 hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(int h1, int h2, int h3, int h4, int h5, int h6, int h7, int h8, int h9)
         {
@@ -133,19 +133,19 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 合并哈希值。
+        /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">参与合并的第一个哈希值。</param>
-        /// <param name="h2">参与合并的第二个哈希值。</param>
-        /// <param name="h3">参与合并的第三个哈希值。</param>
-        /// <param name="h4">参与合并的第四个哈希值。</param>
-        /// <param name="h5">参与合并的第五个哈希值。</param>
-        /// <param name="h6">参与合并的第六个哈希值。</param>
-        /// <param name="h7">参与合并的第七个哈希值。</param>
-        /// <param name="h8">参与合并的第八个哈希值。</param>
-        /// <param name="h9">参与合并的第九个哈希值。</param>
-        /// <param name="h10">参与合并的第十个哈希值。</param>
-        /// <returns>十个哈希值的合并结果。</returns>
+        /// <param name="h1">The 1st hash code involved in the combination.</param>
+        /// <param name="h2">The 2nd hash code involved in the combination.</param>
+        /// <param name="h3">The 3rd hash code involved in the combination.</param>
+        /// <param name="h4">The 4th hash code involved in the combination.</param>
+        /// <param name="h5">The 5th hash code involved in the combination.</param>
+        /// <param name="h6">The 6th hash code involved in the combination.</param>
+        /// <param name="h7">The 7th hash code involved in the combination.</param>
+        /// <param name="h8">The 8th hash code involved in the combination.</param>
+        /// <param name="h9">The 9th hash code involved in the combination.</param>
+        /// <param name="h10">The 10th hash code involved in the combination.</param>
+        /// <returns>The combined result of 10 hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(
             int h1,
@@ -163,20 +163,20 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 合并哈希值。
+        /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">参与合并的第一个哈希值。</param>
-        /// <param name="h2">参与合并的第二个哈希值。</param>
-        /// <param name="h3">参与合并的第三个哈希值。</param>
-        /// <param name="h4">参与合并的第四个哈希值。</param>
-        /// <param name="h5">参与合并的第五个哈希值。</param>
-        /// <param name="h6">参与合并的第六个哈希值。</param>
-        /// <param name="h7">参与合并的第七个哈希值。</param>
-        /// <param name="h8">参与合并的第八个哈希值。</param>
-        /// <param name="h9">参与合并的第九个哈希值。</param>
-        /// <param name="h10">参与合并的第十个哈希值。</param>
-        /// <param name="h11">参与合并的第十一个哈希值。</param>
-        /// <returns>十一个哈希值的合并结果。</returns>
+        /// <param name="h1">The 1st hash code involved in the combination.</param>
+        /// <param name="h2">The 2nd hash code involved in the combination.</param>
+        /// <param name="h3">The 3rd hash code involved in the combination.</param>
+        /// <param name="h4">The 4th hash code involved in the combination.</param>
+        /// <param name="h5">The 5th hash code involved in the combination.</param>
+        /// <param name="h6">The 6th hash code involved in the combination.</param>
+        /// <param name="h7">The 7th hash code involved in the combination.</param>
+        /// <param name="h8">The 8th hash code involved in the combination.</param>
+        /// <param name="h9">The 9th hash code involved in the combination.</param>
+        /// <param name="h10">The 10th hash code involved in the combination.</param>
+        /// <param name="h11">The 11th hash code involved in the combination.</param>
+        /// <returns>The combined result of 11 hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(
             int h1,
@@ -195,21 +195,21 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 合并哈希值。
+        /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">参与合并的第一个哈希值。</param>
-        /// <param name="h2">参与合并的第二个哈希值。</param>
-        /// <param name="h3">参与合并的第三个哈希值。</param>
-        /// <param name="h4">参与合并的第四个哈希值。</param>
-        /// <param name="h5">参与合并的第五个哈希值。</param>
-        /// <param name="h6">参与合并的第六个哈希值。</param>
-        /// <param name="h7">参与合并的第七个哈希值。</param>
-        /// <param name="h8">参与合并的第八个哈希值。</param>
-        /// <param name="h9">参与合并的第九个哈希值。</param>
-        /// <param name="h10">参与合并的第十个哈希值。</param>
-        /// <param name="h11">参与合并的第十一个哈希值。</param>
-        /// <param name="h12">参与合并的第十二个哈希值。</param>
-        /// <returns>十二个哈希值的合并结果。</returns>
+        /// <param name="h1">The 1st hash code involved in the combination.</param>
+        /// <param name="h2">The 2nd hash code involved in the combination.</param>
+        /// <param name="h3">The 3rd hash code involved in the combination.</param>
+        /// <param name="h4">The 4th hash code involved in the combination.</param>
+        /// <param name="h5">The 5th hash code involved in the combination.</param>
+        /// <param name="h6">The 6th hash code involved in the combination.</param>
+        /// <param name="h7">The 7th hash code involved in the combination.</param>
+        /// <param name="h8">The 8th hash code involved in the combination.</param>
+        /// <param name="h9">The 9th hash code involved in the combination.</param>
+        /// <param name="h10">The 10th hash code involved in the combination.</param>
+        /// <param name="h11">The 11th hash code involved in the combination.</param>
+        /// <param name="h12">The 12th hash code involved in the combination.</param>
+        /// <returns>The combined result of 12 hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(
             int h1,
@@ -229,22 +229,22 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 合并哈希值。
+        /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">参与合并的第一个哈希值。</param>
-        /// <param name="h2">参与合并的第二个哈希值。</param>
-        /// <param name="h3">参与合并的第三个哈希值。</param>
-        /// <param name="h4">参与合并的第四个哈希值。</param>
-        /// <param name="h5">参与合并的第五个哈希值。</param>
-        /// <param name="h6">参与合并的第六个哈希值。</param>
-        /// <param name="h7">参与合并的第七个哈希值。</param>
-        /// <param name="h8">参与合并的第八个哈希值。</param>
-        /// <param name="h9">参与合并的第九个哈希值。</param>
-        /// <param name="h10">参与合并的第十个哈希值。</param>
-        /// <param name="h11">参与合并的第十一个哈希值。</param>
-        /// <param name="h12">参与合并的第十二个哈希值。</param>
-        /// <param name="h13">参与合并的第十三个哈希值。</param>
-        /// <returns>十三个哈希值的合并结果。</returns>
+        /// <param name="h1">The 1st hash code involved in the combination.</param>
+        /// <param name="h2">The 2nd hash code involved in the combination.</param>
+        /// <param name="h3">The 3rd hash code involved in the combination.</param>
+        /// <param name="h4">The 4th hash code involved in the combination.</param>
+        /// <param name="h5">The 5th hash code involved in the combination.</param>
+        /// <param name="h6">The 6th hash code involved in the combination.</param>
+        /// <param name="h7">The 7th hash code involved in the combination.</param>
+        /// <param name="h8">The 8th hash code involved in the combination.</param>
+        /// <param name="h9">The 9th hash code involved in the combination.</param>
+        /// <param name="h10">The 10th hash code involved in the combination.</param>
+        /// <param name="h11">The 11th hash code involved in the combination.</param>
+        /// <param name="h12">The 12th hash code involved in the combination.</param>
+        /// <param name="h13">The 13th hash code involved in the combination.</param>
+        /// <returns>The combined result of 13 hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(
             int h1,
@@ -265,23 +265,23 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 合并哈希值。
+        /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">参与合并的第一个哈希值。</param>
-        /// <param name="h2">参与合并的第二个哈希值。</param>
-        /// <param name="h3">参与合并的第三个哈希值。</param>
-        /// <param name="h4">参与合并的第四个哈希值。</param>
-        /// <param name="h5">参与合并的第五个哈希值。</param>
-        /// <param name="h6">参与合并的第六个哈希值。</param>
-        /// <param name="h7">参与合并的第七个哈希值。</param>
-        /// <param name="h8">参与合并的第八个哈希值。</param>
-        /// <param name="h9">参与合并的第九个哈希值。</param>
-        /// <param name="h10">参与合并的第十个哈希值。</param>
-        /// <param name="h11">参与合并的第十一个哈希值。</param>
-        /// <param name="h12">参与合并的第十二个哈希值。</param>
-        /// <param name="h13">参与合并的第十三个哈希值。</param>
-        /// <param name="h14">参与合并的第十四个哈希值。</param>
-        /// <returns>十四个哈希值的合并结果。</returns>
+        /// <param name="h1">The 1st hash code involved in the combination.</param>
+        /// <param name="h2">The 2nd hash code involved in the combination.</param>
+        /// <param name="h3">The 3rd hash code involved in the combination.</param>
+        /// <param name="h4">The 4th hash code involved in the combination.</param>
+        /// <param name="h5">The 5th hash code involved in the combination.</param>
+        /// <param name="h6">The 6th hash code involved in the combination.</param>
+        /// <param name="h7">The 7th hash code involved in the combination.</param>
+        /// <param name="h8">The 8th hash code involved in the combination.</param>
+        /// <param name="h9">The 9th hash code involved in the combination.</param>
+        /// <param name="h10">The 10th hash code involved in the combination.</param>
+        /// <param name="h11">The 11th hash code involved in the combination.</param>
+        /// <param name="h12">The 12th hash code involved in the combination.</param>
+        /// <param name="h13">The 13th hash code involved in the combination.</param>
+        /// <param name="h14">The 14th hash code involved in the combination.</param>
+        /// <returns>The combined result of 14 hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(
             int h1,
@@ -303,24 +303,24 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 合并哈希值。
+        /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">参与合并的第一个哈希值。</param>
-        /// <param name="h2">参与合并的第二个哈希值。</param>
-        /// <param name="h3">参与合并的第三个哈希值。</param>
-        /// <param name="h4">参与合并的第四个哈希值。</param>
-        /// <param name="h5">参与合并的第五个哈希值。</param>
-        /// <param name="h6">参与合并的第六个哈希值。</param>
-        /// <param name="h7">参与合并的第七个哈希值。</param>
-        /// <param name="h8">参与合并的第八个哈希值。</param>
-        /// <param name="h9">参与合并的第九个哈希值。</param>
-        /// <param name="h10">参与合并的第十个哈希值。</param>
-        /// <param name="h11">参与合并的第十一个哈希值。</param>
-        /// <param name="h12">参与合并的第十二个哈希值。</param>
-        /// <param name="h13">参与合并的第十三个哈希值。</param>
-        /// <param name="h14">参与合并的第十四个哈希值。</param>
-        /// <param name="h15">参与合并的第十五个哈希值。</param>
-        /// <returns>十五个哈希值的合并结果。</returns>
+        /// <param name="h1">The 1st hash code involved in the combination.</param>
+        /// <param name="h2">The 2nd hash code involved in the combination.</param>
+        /// <param name="h3">The 3rd hash code involved in the combination.</param>
+        /// <param name="h4">The 4th hash code involved in the combination.</param>
+        /// <param name="h5">The 5th hash code involved in the combination.</param>
+        /// <param name="h6">The 6th hash code involved in the combination.</param>
+        /// <param name="h7">The 7th hash code involved in the combination.</param>
+        /// <param name="h8">The 8th hash code involved in the combination.</param>
+        /// <param name="h9">The 9th hash code involved in the combination.</param>
+        /// <param name="h10">The 10th hash code involved in the combination.</param>
+        /// <param name="h11">The 11th hash code involved in the combination.</param>
+        /// <param name="h12">The 12th hash code involved in the combination.</param>
+        /// <param name="h13">The 13th hash code involved in the combination.</param>
+        /// <param name="h14">The 14th hash code involved in the combination.</param>
+        /// <param name="h15">The 15th hash code involved in the combination.</param>
+        /// <returns>The combined result of 15 hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(
             int h1,
@@ -343,25 +343,25 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 合并哈希值。
+        /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">参与合并的第一个哈希值。</param>
-        /// <param name="h2">参与合并的第二个哈希值。</param>
-        /// <param name="h3">参与合并的第三个哈希值。</param>
-        /// <param name="h4">参与合并的第四个哈希值。</param>
-        /// <param name="h5">参与合并的第五个哈希值。</param>
-        /// <param name="h6">参与合并的第六个哈希值。</param>
-        /// <param name="h7">参与合并的第七个哈希值。</param>
-        /// <param name="h8">参与合并的第八个哈希值。</param>
-        /// <param name="h9">参与合并的第九个哈希值。</param>
-        /// <param name="h10">参与合并的第十个哈希值。</param>
-        /// <param name="h11">参与合并的第十一个哈希值。</param>
-        /// <param name="h12">参与合并的第十二个哈希值。</param>
-        /// <param name="h13">参与合并的第十三个哈希值。</param>
-        /// <param name="h14">参与合并的第十四个哈希值。</param>
-        /// <param name="h15">参与合并的第十五个哈希值。</param>
-        /// <param name="h16">参与合并的第十六个哈希值。</param>
-        /// <returns>十六个哈希值的合并结果。</returns>
+        /// <param name="h1">The 1st hash code involved in the combination.</param>
+        /// <param name="h2">The 2nd hash code involved in the combination.</param>
+        /// <param name="h3">The 3rd hash code involved in the combination.</param>
+        /// <param name="h4">The 4th hash code involved in the combination.</param>
+        /// <param name="h5">The 5th hash code involved in the combination.</param>
+        /// <param name="h6">The 6th hash code involved in the combination.</param>
+        /// <param name="h7">The 7th hash code involved in the combination.</param>
+        /// <param name="h8">The 8th hash code involved in the combination.</param>
+        /// <param name="h9">The 9th hash code involved in the combination.</param>
+        /// <param name="h10">The 10th hash code involved in the combination.</param>
+        /// <param name="h11">The 11th hash code involved in the combination.</param>
+        /// <param name="h12">The 12th hash code involved in the combination.</param>
+        /// <param name="h13">The 13th hash code involved in the combination.</param>
+        /// <param name="h14">The 14th hash code involved in the combination.</param>
+        /// <param name="h15">The 15th hash code involved in the combination.</param>
+        /// <param name="h16">The 16th hash code involved in the combination.</param>
+        /// <returns>The combined result of 16 hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(
             int h1,
@@ -388,11 +388,11 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 合并哈希值。
+        /// Combines hash codes.
         /// </summary>
-        /// <param name="hashCodes">含有多个哈希值的可变长度的数组。</param>
-        /// <returns>多个哈希值的合并结果。特别地，如果 <paramref name="hashCodes"/> 为空数组，则为 0。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="hashCodes"/> 为 <see langword="null"/>。</exception>
+        /// <param name="hashCodes">A variable-length array containing multiple hash codes.</param>
+        /// <returns>The combined result of multiple hash codes. In particular, if <paramref name="hashCodes"/> is an empty array, it is 0.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="hashCodes"/> is <see langword="null"/>.</exception>
         public static int CombineHashCodes(params int[] hashCodes)
         {
             if (hashCodes == null)

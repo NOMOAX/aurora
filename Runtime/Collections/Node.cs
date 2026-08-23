@@ -8,7 +8,7 @@ using Aurora.Pooling;
 namespace Aurora.Collections
 {
     /// <summary>
-    /// 表示树的结点。
+    /// Represents a node of a tree.
     /// </summary>
     public class Node : IEnumerable<Node>
     {
@@ -19,10 +19,10 @@ namespace Aurora.Collections
         private Node _parent;
 
         /// <summary>
-        /// 获取或设置直接父结点。
+        /// Gets or sets the direct parent node.
         /// </summary>
         /// <exception cref="ArgumentException">
-        /// <paramref name="value"/> 为此结点自身，或者 <paramref name="value"/> 为此结点的子结点，或者在此类型的实现中拒绝将 <paramref name="value"/> 设置为直接父结点，或者 <paramref name="value"/> 不为 <see langword="null"/>，并且在 <paramref name="value"/> 类型的实现中拒绝将此结点添加到 <paramref name="value"/> 的直接子结点列表中。</exception>
+        /// <paramref name="value"/> is this node itself, or <paramref name="value"/> is a child of this node, or this type's implementation rejects setting <paramref name="value"/> as the direct parent, or <paramref name="value"/> is not <see langword="null"/>, and <paramref name="value"/> type's implementation rejects adding this node to <paramref name="value"/>'s list of direct children.</exception>
         public Node Parent
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -36,7 +36,7 @@ namespace Aurora.Collections
         private int _version;
 
         /// <summary>
-        /// 获取存放直接子结点的只读集合。
+        /// Gets the read-only collection that stores the direct children.
         /// </summary>
         public IReadOnlyList<Node> Children
         {
@@ -45,7 +45,7 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 获取根结点。
+        /// Gets the root node.
         /// </summary>
         public Node Root
         {
@@ -54,7 +54,7 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 获取一个值，这个值指示这个结点是否是根结点。
+        /// Gets a value indicating whether this node is the root.
         /// </summary>
         public bool IsRoot
         {
@@ -63,7 +63,7 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 获取一个值，这个值指示这个结点是否是叶子结点。
+        /// Gets a value indicating whether this node is a leaf.
         /// </summary>
         public bool IsLeaf
         {
@@ -72,9 +72,9 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 获取一个值，这个值指示这个结点的层次。
+        /// Gets a value indicating the level of this node.
         /// </summary>
-        /// <remarks>根结点的层次为 0。</remarks>
+        /// <remarks>The root node is at level 0.</remarks>
         public int Level
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -82,14 +82,14 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 获取结点的版本。
+        /// Gets the node's version.
         /// </summary>
         /// <remarks>
-        /// 公开此属性，以允许实现额外的枚举器。
+        /// Expose this property to allow additional enumerators to be implemented.
         /// <br/>
-        /// 每当直接和间接子结点发生变化，这个值都会更新。
+        /// This value updates whenever direct or indirect children change.
         /// <br/>
-        /// 根据这个值的不变确保枚举依然合理。
+        /// The invariants based on this value ensure enumeration remains valid.
         /// </remarks>
         public int Version
         {
@@ -108,11 +108,11 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 获取一个值，这个值指示这个结点是否是指定结点的子结点。
+        /// Gets a value indicating whether this node is a child of the specified node.
         /// </summary>
-        /// <param name="node">指定的结点。</param>
-        /// <returns>这个结点是否是指定结点的子结点。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="node"/> 为 <see langword="null"/>。</exception>
+        /// <param name="node">The specified node.</param>
+        /// <returns>Whether this node is a child of the specified node.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="node"/> is <see langword="null"/>.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsChildOf(Node node)
         {
@@ -124,11 +124,11 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 获取一个值，这个值指示这个结点是否是指定结点的父结点。
+        /// Gets a value indicating whether this node is the parent of the specified node.
         /// </summary>
-        /// <param name="node">指定的结点。</param>
-        /// <returns>这个结点是否是指定结点的父结点。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="node"/> 为 <see langword="null"/>。</exception>
+        /// <param name="node">The specified node.</param>
+        /// <returns>Whether this node is the parent of the specified node.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="node"/> is <see langword="null"/>.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsParentOf(Node node)
         {
@@ -180,11 +180,11 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 获取第一个满足指定条件的子结点。
+        /// Gets the first child that satisfies the specified condition.
         /// </summary>
-        /// <param name="match">条件。</param>
-        /// <returns>第一个满足 <paramref name="match"/> 的子结点。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="match"/> 为 <see langword="null"/>。</exception>
+        /// <param name="match">The condition.</param>
+        /// <returns>The first child that satisfies <paramref name="match"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="match"/> is <see langword="null"/>.</exception>
         protected Node GetChild(Func<Node, bool> match)
         {
             if (match == null)
@@ -204,12 +204,12 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 获取第一个满足指定条件的子结点。
+        /// Gets the first child that satisfies the specified condition.
         /// </summary>
-        /// <param name="match">条件。</param>
-        /// <param name="state">将传递给 <paramref name="match"/> 的第二个形参。</param>
-        /// <returns>第一个满足 <paramref name="match"/> 的子结点。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="match"/> 为 <see langword="null"/>。</exception>
+        /// <param name="match">The condition.</param>
+        /// <param name="state">The second parameter passed to <paramref name="match"/>.</param>
+        /// <returns>The first child that satisfies <paramref name="match"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="match"/> is <see langword="null"/>.</exception>
         protected Node GetChild(Func<Node, object, bool> match, object state)
         {
             if (match == null)
@@ -229,11 +229,11 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 获取所有直接子结点，将他们存入指定的集合。
+        /// Gets all direct children and stores them into the specified collection.
         /// </summary>
-        /// <param name="results">用于存放结果的集合。</param>
-        /// <exception cref="ArgumentNullException"><paramref name="results"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentException"><paramref name="results"/> 是只读的。</exception>
+        /// <param name="results">The collection used to store the results.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="results"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="results"/> is read-only.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void GetChildren(ICollection<Node> results)
         {
@@ -252,12 +252,12 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 获取所有指定类型的直接子结点，将他们存入指定的集合。
+        /// Gets all direct children of the specified type and stores them into the specified collection.
         /// </summary>
-        /// <param name="results">用于存放结果的集合。</param>
-        /// <typeparam name="TNode">要获取的直接子结点类型。</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="results"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentException"><paramref name="results"/> 是只读的。</exception>
+        /// <param name="results">The collection used to store the results.</param>
+        /// <typeparam name="TNode">The type of direct children to get.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="results"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="results"/> is read-only.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void GetChildren<TNode>(ICollection<TNode> results) where TNode : Node
         {
@@ -279,10 +279,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 如果当前版本不等于指定的版本，则抛出 <see cref="InvalidOperationException"/>。
+        /// Throws <see cref="InvalidOperationException"/> if the current version is not equal to the specified version.
         /// </summary>
-        /// <param name="version">期待版本。</param>
-        /// <exception cref="InvalidOperationException">当前版本不等于 <paramref name="version"/>。</exception>
+        /// <param name="version">The expected version.</param>
+        /// <exception cref="InvalidOperationException">The current version is not equal to <paramref name="version"/>.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void ValidateVersion(int version)
         {
@@ -294,11 +294,11 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 添加子结点。
+        /// Adds a child node.
         /// </summary>
-        /// <param name="child">要添加的子结点。</param>
-        /// <exception cref="ArgumentNullException"><paramref name="child"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentException"><paramref name="child"/> 为此结点自身，或者 <paramref name="child"/> 为此结点的父结点，或者在 <paramref name="child"/> 类型的实现中拒绝将此结点设置为 <paramref name="child"/> 的直接父结点，或者在此类型的实现中拒绝将 <see langword="child"/> 添加到此结点的直接子结点列表中。</exception>
+        /// <param name="child">The child node to add.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="child"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="child"/> is this node itself, or <paramref name="child"/> is the parent of this node, or <paramref name="child"/> type's implementation rejects setting this node as <paramref name="child"/>'s direct parent, or this type's implementation rejects adding <see langword="child"/> to this node's list of direct children.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Add(Node child)
         {
@@ -310,11 +310,11 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 移除子结点。
+        /// Removes a child node.
         /// </summary>
-        /// <param name="child">要移除的子结点。</param>
-        /// <returns>如果成功地移除了子结点，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="child"/> 为 <see langword="null"/>。</exception>
+        /// <param name="child">The child node to remove.</param>
+        /// <returns><see langword="true"/> if the child node was successfully removed; otherwise, <see langword="false"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="child"/> is <see langword="null"/>.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Remove(Node child)
         {
@@ -331,19 +331,19 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 即将设置 <paramref name="parent"/> 为此结点的直接父结点；若拒绝此行为，子类可重写此方法并在实现中抛出 <see cref="ArgumentException"/> 异常。
+        /// About to set <paramref name="parent"/> as this node's direct parent; to reject this, a subclass may override this method and throw <see cref="ArgumentException"/> in its implementation.
         /// </summary>
-        /// <param name="parent">（不为 <see langword="null"/>）新的直接父结点。</param>
-        /// <exception cref="ArgumentException">在子类的实现中，拒绝设置 <paramref name="parent"/> 为此结点的直接父结点。</exception>
+        /// <param name="parent">The new direct parent (not <see langword="null"/>).</param>
+        /// <exception cref="ArgumentException">In a subclass implementation, <paramref name="parent"/> is rejected as this node's direct parent.</exception>
         protected virtual void ThrowIfRejectParent(Node parent)
         {
         }
 
         /// <summary>
-        /// 即将添加 <paramref name="child"/> 到此结点的直接子结点列表中；若拒绝此行为，子类可重写此方法并在实现中抛出 <see cref="ArgumentException"/> 异常。
+        /// About to add <paramref name="child"/> to this node's list of direct children; to reject this, a subclass may override this method and throw <see cref="ArgumentException"/> in its implementation.
         /// </summary>
-        /// <param name="child">（不为 <see langword="null"/>）新的直接子结点。</param>
-        /// <exception cref="ArgumentException">在子类的实现中，拒绝添加 <paramref name="child"/> 到此结点的直接子结点列表中。</exception>
+        /// <param name="child">The new direct child (not <see langword="null"/>).</param>
+        /// <exception cref="ArgumentException">In a subclass implementation, <paramref name="child"/> is rejected from being added to this node's list of direct children.</exception>
         protected virtual void ThrowIfRejectChild(Node child)
         {
         }
@@ -358,11 +358,11 @@ namespace Aurora.Collections
             {
                 if (parent == this)
                 {
-                    throw new ArgumentException("不能将结点自身设置为父结点");
+                    throw new ArgumentException("Cannot set a node as its own parent");
                 }
                 if (parent.InternalIsChildOf(this))
                 {
-                    throw new ArgumentException("不能将子结点设置为父结点");
+                    throw new ArgumentException("Cannot set a child node as a parent");
                 }
                 ThrowIfRejectParent(parent);
                 parent.ThrowIfRejectChild(this);
@@ -403,11 +403,11 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 根据指定的枚举顺序，获取一个枚举此 <see cref="Node"/> 的枚举器。
+        /// Gets an enumerator that enumerates this <see cref="Node"/> according to the specified enumeration order.
         /// </summary>
-        /// <param name="order">枚举顺序。</param>
-        /// <returns>用于枚举此 <see cref="Node"/> 的枚举器。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="order"/> 不是在 <see cref="TreeEnumOrder"/> 枚举中定义的成员。</exception>
+        /// <param name="order">The enumeration order.</param>
+        /// <returns>An enumerator used to enumerate this <see cref="Node"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="order"/> is not a member defined in the <see cref="TreeEnumOrder"/> enum.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerator<Node> GetEnumerator(TreeEnumOrder order)
         {
@@ -521,7 +521,7 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 确保结点的 <see cref="Node.Version"/> 未改变的范围。
+        /// A scope that ensures the <see cref="Node.Version"/> of a node is unchanged.
         /// </summary>
         public struct ValidateVersionScope : IDisposable
         {
@@ -530,9 +530,9 @@ namespace Aurora.Collections
             private readonly int _version;
 
             /// <summary>
-            /// 初始化 <see cref="ValidateVersionScope"/> 结构的新实例。
+            /// Initializes a new instance of the <see cref="ValidateVersionScope"/> struct.
             /// </summary>
-            /// <param name="node">结点。</param>
+            /// <param name="node">The node.</param>
             public ValidateVersionScope(Node node)
             {
                 _node    = node;

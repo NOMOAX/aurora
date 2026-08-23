@@ -3,18 +3,18 @@
 namespace Aurora.Pooling
 {
     /// <summary>
-    /// 管理池中的双端队列的策略。
+    /// A strategy for managing deques in the pool.
     /// </summary>
-    /// <typeparam name="T">双端队列的成员的类型。</typeparam>
+    /// <typeparam name="T">The type of the deque's members.</typeparam>
     public class PooledDequePolicy<T> : IPooledObjectPolicy<Deque<T>>
     {
         /// <summary>
-        /// 获取或设置池化的双端队列的初始容量。
+        /// Gets or sets the initial capacity of pooled deques.
         /// </summary>
         public int InitialCapacity { get; set; } = 16;
 
         /// <summary>
-        /// 获取或设置允许被放入池的双端队列的最大长度。
+        /// Gets or sets the maximum length of deques allowed into the pool.
         /// </summary>
         public int MaximumRetainedCount { get; set; } = 256;
 

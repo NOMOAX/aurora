@@ -4,55 +4,55 @@ using System.Runtime.CompilerServices;
 namespace Aurora.Interpolations
 {
     /// <summary>
-    /// 提供一组与插值有关的方法。
+    /// Provides a set of methods related to interpolation.
     /// </summary>
     public static class InterpolationUtility
     {
         /// <summary>
-        /// 根据指定的插值方式和权重在指定的开始值和结束值之间执行插值。
+        /// Interpolates between the specified begin and end values using the specified interpolation mode and weight.
         /// </summary>
-        /// <param name="begin">开始值。</param>
-        /// <param name="end">结束值。</param>
-        /// <param name="weight">一个介于 0 和 1 之间的值，指示插值的权重。</param>
-        /// <param name="interpolation">插值类型。</param>
-        /// <returns>插值。</returns>
+        /// <param name="begin">The begin value.</param>
+        /// <param name="end">The end value.</param>
+        /// <param name="weight">A value between 0 and 1 that indicates the weight of the interpolation.</param>
+        /// <param name="interpolation">The interpolation type.</param>
+        /// <returns>The interpolation.</returns>
         public static double Interpolate(double begin, double end, double weight, Interpolation interpolation)
         {
             return InternalLinearInterpolate(begin, end, InternalTransform(weight, interpolation));
         }
 
         /// <summary>
-        /// 根据指定的权重在开始值和结束值之间执行线性插值。
+        /// Performs a linear interpolation between the begin and end values using the specified weight.
         /// </summary>
-        /// <param name="begin">开始值。</param>
-        /// <param name="end">结束值。</param>
-        /// <param name="weight">一个介于 0 和 1 之间的值，指示插值的权重。</param>
-        /// <returns>插值。</returns>
+        /// <param name="begin">The begin value.</param>
+        /// <param name="end">The end value.</param>
+        /// <param name="weight">A value between 0 and 1 that indicates the weight of the interpolation.</param>
+        /// <returns>The interpolation.</returns>
         public static double LinearInterpolate(double begin, double end, double weight)
         {
             return InternalLinearInterpolate(begin, end, weight);
         }
 
         /// <summary>
-        /// 计算指定值在开始值和结束值之间的线性权重。
+        /// Computes the linear weight of a specified value between the begin and end values.
         /// </summary>
-        /// <param name="begin">开始值。</param>
-        /// <param name="end">结束值。</param>
-        /// <param name="value">目标值。</param>
-        /// <returns>如果 <paramref name="begin"/> 与 <paramref name="end"/> 不相等，则为 <c>(value - begin) / (end - begin)</c>；否则为 0。</returns>
+        /// <param name="begin">The begin value.</param>
+        /// <param name="end">The end value.</param>
+        /// <param name="value">The target value.</param>
+        /// <returns>If <paramref name="begin"/> and <paramref name="end"/> are not equal, <c>(value - begin) / (end - begin)</c>; otherwise, 0.</returns>
         public static double InverseLinearInterpolate(double begin, double end, double value)
         {
             return InternalInverseLinearInterpolate(begin, end, value, 0);
         }
 
         /// <summary>
-        /// 计算指定值在开始值和结束值之间的线性权重。
+        /// Computes the linear weight of a specified value between the begin and end values.
         /// </summary>
-        /// <param name="begin">开始值。</param>
-        /// <param name="end">结束值。</param>
-        /// <param name="value">目标值。</param>
-        /// <param name="defaultWeightWhenBeginAndEndAreEqual">当 <paramref name="begin"/> 与 <paramref name="end"/> 相等时，将返回这个值。</param>
-        /// <returns>如果 <paramref name="begin"/> 与 <paramref name="end"/> 不相等，则为 <c>(value - begin) / (end - begin)</c>；否则为 <paramref name="defaultWeightWhenBeginAndEndAreEqual"/>。</returns>
+        /// <param name="begin">The begin value.</param>
+        /// <param name="end">The end value.</param>
+        /// <param name="value">The target value.</param>
+        /// <param name="defaultWeightWhenBeginAndEndAreEqual">When <paramref name="begin"/> and <paramref name="end"/> are equal, this value is returned.</param>
+        /// <returns>If <paramref name="begin"/> and <paramref name="end"/> are not equal, <c>(value - begin) / (end - begin)</c>; otherwise, <paramref name="defaultWeightWhenBeginAndEndAreEqual"/>.</returns>
         public static double InverseLinearInterpolate(
             double begin,
             double end,
@@ -63,12 +63,12 @@ namespace Aurora.Interpolations
         }
 
         /// <summary>
-        /// 将线性插值权重值转换为另一权重值。
+        /// Converts a linear-interpolation weight value to another weight value.
         /// </summary>
-        /// <param name="weight">线性插值的权重值。</param>
-        /// <param name="interpolation">要转换到的插值类型。</param>
-        /// <returns>新权重值。使用此权重值在开始值和结束值之间执行线性插值，等同于在开始值和结束值之间执行 <paramref name="interpolation"/> 插值。</returns>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="interpolation"/> 不是在 <see cref="Interpolation"/> 枚举中定义的成员。</exception>
+        /// <param name="weight">The weight value of the linear interpolation.</param>
+        /// <param name="interpolation">The interpolation type to convert to.</param>
+        /// <returns>The new weight value. Using this weight value to perform a linear interpolation between the begin and end values is equivalent to performing an <paramref name="interpolation"/> interpolation between the begin and end values.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="interpolation"/> is not a member defined in the <see cref="Interpolation"/> enum.</exception>
         public static double Transform(double weight, Interpolation interpolation)
         {
             return InternalTransform(weight, interpolation);

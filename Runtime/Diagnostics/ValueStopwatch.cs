@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace Aurora.Diagnostics
 {
     /// <summary>
-    /// 秒表（值类型）。
+    /// A stopwatch (value type).
     /// </summary>
     public struct ValueStopwatch
     {
@@ -17,27 +17,27 @@ namespace Aurora.Diagnostics
         private bool _isRunning;
 
         /// <summary>
-        /// 获取一个值，该值指示 <see cref="ValueStopwatch"/> 是否正在运行。
+        /// Gets a value indicating whether the <see cref="ValueStopwatch"/> is running.
         /// </summary>
         public readonly bool IsRunning => _isRunning;
 
         /// <summary>
-        /// 获取 <see cref="ValueStopwatch"/> 测量得出的总运行时间。
+        /// Gets the total elapsed time measured by the <see cref="ValueStopwatch"/>.
         /// </summary>
         public readonly TimeSpan Elapsed => new(GetElapsedDateTimeTicks());
 
         /// <summary>
-        /// 获取 <see cref="ValueStopwatch"/> 测量得出的总运行时间（以毫秒为单位）。
+        /// Gets the total elapsed time measured by the <see cref="ValueStopwatch"/> in milliseconds.
         /// </summary>
         public readonly long ElapsedMilliseconds => GetElapsedDateTimeTicks() / TimeSpan.TicksPerMillisecond;
 
         /// <summary>
-        /// 获取 <see cref="ValueStopwatch"/> 测量得出的总运行时间（用计时器刻度表示）。
+        /// Gets the total elapsed time measured by the <see cref="ValueStopwatch"/> in timer ticks.
         /// </summary>
         public readonly long ElapsedTicks => GetRawElapsedTicks();
 
         /// <summary>
-        /// 开始或继续测量某个时间间隔的运行时间。
+        /// Starts or resumes measuring elapsed time for an interval.
         /// </summary>
         public void Start()
         {
@@ -50,9 +50,9 @@ namespace Aurora.Diagnostics
         }
 
         /// <summary>
-        /// 初始化新的 <see cref="ValueStopwatch"/> 实例，将运行时间属性设置为零，然后开始测量运行时间。
+        /// Initializes a new <see cref="ValueStopwatch"/> instance, sets the elapsed time property to zero, and then starts measuring elapsed time.
         /// </summary>
-        /// <returns>刚刚开始测量运行时间的 <see cref="ValueStopwatch"/>。</returns>
+        /// <returns>A <see cref="ValueStopwatch"/> that has just started measuring elapsed time.</returns>
         public static ValueStopwatch StartNew()
         {
             var valueStopwatch = new ValueStopwatch();
@@ -61,7 +61,7 @@ namespace Aurora.Diagnostics
         }
 
         /// <summary>
-        /// 停止测量某个时间间隔的运行时间。
+        /// Stops measuring elapsed time for an interval.
         /// </summary>
         public void Stop()
         {
@@ -79,7 +79,7 @@ namespace Aurora.Diagnostics
         }
 
         /// <summary>
-        /// 停止时间间隔测量，并将运行时间重置为零。
+        /// Stops interval measurement and resets the elapsed time to zero.
         /// </summary>
         public void Reset()
         {
@@ -89,7 +89,7 @@ namespace Aurora.Diagnostics
         }
 
         /// <summary>
-        /// 停止时间间隔测量，将运行时间重置为零，然后开始测量运行时间。
+        /// Stops interval measurement, resets the elapsed time to zero, and then starts measuring elapsed time.
         /// </summary>
         public void Restart()
         {

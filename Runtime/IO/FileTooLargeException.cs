@@ -3,21 +3,21 @@
 namespace Aurora.IO
 {
     /// <summary>
-    /// 在文件体积过大时引发的异常。
+    /// The exception thrown when a file is too large.
     /// </summary>
     public sealed class FileTooLargeException : IOException
     {
         /// <summary>
-        /// 初始化 <see cref="FileTooLargeException"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="FileTooLargeException"/> class.
         /// </summary>
         public FileTooLargeException()
         {
         }
 
         /// <summary>
-        /// 使用指定的错误消息初始化 <see cref="FileTooLargeException"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="FileTooLargeException"/> class with the specified error message.
         /// </summary>
-        /// <param name="message">描述错误的消息。</param>
+        /// <param name="message">The message that describes the error.</param>
         public FileTooLargeException(string message) : base(message)
         {
         }

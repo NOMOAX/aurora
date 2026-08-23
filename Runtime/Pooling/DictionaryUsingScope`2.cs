@@ -5,18 +5,18 @@ using System.Threading;
 namespace Aurora.Pooling
 {
     /// <summary>
-    /// 使用字典范围。
+    /// A using scope for a dictionary.
     /// </summary>
-    /// <typeparam name="TKey">字典中的键的类型。</typeparam>
-    /// <typeparam name="TValue">字典中的值的类型。</typeparam>
+    /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+    /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
     public sealed class DictionaryUsingScope<TKey, TValue> : IDisposable
     {
         private Dictionary<TKey, TValue> _dictionary;
 
         /// <summary>
-        /// 初始化 <see cref="DictionaryUsingScope{TKey,TValue}"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="DictionaryUsingScope{TKey,TValue}"/> class.
         /// </summary>
-        /// <param name="dictionary">此输出参数将被赋值为一个空字典。</param>
+        /// <param name="dictionary">This output parameter is assigned an empty dictionary.</param>
         public DictionaryUsingScope(out Dictionary<TKey, TValue> dictionary)
         {
             _dictionary = PredefinedPools<TKey, TValue>.Dictionary.Get();

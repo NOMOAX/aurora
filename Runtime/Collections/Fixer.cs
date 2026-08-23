@@ -7,17 +7,17 @@ using Aurora.Sorting;
 namespace Aurora.Collections
 {
     /// <summary>
-    /// 修复器。
+    /// A fixer.
     /// </summary>
     public sealed class Fixer : Node, IComparable, IComparable<Fixer>
     {
         /// <summary>
-        /// 表示一个方法，该方法的返回值为 <see langword="true"/>。
+        /// Represents a method whose return value is <see langword="true"/>.
         /// </summary>
         public static readonly Func<bool> IsAlwaysFixed = () => true;
 
         /// <summary>
-        /// 表示一个方法，该方法的返回值为一个任务，根据 <see cref="CancellationToken"/> 参数的状态不同，该任务为已取消或已成功完成的任务。
+        /// Represents a method whose return value is a task that is either canceled or successfully completed, depending on the state of the <see cref="CancellationToken"/> argument.
         /// </summary>
         public static readonly Func<CancellationToken, Task> CompletedTask = cancellationToken =>
             cancellationToken.IsCancellationRequested ? Task.FromCanceled(cancellationToken) : Task.CompletedTask;
@@ -29,9 +29,9 @@ namespace Aurora.Collections
         private readonly int _priority;
 
         /// <summary>
-        /// 初始化 <see cref="Fixer"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="Fixer"/> class.
         /// <br/>
-        /// 它总是已修复的，并且异步修复操作会立即同步完成。
+        /// It is always fixed, and the asynchronous fix operation completes synchronously immediately.
         /// </summary>
         public Fixer()
         {
@@ -41,12 +41,12 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 初始化 <see cref="Fixer"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="Fixer"/> class.
         /// </summary>
-        /// <param name="isFixedFunc">一个返回值为 <see cref="bool"/> 的方法。返回值表示该结点是否已修复。</param>
-        /// <param name="fixAsyncFunc">一个返回值为 <see cref="Task"/> 的方法。返回值是一个任务，执行该任务以尝试异步修复该结点。</param>
-        /// <param name="priority">优先级。父结点会优先访问和处理优先级更小的子结点。</param>
-        /// <exception cref="ArgumentNullException"><paramref name="isFixedFunc"/> 或 <paramref name="fixAsyncFunc"/> 为 <see langword="null"/></exception>
+        /// <param name="isFixedFunc">A method whose return value is <see cref="bool"/>. The return value indicates whether the node is fixed.</param>
+        /// <param name="fixAsyncFunc">A method whose return value is <see cref="Task"/>. The return value is a task; executing it attempts to fix the node asynchronously.</param>
+        /// <param name="priority">The priority. A parent node accesses and processes children with a smaller priority first.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="isFixedFunc"/> or <paramref name="fixAsyncFunc"/> is <see langword="null"/></exception>
         public Fixer(Func<bool> isFixedFunc, Func<CancellationToken, Task> fixAsyncFunc, int priority)
         {
             _isFixedFunc  = isFixedFunc ?? throw new ArgumentNullException(nameof(isFixedFunc));
@@ -55,13 +55,13 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 优先级。
+        /// The priority.
         /// </summary>
-        /// <remarks>父结点会优先访问和处理优先级更小的子结点。</remarks>
+        /// <remarks>A parent node accesses and processes children with a smaller priority first.</remarks>
         public int Priority => _priority;
 
         /// <summary>
-        /// 获取一个值，这个值指示此结点是否已修复。
+        /// Gets a value that indicates whether this node is fixed.
         /// </summary>
         public bool IsFixed => InternalIsFixed;
 
@@ -88,10 +88,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 尝试异步修复此结点。
+        /// Attempts to fix this node asynchronously.
         /// </summary>
-        /// <param name="cancellationToken">取消令牌。</param>
-        /// <exception cref="OperationCanceledException"><paramref name="cancellationToken"/> 已取消。</exception>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <exception cref="OperationCanceledException"><paramref name="cancellationToken"/> has been canceled.</exception>
         public Task FixAsync(CancellationToken cancellationToken = default)
         {
             return InternalFixAsync(cancellationToken);
@@ -137,11 +137,11 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 如果 <see cref="IsFixed"/> 的值为 <see langword="true"/>，则直接返回 <see langword="true"/>；否则，尝试异步修复此结点，然后返回尝试修复后 <see cref="IsFixed"/> 的值。
+        /// If the value of <see cref="IsFixed"/> is <see langword="true"/>, directly returns <see langword="true"/>; otherwise, attempts to fix this node asynchronously and then returns the value of <see cref="IsFixed"/> after the attempt.
         /// </summary>
-        /// <param name="cancellationToken">取消令牌。</param>
-        /// <returns>最终的 <see cref="IsFixed"/> 的值。</returns>
-        /// <exception cref="OperationCanceledException"><paramref name="cancellationToken"/> 已取消。</exception>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The final value of <see cref="IsFixed"/>.</returns>
+        /// <exception cref="OperationCanceledException"><paramref name="cancellationToken"/> has been canceled.</exception>
         public async Task<bool> EnsureFixedAsync(CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();

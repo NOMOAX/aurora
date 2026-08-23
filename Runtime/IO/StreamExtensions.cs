@@ -7,12 +7,12 @@ using Aurora.Pooling;
 namespace Aurora.IO
 {
     /// <summary>
-    /// 为 <see cref="Stream"/> 类提供扩展方法。
+    /// Provides extension methods for the <see cref="Stream"/> class.
     /// </summary>
     public static class StreamExtensions
     {
         /// <seealso cref="Stream.CopyTo(System.IO.Stream)"/>
-        /// <remarks>此方法将重用缓冲区，以帮助减少频繁分配内存的行为。</remarks>
+        /// <remarks>This method reuses a buffer to help reduce frequent memory allocations.</remarks>
         public static void CopyToFrugally(this Stream stream, Stream destination)
         {
             if (stream == null)
@@ -55,14 +55,14 @@ namespace Aurora.IO
         }
 
         /// <seealso cref="Stream.CopyToAsync(System.IO.Stream)"/>
-        /// <remarks>此方法将重用缓冲区，以帮助减少频繁分配内存的行为。</remarks>
+        /// <remarks>This method reuses a buffer to help reduce frequent memory allocations.</remarks>
         public static Task CopyToFrugallyAsync(this Stream stream, Stream destination)
         {
             return InternalCopyToFrugallyAsync(stream, destination, CancellationToken.None);
         }
 
         /// <seealso cref="Stream.CopyToAsync(System.IO.Stream)"/>
-        /// <remarks>此方法将重用缓冲区，以帮助减少频繁分配内存的行为。</remarks>
+        /// <remarks>This method reuses a buffer to help reduce frequent memory allocations.</remarks>
         public static Task CopyToFrugallyAsync(
             this Stream       stream,
             Stream            destination,

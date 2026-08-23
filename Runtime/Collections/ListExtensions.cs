@@ -4,16 +4,16 @@ using System.Collections.Generic;
 namespace Aurora.Collections
 {
     /// <summary>
-    /// 为 <see cref="IList{T}"/> 接口提供扩展方法。
+    /// Provides extension methods for the <see cref="IList{T}"/> interface.
     /// </summary>
     public static class ListExtensions
     {
         /// <summary>
-        /// 打乱当前 <see cref="IList{T}"/> 中元素的顺序。
+        /// Shuffles the order of elements in the current <see cref="IList{T}"/>.
         /// </summary>
-        /// <param name="collection">要被打乱的集合。</param>
-        /// <typeparam name="T">集合中元素的类型。</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 为 <see langword="null"/>。</exception>
+        /// <param name="collection">The collection to shuffle.</param>
+        /// <typeparam name="T">The type of the elements in the collection.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
         public static void ShuffleInPlace<T>(this IList<T> collection)
         {
             if (collection == null)
@@ -24,15 +24,15 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 打乱当前 <see cref="IList{T}"/> 的指定范围中元素的顺序。
+        /// Shuffles the order of elements in the specified range of the current <see cref="IList{T}"/>.
         /// </summary>
-        /// <param name="collection">要被打乱的集合。</param>
-        /// <param name="index">打乱顺序范围的起始索引。</param>
-        /// <param name="count">打乱顺序范围内的元素数。</param>
-        /// <typeparam name="T">集合中元素的类型。</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> 小于 0，或 <paramref name="count"/> 小于 0。</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> 和 <paramref name="count"/> 不能指定 <paramref name="collection"/> 中的合理范围。</exception>
+        /// <param name="collection">The collection to shuffle.</param>
+        /// <param name="index">The starting index of the range to shuffle.</param>
+        /// <param name="count">The number of elements in the range to shuffle.</param>
+        /// <typeparam name="T">The type of the elements in the collection.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
+        /// <exception cref="ArgumentException"><paramref name="index"/> and <paramref name="count"/> do not specify a valid range within <paramref name="collection"/>.</exception>
         public static void ShuffleInPlace<T>(this IList<T> collection, int index, int count)
         {
             if (collection == null)
@@ -63,15 +63,15 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 搜索与指定条件相匹配的元素，返回当前 <see cref="IList{T}"/> 中第一个匹配元素。
+        /// Searches for an element matching the specified condition and returns the first matching element in the current <see cref="IList{T}"/>.
         /// </summary>
-        /// <param name="collection">要搜索的集合。</param>
-        /// <param name="match">条件。</param>
-        /// <param name="state">将传递给 <paramref name="match"/> 的第二个形参。</param>
-        /// <typeparam name="TSource">集合中元素的类型。</typeparam>
-        /// <typeparam name="TState"><paramref name="state"/> 的类型。</typeparam>
-        /// <returns>如果找到与 <paramref name="match"/> 定义的条件相匹配的第一个元素，则为该元素；否则为类型 <typeparamref name="TSource"/> 的默认值。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 或 <paramref name="match"/> 为 <see langword="null"/>。</exception>
+        /// <param name="collection">The collection to search.</param>
+        /// <param name="match">The condition.</param>
+        /// <param name="state">The second parameter passed to <paramref name="match"/>.</param>
+        /// <typeparam name="TSource">The type of the elements in the collection.</typeparam>
+        /// <typeparam name="TState">The type of <paramref name="state"/>.</typeparam>
+        /// <returns>If the first element matching the condition defined by <paramref name="match"/> is found, that element; otherwise, the default value of type <typeparamref name="TSource"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="match"/> is <see langword="null"/>。</exception>
         public static TSource Find<TSource, TState>(
             this IList<TSource>                     collection,
             ParameterizedPredicate<TSource, TState> match,
@@ -96,15 +96,15 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 搜索与指定条件相匹配的元素，返回当前 <see cref="IList{T}"/> 中第一个匹配元素的从零开始的索引。
+        /// Searches for an element matching the specified condition and returns the zero-based index of the first matching element in the current <see cref="IList{T}"/>.
         /// </summary>
-        /// <param name="collection">要搜索的集合。</param>
-        /// <param name="match">条件。</param>
-        /// <param name="state">将传递给 <paramref name="match"/> 的第二个形参。</param>
-        /// <typeparam name="TSource">集合中元素的类型。</typeparam>
-        /// <typeparam name="TState"><paramref name="state"/> 的类型。</typeparam>
-        /// <returns>如果找到与 <paramref name="match"/> 定义的条件相匹配的第一个元素，则为该元素的从零开始的索引；否则为 -1。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 或 <paramref name="match"/> 为 <see langword="null"/>。</exception>
+        /// <param name="collection">The collection to search.</param>
+        /// <param name="match">The condition.</param>
+        /// <param name="state">The second parameter passed to <paramref name="match"/>.</param>
+        /// <typeparam name="TSource">The type of the elements in the collection.</typeparam>
+        /// <typeparam name="TState">The type of <paramref name="state"/>.</typeparam>
+        /// <returns>If the first element matching the condition defined by <paramref name="match"/> is found, the zero-based index of that element; otherwise, -1.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="match"/> is <see langword="null"/>。</exception>
         public static int FindIndex<TSource, TState>(
             this IList<TSource>                     collection,
             ParameterizedPredicate<TSource, TState> match,
@@ -129,15 +129,15 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 搜索与指定条件相匹配的元素，返回当前 <see cref="IList{T}"/> 中最后一个匹配元素。
+        /// Searches for an element matching the specified condition and returns the last matching element in the current <see cref="IList{T}"/>.
         /// </summary>
-        /// <param name="collection">要搜索的集合。</param>
-        /// <param name="match">条件。</param>
-        /// <param name="state">将传递给 <paramref name="match"/> 的第二个形参。</param>
-        /// <typeparam name="TSource">集合中元素的类型。</typeparam>
-        /// <typeparam name="TState"><paramref name="state"/> 的类型。</typeparam>
-        /// <returns>如果找到与 <paramref name="match"/> 定义的条件相匹配的最后一个元素，则为该元素；否则为类型 <typeparamref name="TSource"/> 的默认值。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 或 <paramref name="match"/> 为 <see langword="null"/>。</exception>
+        /// <param name="collection">The collection to search.</param>
+        /// <param name="match">The condition.</param>
+        /// <param name="state">The second parameter passed to <paramref name="match"/>.</param>
+        /// <typeparam name="TSource">The type of the elements in the collection.</typeparam>
+        /// <typeparam name="TState">The type of <paramref name="state"/>.</typeparam>
+        /// <returns>If the last element matching the condition defined by <paramref name="match"/> is found, that element; otherwise, the default value of type <typeparamref name="TSource"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="match"/> is <see langword="null"/>。</exception>
         public static TSource FindLast<TSource, TState>(
             this IList<TSource>                     collection,
             ParameterizedPredicate<TSource, TState> match,
@@ -163,15 +163,15 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 搜索与指定条件相匹配的元素，返回当前 <see cref="IList{T}"/> 中最后一个匹配元素的从零开始的索引。
+        /// Searches for an element matching the specified condition and returns the zero-based index of the last matching element in the current <see cref="IList{T}"/>.
         /// </summary>
-        /// <param name="collection">要搜索的集合。</param>
-        /// <param name="match">条件。</param>
-        /// <param name="state">将传递给 <paramref name="match"/> 的第二个形参。</param>
-        /// <typeparam name="TSource">集合中元素的类型。</typeparam>
-        /// <typeparam name="TState"><paramref name="state"/> 的类型。</typeparam>
-        /// <returns>如果找到与 <paramref name="match"/> 定义的条件相匹配的最后一个元素，则为该元素的从零开始的索引；否则为 -1。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 或 <paramref name="match"/> 为 <see langword="null"/>。</exception>
+        /// <param name="collection">The collection to search.</param>
+        /// <param name="match">The condition.</param>
+        /// <param name="state">The second parameter passed to <paramref name="match"/>.</param>
+        /// <typeparam name="TSource">The type of the elements in the collection.</typeparam>
+        /// <typeparam name="TState">The type of <paramref name="state"/>.</typeparam>
+        /// <returns>If the last element matching the condition defined by <paramref name="match"/> is found, the zero-based index of that element; otherwise, -1.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="match"/> is <see langword="null"/>。</exception>
         public static int FindLastIndex<TSource, TState>(
             this IList<TSource>                     collection,
             ParameterizedPredicate<TSource, TState> match,
@@ -196,15 +196,15 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 将当前 <see cref="IList{T}"/> 转换为另一种类型的 <see cref="List{T}"/>。
+        /// Converts the current <see cref="IList{T}"/> to a <see cref="List{T}"/> of another type.
         /// </summary>
-        /// <param name="collection">要转换为目标类型的集合。</param>
-        /// <param name="converter">转换器。</param>
-        /// <param name="state">传入转换器的第二个参数。</param>
-        /// <typeparam name="TInput">源 <see cref="IList{T}"/> 元素的类型。</typeparam>
-        /// <typeparam name="TOutput">目标 <see cref="List{T}"/> 元素的类型。</typeparam>
-        /// <returns>目标类型的 <see cref="List{T}"/>，包含从源 <see cref="IList{T}"/> 转换而来的元素。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 或 <paramref name="converter"/> 为 <see langword="null"/>。</exception>
+        /// <param name="collection">The collection to convert to the target type.</param>
+        /// <param name="converter">The converter.</param>
+        /// <param name="state">The second argument passed to the converter.</param>
+        /// <typeparam name="TInput">The type of the source <see cref="IList{T}"/> elements.</typeparam>
+        /// <typeparam name="TOutput">The type of the target <see cref="List{T}"/> elements.</typeparam>
+        /// <returns>A <see cref="List{T}"/> of the target type containing the elements converted from the source <see cref="IList{T}"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="converter"/> is <see langword="null"/>.</exception>
         public static List<TOutput> ConvertAll<TInput, TOutput>(
             this IList<TInput>            collection,
             Func<TInput, object, TOutput> converter,
@@ -228,16 +228,16 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 移除当前 <see cref="IList{T}"/> 中所有与指定条件相匹配的元素。
+        /// Removes all elements matching the specified condition from the current <see cref="IList{T}"/>.
         /// </summary>
-        /// <param name="collection">要移除其元素的集合。</param>
-        /// <param name="match">条件。</param>
-        /// <param name="state">将传递给 <paramref name="match"/> 的第二个形参。</param>
-        /// <typeparam name="TSource">集合中元素的类型。</typeparam>
-        /// <typeparam name="TState"><paramref name="state"/> 的类型。</typeparam>
-        /// <returns>从 <see cref="IList{T}"/> 中移除的元素数。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 或 <paramref name="match"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentException"><paramref name="collection"/> 是只读的。</exception>
+        /// <param name="collection">The collection whose elements are to be removed.</param>
+        /// <param name="match">The condition.</param>
+        /// <param name="state">The second parameter passed to <paramref name="match"/>.</param>
+        /// <typeparam name="TSource">The type of the elements in the collection.</typeparam>
+        /// <typeparam name="TState">The type of <paramref name="state"/>.</typeparam>
+        /// <returns>The number of elements removed from the <see cref="IList{T}"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="match"/> is <see langword="null"/>。</exception>
+        /// <exception cref="ArgumentException"><paramref name="collection"/> is read-only.</exception>
         public static int RemoveAll<TSource, TState>(
             this IList<TSource>                     collection,
             ParameterizedPredicate<TSource, TState> match,

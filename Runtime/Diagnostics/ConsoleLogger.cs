@@ -4,12 +4,12 @@ using Aurora.Pooling;
 namespace Aurora.Diagnostics
 {
     /// <summary>
-    /// 记录到控制台标准输出流。
+    /// Logs to the console standard output stream.
     /// </summary>
     public sealed class ConsoleLogger : ILogger
     {
         /// <summary>
-        /// 获取单一实例。
+        /// Gets the singleton instance.
         /// </summary>
         public static ConsoleLogger Instance { get; } = new();
 

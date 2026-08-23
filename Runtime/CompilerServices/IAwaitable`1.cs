@@ -1,17 +1,17 @@
 ﻿namespace Aurora.CompilerServices
 {
     /// <summary>
-    /// 提供上下文，用于在切换到目标环境时等待。
+    /// Provides a context to await while switching to the target environment.
     /// </summary>
-    /// <typeparam name="TResult">等待完成时可获取的结果的类型。</typeparam>
+    /// <typeparam name="TResult">The type of the result available when the await completes.</typeparam>
     public interface IAwaitable<out TResult>
     {
         /// <summary>
-        /// 获取等待器。
+        /// Gets the awaiter.
         /// </summary>
-        /// <returns>等待器。</returns>
+        /// <returns>The awaiter.</returns>
         /// <remarks>
-        /// 根据 C# 规范“可等待表达式”的规定，请隐式实现此接口成员。
+        /// According to the C# specification on "awaitable expressions", please implement this interface member explicitly.
         /// </remarks>
         /// <seealso href="https://learn.microsoft.com/dotnet/csharp/language-reference/language-specification/expressions"/>
         IAwaiter<TResult> GetAwaiter();

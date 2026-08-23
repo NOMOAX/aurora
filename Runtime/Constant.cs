@@ -3,61 +3,61 @@
 namespace Aurora
 {
     /// <summary>
-    /// 常量和静态只读量。
+    /// Constant and static read-only values.
     /// </summary>
     public static class Constant
     {
         /// <summary>
-        /// 字符串常量。
+        /// String constants.
         /// </summary>
         public static class String
         {
             /// <summary>
-            /// 作者的名称。
+            /// The author's name.
             /// </summary>
             public const string AuthorName = "谢凯文";
 
             /// <summary>
-            /// 作者的英文名称。
+            /// The author's English name.
             /// </summary>
             public const string AuthorNameEnglish = "Kevin Xie";
 
             /// <summary>
-            /// 可使得单精度浮点数成功往返的格式。
+            /// A format that allows single-precision floating-point values to round-trip successfully.
             /// </summary>
             public const string FloatFormatRoundTrip = "G9";
 
             /// <summary>
-            /// 可获取单精度浮点数有效定点数字的格式。
+            /// A format that obtains significant fixed-point digits for single-precision floating-point values.
             /// </summary>
             public const string FloatFormatSignificantFixedPointFigures =
                 "0.###################################################";
 
             /// <summary>
-            /// 可使得双精度浮点数成功往返的格式。
+            /// A format that allows double-precision floating-point values to round-trip successfully.
             /// </summary>
             public const string DoubleFormatRoundTrip = "G17";
 
             /// <summary>
-            /// 可获取双精度浮点数有效定点数字的格式。
+            /// A format that obtains significant fixed-point digits for double-precision floating-point values.
             /// </summary>
             public const string DoubleFormatSignificantFixedPointFigures =
                 "0.##################################################################################################################################################################################################################################################################################################################################################";
 
             /// <summary>
-            /// 用于匹配符合 RFC 5322 标准的电子邮件地址的正则表达式模式。
+            /// A regular expression pattern that matches email addresses conforming to the RFC 5322 standard.
             /// </summary>
             public const string EmailAddressRegexPattern =
                 "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
         }
 
         /// <summary>
-        /// 正则表达式静态只读量。
+        /// Static read-only regular expressions.
         /// </summary>
         public static class Regex
         {
             /// <summary>
-            /// 用于匹配符合 RFC 5322 标准的电子邮件地址的模式。
+            /// A pattern that matches email addresses conforming to the RFC 5322 standard.
             /// </summary>
             public static readonly System.Text.RegularExpressions.Regex EmailAddressRegex = new(
                 String.EmailAddressRegexPattern,
@@ -66,1317 +66,1317 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 时间间隔静态只读量。
+        /// Static read-only time intervals.
         /// </summary>
         public static class TimeSpan
         {
             /// <summary>
-            /// 计时器支持的最大超时时间间隔。
+            /// The maximum timeout interval supported by the timer.
             /// </summary>
             public static readonly System.TimeSpan TimerMaxSupportedTimeout =
                 System.TimeSpan.FromMilliseconds(4294967294);
         }
 
         /// <summary>
-        /// 字符常量。
+        /// Character constants.
         /// </summary>
         public static class Character
         {
-            #region 基本拉丁字母 ('\u0000' → '\u007f')
+            #region Basic Latin ('\u0000' → '\u007f')
 
             /// <summary>
-            /// 空。
+            /// Null.
             /// </summary>
             /// <remarks>
-            /// 十进制：0
+            /// Decimal:0
             /// <br/>
-            /// 十六进制：'\u0000'
+            /// Hex:'\u0000'
             /// <br/>
-            /// 转义：'\0'
+            /// Escape:'\0'
             /// </remarks>
             public const char Null = '\u0000';
 
             /// <summary>
-            /// 标题开始。
+            /// Start of Heading.
             /// </summary>
             /// <remarks>
-            /// 十进制：1
+            /// Decimal:1
             /// <br/>
-            /// 十六进制：'\u0001'
+            /// Hex:'\u0001'
             /// </remarks>
             public const char StartOfHeading = '\u0001';
 
             /// <summary>
-            /// 正文开始。
+            /// Start of Text.
             /// </summary>
             /// <remarks>
-            /// 十进制：2
+            /// Decimal:2
             /// <br/>
-            /// 十六进制：'\u0002'
+            /// Hex:'\u0002'
             /// </remarks>
             public const char StartOfText = '\u0002';
 
             /// <summary>
-            /// 正文结束。
+            /// End of Text.
             /// </summary>
             /// <remarks>
-            /// 十进制：3
+            /// Decimal:3
             /// <br/>
-            /// 十六进制：'\u0003'
+            /// Hex:'\u0003'
             /// </remarks>
             public const char EndOfText = '\u0003';
 
             /// <summary>
-            /// 传输结束。
+            /// End of Transmission.
             /// </summary>
             /// <remarks>
-            /// 十进制：4
+            /// Decimal:4
             /// <br/>
-            /// 十六进制：'\u0004'
+            /// Hex:'\u0004'
             /// </remarks>
             public const char EndOfTransmission = '\u0004';
 
             /// <summary>
-            /// 询问。
+            /// Enquiry.
             /// </summary>
             /// <remarks>
-            /// 十进制：5
+            /// Decimal:5
             /// <br/>
-            /// 十六进制：'\u0005'
+            /// Hex:'\u0005'
             /// </remarks>
             public const char Enquiry = '\u0005';
 
             /// <summary>
-            /// 确认。
+            /// Acknowledge.
             /// </summary>
             /// <remarks>
-            /// 十进制：6
+            /// Decimal:6
             /// <br/>
-            /// 十六进制：'\u0006'
+            /// Hex:'\u0006'
             /// </remarks>
             public const char Acknowledge = '\u0006';
 
             /// <summary>
-            /// 响铃。
+            /// Bell.
             /// </summary>
             /// <remarks>
-            /// 十进制：7
+            /// Decimal:7
             /// <br/>
-            /// 十六进制：'\u0007'
+            /// Hex:'\u0007'
             /// <br/>
-            /// 转义：'\a'
+            /// Escape:'\a'
             /// </remarks>
             public const char Bell = '\u0007';
 
             /// <summary>
-            /// 退格。
+            /// Backspace.
             /// </summary>
             /// <remarks>
-            /// 十进制：8
+            /// Decimal:8
             /// <br/>
-            /// 十六进制：'\u0008'
+            /// Hex:'\u0008'
             /// <br/>
-            /// 转义：'\b'
+            /// Escape:'\b'
             /// </remarks>
             public const char Backspace = '\u0008';
 
             /// <summary>
-            /// 水平制表符。
+            /// Horizontal Tabulation.
             /// </summary>
             /// <remarks>
-            /// 十进制：9
+            /// Decimal:9
             /// <br/>
-            /// 十六进制：'\u0009'
+            /// Hex:'\u0009'
             /// <br/>
-            /// 转义：'\t'
+            /// Escape:'\t'
             /// </remarks>
             public const char HorizontalTabulation = '\u0009';
 
             /// <summary>
-            /// 换行。
+            /// New Line.
             /// </summary>
             /// <remarks>
-            /// 十进制：10
+            /// Decimal:10
             /// <br/>
-            /// 十六进制：'\u000a'
+            /// Hex:'\u000a'
             /// <br/>
-            /// 转义：'\n'
+            /// Escape:'\n'
             /// </remarks>
             public const char NewLine = '\u000a';
 
             /// <summary>
-            /// 垂直制表符。
+            /// Vertical Tabulation.
             /// </summary>
             /// <remarks>
-            /// 十进制：11
+            /// Decimal:11
             /// <br/>
-            /// 十六进制：'\u000b'
+            /// Hex:'\u000b'
             /// <br/>
-            /// 转义：'\v'
+            /// Escape:'\v'
             /// </remarks>
             public const char VerticalTabulation = '\u000b';
 
             /// <summary>
-            /// 换页。
+            /// Form Feed.
             /// </summary>
             /// <remarks>
-            /// 十进制：12
+            /// Decimal:12
             /// <br/>
-            /// 十六进制：'\u000c'
+            /// Hex:'\u000c'
             /// <br/>
-            /// 转义：'\f'
+            /// Escape:'\f'
             /// </remarks>
             public const char FormFeed = '\u000c';
 
             /// <summary>
-            /// 回车。
+            /// Carriage Return.
             /// </summary>
             /// <remarks>
-            /// 十进制：13
+            /// Decimal:13
             /// <br/>
-            /// 十六进制：'\u000d'
+            /// Hex:'\u000d'
             /// <br/>
-            /// 转义：'\r'
+            /// Escape:'\r'
             /// </remarks>
             public const char CarriageReturn = '\u000d';
 
             /// <summary>
-            /// 移出。
+            /// Shift Out.
             /// </summary>
             /// <remarks>
-            /// 十进制：14
+            /// Decimal:14
             /// <br/>
-            /// 十六进制：'\u000e'
+            /// Hex:'\u000e'
             /// </remarks>
             public const char ShiftOut = '\u000e';
 
             /// <summary>
-            /// 移入。
+            /// Shift In.
             /// </summary>
             /// <remarks>
-            /// 十进制：15
+            /// Decimal:15
             /// <br/>
-            /// 十六进制：'\u000f'
+            /// Hex:'\u000f'
             /// </remarks>
             public const char ShiftIn = '\u000f';
 
             /// <summary>
-            /// 数据传输转义。
+            /// Data Link Escape.
             /// </summary>
             /// <remarks>
-            /// 十进制：16
+            /// Decimal:16
             /// <br/>
-            /// 十六进制：'\u0010'
+            /// Hex:'\u0010'
             /// </remarks>
             public const char DataLinkEscape = '\u0010';
 
             /// <summary>
-            /// 设备控制一。
+            /// Device Control One.
             /// </summary>
             /// <remarks>
-            /// 十进制：17
+            /// Decimal:17
             /// <br/>
-            /// 十六进制：'\u0011'
+            /// Hex:'\u0011'
             /// </remarks>
             public const char DeviceControlOne = '\u0011';
 
             /// <summary>
-            /// 设备控制二。
+            /// Device Control Two.
             /// </summary>
             /// <remarks>
-            /// 十进制：18
+            /// Decimal:18
             /// <br/>
-            /// 十六进制：'\u0012'
+            /// Hex:'\u0012'
             /// </remarks>
             public const char DeviceControlTwo = '\u0012';
 
             /// <summary>
-            /// 设备控制三。
+            /// Device Control Three.
             /// </summary>
             /// <remarks>
-            /// 十进制：19
+            /// Decimal:19
             /// <br/>
-            /// 十六进制：'\u0013'
+            /// Hex:'\u0013'
             /// </remarks>
             public const char DeviceControlThree = '\u0013';
 
             /// <summary>
-            /// 设备控制四。
+            /// Device Control Four.
             /// </summary>
             /// <remarks>
-            /// 十进制：20
+            /// Decimal:20
             /// <br/>
-            /// 十六进制：'\u0014'
+            /// Hex:'\u0014'
             /// </remarks>
             public const char DeviceControlFour = '\u0014';
 
             /// <summary>
-            /// 否认。
+            /// Negative Acknowledge.
             /// </summary>
             /// <remarks>
-            /// 十进制：21
+            /// Decimal:21
             /// <br/>
-            /// 十六进制：'\u0015'
+            /// Hex:'\u0015'
             /// </remarks>
             public const char NegativeAcknowledge = '\u0015';
 
             /// <summary>
-            /// 同步空闲。
+            /// Synchronous Idle.
             /// </summary>
             /// <remarks>
-            /// 十进制：22
+            /// Decimal:22
             /// <br/>
-            /// 十六进制：'\u0016'
+            /// Hex:'\u0016'
             /// </remarks>
             public const char SynchronousIdle = '\u0016';
 
             /// <summary>
-            /// 传输块结束。
+            /// End of Transmission Block.
             /// </summary>
             /// <remarks>
-            /// 十进制：23
+            /// Decimal:23
             /// <br/>
-            /// 十六进制：'\u0017'
+            /// Hex:'\u0017'
             /// </remarks>
             public const char EndOfTransmissionBlock = '\u0017';
 
             /// <summary>
-            /// 取消。
+            /// Cancel.
             /// </summary>
             /// <remarks>
-            /// 十进制：24
+            /// Decimal:24
             /// <br/>
-            /// 十六进制：'\u0018'
+            /// Hex:'\u0018'
             /// </remarks>
             public const char Cancel = '\u0018';
 
             /// <summary>
-            /// 媒体结束。
+            /// End of Medium.
             /// </summary>
             /// <remarks>
-            /// 十进制：25
+            /// Decimal:25
             /// <br/>
-            /// 十六进制：'\u0019'
+            /// Hex:'\u0019'
             /// </remarks>
             public const char EndOfMedium = '\u0019';
 
             /// <summary>
-            /// 替换。
+            /// Substitute.
             /// </summary>
             /// <remarks>
-            /// 十进制：26
+            /// Decimal:26
             /// <br/>
-            /// 十六进制：'\u001a'
+            /// Hex:'\u001a'
             /// </remarks>
             public const char Substitute = '\u001a';
 
             /// <summary>
-            /// 转义。
+            /// Escape.
             /// </summary>
             /// <remarks>
-            /// 十进制：27
+            /// Decimal:27
             /// <br/>
-            /// 十六进制：'\u001b'
+            /// Hex:'\u001b'
             /// </remarks>
             public const char Escape = '\u001b';
 
             /// <summary>
-            /// 文件分隔。
+            /// File Separator.
             /// </summary>
             /// <remarks>
-            /// 十进制：28
+            /// Decimal:28
             /// <br/>
-            /// 十六进制：'\u001c'
+            /// Hex:'\u001c'
             /// </remarks>
             public const char FileSeparator = '\u001c';
 
             /// <summary>
-            /// 组分隔。
+            /// Group Separator.
             /// </summary>
             /// <remarks>
-            /// 十进制：29
+            /// Decimal:29
             /// <br/>
-            /// 十六进制：'\u001d'
+            /// Hex:'\u001d'
             /// </remarks>
             public const char GroupSeparator = '\u001d';
 
             /// <summary>
-            /// 记录分隔。
+            /// Record Separator.
             /// </summary>
             /// <remarks>
-            /// 十进制：30
+            /// Decimal:30
             /// <br/>
-            /// 十六进制：'\u001e'
+            /// Hex:'\u001e'
             /// </remarks>
             public const char RecordSeparator = '\u001e';
 
             /// <summary>
-            /// 单元分隔。
+            /// Unit Separator.
             /// </summary>
             /// <remarks>
-            /// 十进制：31
+            /// Decimal:31
             /// <br/>
-            /// 十六进制：'\u001f'
+            /// Hex:'\u001f'
             /// </remarks>
             public const char UnitSeparator = '\u001f';
 
             /// <summary>
-            /// 空格（“ ”）。
+            /// Space (" ").
             /// </summary>
             /// <remarks>
-            /// 十进制：32
+            /// Decimal:32
             /// <br/>
-            /// 十六进制：'\u0020'
+            /// Hex:'\u0020'
             /// </remarks>
             public const char Space = '\u0020';
 
             /// <summary>
-            /// 叹号（“!”）。
+            /// Exclamation Mark ("!").
             /// </summary>
             /// <remarks>
-            /// 十进制：33
+            /// Decimal:33
             /// <br/>
-            /// 十六进制：'\u0021'
+            /// Hex:'\u0021'
             /// </remarks>
             public const char ExclamationMark = '\u0021';
 
             /// <summary>
-            /// 引号（“&quot;”）。
+            /// Quotation Mark ("&quot;").
             /// </summary>
             /// <remarks>
-            /// 十进制：34
+            /// Decimal:34
             /// <br/>
-            /// 十六进制：'\u0022'
+            /// Hex:'\u0022'
             /// </remarks>
             public const char QuotationMark = '\u0022';
 
             /// <summary>
-            /// 数字标记（“#”）。
+            /// Number Sign ("#").
             /// </summary>
             /// <remarks>
-            /// 十进制：35
+            /// Decimal:35
             /// <br/>
-            /// 十六进制：'\u0023'
+            /// Hex:'\u0023'
             /// </remarks>
             public const char NumberSign = '\u0023';
 
             /// <summary>
-            /// 美元标记（“$”）。
+            /// Dollar Sign ("$").
             /// </summary>
             /// <remarks>
-            /// 十进制：36
+            /// Decimal:36
             /// <br/>
-            /// 十六进制：'\u0024'
+            /// Hex:'\u0024'
             /// </remarks>
             public const char DollarSign = '\u0024';
 
             /// <summary>
-            /// 百分号（“%”）。
+            /// Percent Sign ("%").
             /// </summary>
             /// <remarks>
-            /// 十进制：37
+            /// Decimal:37
             /// <br/>
-            /// 十六进制：'\u0025'
+            /// Hex:'\u0025'
             /// </remarks>
             public const char PercentSign = '\u0025';
 
             /// <summary>
-            /// 与号（“&amp;”）。
+            /// Ampersand ("&amp;").
             /// </summary>
             /// <remarks>
-            /// 十进制：38
+            /// Decimal:38
             /// <br/>
-            /// 十六进制：'\u0026'
+            /// Hex:'\u0026'
             /// </remarks>
             public const char Ampersand = '\u0026';
 
             /// <summary>
-            /// 撇号（“&apos;”）。
+            /// Apostrophe ("&apos;").
             /// </summary>
             /// <remarks>
-            /// 十进制：39
+            /// Decimal:39
             /// <br/>
-            /// 十六进制：'\u0027'
+            /// Hex:'\u0027'
             /// </remarks>
             public const char Apostrophe = '\u0027';
 
             /// <summary>
-            /// 左圆括号（“(”）。
+            /// Left Parenthesis ("(").
             /// </summary>
             /// <remarks>
-            /// 十进制：40
+            /// Decimal:40
             /// <br/>
-            /// 十六进制：'\u0028'
+            /// Hex:'\u0028'
             /// </remarks>
             public const char LeftParenthesis = '\u0028';
 
             /// <summary>
-            /// 右圆括号（“)”）。
+            /// Right Parenthesis (")").
             /// </summary>
             /// <remarks>
-            /// 十进制：41
+            /// Decimal:41
             /// <br/>
-            /// 十六进制：'\u0029'
+            /// Hex:'\u0029'
             /// </remarks>
             public const char RightParenthesis = '\u0029';
 
             /// <summary>
-            /// 星号（“*”）。
+            /// Asterisk ("*").
             /// </summary>
             /// <remarks>
-            /// 十进制：42
+            /// Decimal:42
             /// <br/>
-            /// 十六进制：'\u002a'
+            /// Hex:'\u002a'
             /// </remarks>
             public const char Asterisk = '\u002a';
 
             /// <summary>
-            /// 正号（“+”）。
+            /// Plus Sign ("+").
             /// </summary>
             /// <remarks>
-            /// 十进制：43
+            /// Decimal:43
             /// <br/>
-            /// 十六进制：'\u002b'
+            /// Hex:'\u002b'
             /// </remarks>
             public const char PlusSign = '\u002b';
 
             /// <summary>
-            /// 逗号（“,”）。
+            /// Comma (",").
             /// </summary>
             /// <remarks>
-            /// 十进制：44
+            /// Decimal:44
             /// <br/>
-            /// 十六进制：'\u002c'
+            /// Hex:'\u002c'
             /// </remarks>
             public const char Comma = '\u002c';
 
             /// <summary>
-            /// 连字符及负号（“-”）。
+            /// Hyphen-Minus ("-").
             /// </summary>
             /// <remarks>
-            /// 十进制：45
+            /// Decimal:45
             /// <br/>
-            /// 十六进制：'\u002d'
+            /// Hex:'\u002d'
             /// </remarks>
             public const char HyphenMinus = '\u002d';
 
             /// <summary>
-            /// 句号（“.”）。
+            /// Full Stop (".").
             /// </summary>
             /// <remarks>
-            /// 十进制：46
+            /// Decimal:46
             /// <br/>
-            /// 十六进制：'\u002e'
+            /// Hex:'\u002e'
             /// </remarks>
             public const char FullStop = '\u002e';
 
             /// <summary>
-            /// 斜线号（“/”）。
+            /// Solidus ("/").
             /// </summary>
             /// <remarks>
-            /// 十进制：47
+            /// Decimal:47
             /// <br/>
-            /// 十六进制：'\u002f'
+            /// Hex:'\u002f'
             /// </remarks>
             public const char Solidus = '\u002f';
 
             /// <summary>
-            /// 数字零（“0”）。
+            /// Digit Zero ("0").
             /// </summary>
             /// <remarks>
-            /// 十进制：48
+            /// Decimal:48
             /// <br/>
-            /// 十六进制：'\u0030'
+            /// Hex:'\u0030'
             /// </remarks>
             public const char DigitZero = '\u0030';
 
             /// <summary>
-            /// 数字一（“1”）。
+            /// Digit One ("1").
             /// </summary>
             /// <remarks>
-            /// 十进制：49
+            /// Decimal:49
             /// <br/>
-            /// 十六进制：'\u0031'
+            /// Hex:'\u0031'
             /// </remarks>
             public const char DigitOne = '\u0031';
 
             /// <summary>
-            /// 数字二（“2”）。
+            /// Digit Two ("2").
             /// </summary>
             /// <remarks>
-            /// 十进制：50
+            /// Decimal:50
             /// <br/>
-            /// 十六进制：'\u0032'
+            /// Hex:'\u0032'
             /// </remarks>
             public const char DigitTwo = '\u0032';
 
             /// <summary>
-            /// 数字三（“3”）。
+            /// Digit Three ("3").
             /// </summary>
             /// <remarks>
-            /// 十进制：51
+            /// Decimal:51
             /// <br/>
-            /// 十六进制：'\u0033'
+            /// Hex:'\u0033'
             /// </remarks>
             public const char DigitThree = '\u0033';
 
             /// <summary>
-            /// 数字四（“4”）。
+            /// Digit Four ("4").
             /// </summary>
             /// <remarks>
-            /// 十进制：52
+            /// Decimal:52
             /// <br/>
-            /// 十六进制：'\u0034'
+            /// Hex:'\u0034'
             /// </remarks>
             public const char DigitFour = '\u0034';
 
             /// <summary>
-            /// 数字五（“5”）。
+            /// Digit Five ("5").
             /// </summary>
             /// <remarks>
-            /// 十进制：53
+            /// Decimal:53
             /// <br/>
-            /// 十六进制：'\u0035'
+            /// Hex:'\u0035'
             /// </remarks>
             public const char DigitFive = '\u0035';
 
             /// <summary>
-            /// 数字六（“6”）。
+            /// Digit Six ("6").
             /// </summary>
             /// <remarks>
-            /// 十进制：54
+            /// Decimal:54
             /// <br/>
-            /// 十六进制：'\u0036'
+            /// Hex:'\u0036'
             /// </remarks>
             public const char DigitSix = '\u0036';
 
             /// <summary>
-            /// 数字七（“7”）。
+            /// Digit Seven ("7").
             /// </summary>
             /// <remarks>
-            /// 十进制：55
+            /// Decimal:55
             /// <br/>
-            /// 十六进制：'\u0037'
+            /// Hex:'\u0037'
             /// </remarks>
             public const char DigitSeven = '\u0037';
 
             /// <summary>
-            /// 数字八（“8”）。
+            /// Digit Eight ("8").
             /// </summary>
             /// <remarks>
-            /// 十进制：56
+            /// Decimal:56
             /// <br/>
-            /// 十六进制：'\u0038'
+            /// Hex:'\u0038'
             /// </remarks>
             public const char DigitEight = '\u0038';
 
             /// <summary>
-            /// 数字九（“9”）。
+            /// Digit Nine ("9").
             /// </summary>
             /// <remarks>
-            /// 十进制：57
+            /// Decimal:57
             /// <br/>
-            /// 十六进制：'\u0039'
+            /// Hex:'\u0039'
             /// </remarks>
             public const char DigitNine = '\u0039';
 
             /// <summary>
-            /// 冒号（“:”）。
+            /// Colon (":").
             /// </summary>
             /// <remarks>
-            /// 十进制：58
+            /// Decimal:58
             /// <br/>
-            /// 十六进制：'\u003a'
+            /// Hex:'\u003a'
             /// </remarks>
             public const char Colon = '\u003a';
 
             /// <summary>
-            /// 分号（“;”）。
+            /// Semicolon (";").
             /// </summary>
             /// <remarks>
-            /// 十进制：59
+            /// Decimal:59
             /// <br/>
-            /// 十六进制：'\u003b'
+            /// Hex:'\u003b'
             /// </remarks>
             public const char Semicolon = '\u003b';
 
             /// <summary>
-            /// 小于号（“&lt;”）。
+            /// Less-Than Sign ("&lt;").
             /// </summary>
             /// <remarks>
-            /// 十进制：60
+            /// Decimal:60
             /// <br/>
-            /// 十六进制：'\u003c'
+            /// Hex:'\u003c'
             /// </remarks>
             public const char LessThanSign = '\u003c';
 
             /// <summary>
-            /// 等号（“=”）。
+            /// Equals Sign ("=").
             /// </summary>
             /// <remarks>
-            /// 十进制：61
+            /// Decimal:61
             /// <br/>
-            /// 十六进制：'\u003d'
+            /// Hex:'\u003d'
             /// </remarks>
             public const char EqualsSign = '\u003d';
 
             /// <summary>
-            /// 大于号（“&gt;”）。
+            /// Greater-Than Sign ("&gt;").
             /// </summary>
             /// <remarks>
-            /// 十进制：62
+            /// Decimal:62
             /// <br/>
-            /// 十六进制：'\u003e'
+            /// Hex:'\u003e'
             /// </remarks>
             public const char GreaterThanSign = '\u003e';
 
             /// <summary>
-            /// 问号（“?”）。
+            /// Question Mark ("?").
             /// </summary>
             /// <remarks>
-            /// 十进制：63
+            /// Decimal:63
             /// <br/>
-            /// 十六进制：'\u003f'
+            /// Hex:'\u003f'
             /// </remarks>
             public const char QuestionMark = '\u003f';
 
             /// <summary>
-            /// 商业用 At 符号（“@”）。
+            /// Commercial At ("@").
             /// </summary>
             /// <remarks>
-            /// 十进制：64
+            /// Decimal:64
             /// <br/>
-            /// 十六进制：'\u0040'
+            /// Hex:'\u0040'
             /// </remarks>
             public const char CommercialAt = '\u0040';
 
             /// <summary>
-            /// 拉丁文大写字母 A（“A”）。
+            /// Latin Capital Letter A ("A").
             /// </summary>
             /// <remarks>
-            /// 十进制：65
+            /// Decimal:65
             /// <br/>
-            /// 十六进制：'\u0041'
+            /// Hex:'\u0041'
             /// </remarks>
             public const char LatinCapitalLetterA = '\u0041';
 
             /// <summary>
-            /// 拉丁文大写字母 B（“B”）。
+            /// Latin Capital Letter B ("B").
             /// </summary>
             /// <remarks>
-            /// 十进制：66
+            /// Decimal:66
             /// <br/>
-            /// 十六进制：'\u0042'
+            /// Hex:'\u0042'
             /// </remarks>
             public const char LatinCapitalLetterB = '\u0042';
 
             /// <summary>
-            /// 拉丁文大写字母 C（“C”）。
+            /// Latin Capital Letter C ("C").
             /// </summary>
             /// <remarks>
-            /// 十进制：67
+            /// Decimal:67
             /// <br/>
-            /// 十六进制：'\u0043'
+            /// Hex:'\u0043'
             /// </remarks>
             public const char LatinCapitalLetterC = '\u0043';
 
             /// <summary>
-            /// 拉丁文大写字母 D（“D”）。
+            /// Latin Capital Letter D ("D").
             /// </summary>
             /// <remarks>
-            /// 十进制：68
+            /// Decimal:68
             /// <br/>
-            /// 十六进制：'\u0044'
+            /// Hex:'\u0044'
             /// </remarks>
             public const char LatinCapitalLetterD = '\u0044';
 
             /// <summary>
-            /// 拉丁文大写字母 E（“E”）。
+            /// Latin Capital Letter E ("E").
             /// </summary>
             /// <remarks>
-            /// 十进制：69
+            /// Decimal:69
             /// <br/>
-            /// 十六进制：'\u0045'
+            /// Hex:'\u0045'
             /// </remarks>
             public const char LatinCapitalLetterE = '\u0045';
 
             /// <summary>
-            /// 拉丁文大写字母 F（“F”）。
+            /// Latin Capital Letter F ("F").
             /// </summary>
             /// <remarks>
-            /// 十进制：70
+            /// Decimal:70
             /// <br/>
-            /// 十六进制：'\u0046'
+            /// Hex:'\u0046'
             /// </remarks>
             public const char LatinCapitalLetterF = '\u0046';
 
             /// <summary>
-            /// 拉丁文大写字母 G（“G”）。
+            /// Latin Capital Letter G ("G").
             /// </summary>
             /// <remarks>
-            /// 十进制：71
+            /// Decimal:71
             /// <br/>
-            /// 十六进制：'\u0047'
+            /// Hex:'\u0047'
             /// </remarks>
             public const char LatinCapitalLetterG = '\u0047';
 
             /// <summary>
-            /// 拉丁文大写字母 H（“H”）。
+            /// Latin Capital Letter H ("H").
             /// </summary>
             /// <remarks>
-            /// 十进制：72
+            /// Decimal:72
             /// <br/>
-            /// 十六进制：'\u0048'
+            /// Hex:'\u0048'
             /// </remarks>
             public const char LatinCapitalLetterH = '\u0048';
 
             /// <summary>
-            /// 拉丁文大写字母 I（“I”）。
+            /// Latin Capital Letter I ("I").
             /// </summary>
             /// <remarks>
-            /// 十进制：73
+            /// Decimal:73
             /// <br/>
-            /// 十六进制：'\u0049'
+            /// Hex:'\u0049'
             /// </remarks>
             public const char LatinCapitalLetterI = '\u0049';
 
             /// <summary>
-            /// 拉丁文大写字母 J（“J”）。
+            /// Latin Capital Letter J ("J").
             /// </summary>
             /// <remarks>
-            /// 十进制：74
+            /// Decimal:74
             /// <br/>
-            /// 十六进制：'\u004a'
+            /// Hex:'\u004a'
             /// </remarks>
             public const char LatinCapitalLetterJ = '\u004a';
 
             /// <summary>
-            /// 拉丁文大写字母 K（“K”）。
+            /// Latin Capital Letter K ("K").
             /// </summary>
             /// <remarks>
-            /// 十进制：75
+            /// Decimal:75
             /// <br/>
-            /// 十六进制：'\u004b'
+            /// Hex:'\u004b'
             /// </remarks>
             public const char LatinCapitalLetterK = '\u004b';
 
             /// <summary>
-            /// 拉丁文大写字母 L（“L”）。
+            /// Latin Capital Letter L ("L").
             /// </summary>
             /// <remarks>
-            /// 十进制：76
+            /// Decimal:76
             /// <br/>
-            /// 十六进制：'\u004c'
+            /// Hex:'\u004c'
             /// </remarks>
             public const char LatinCapitalLetterL = '\u004c';
 
             /// <summary>
-            /// 拉丁文大写字母 M（“M”）。
+            /// Latin Capital Letter M ("M").
             /// </summary>
             /// <remarks>
-            /// 十进制：77
+            /// Decimal:77
             /// <br/>
-            /// 十六进制：'\u004d'
+            /// Hex:'\u004d'
             /// </remarks>
             public const char LatinCapitalLetterM = '\u004d';
 
             /// <summary>
-            /// 拉丁文大写字母 N（“N”）。
+            /// Latin Capital Letter N ("N").
             /// </summary>
             /// <remarks>
-            /// 十进制：78
+            /// Decimal:78
             /// <br/>
-            /// 十六进制：'\u004e'
+            /// Hex:'\u004e'
             /// </remarks>
             public const char LatinCapitalLetterN = '\u004e';
 
             /// <summary>
-            /// 拉丁文大写字母 O（“O”）。
+            /// Latin Capital Letter O ("O").
             /// </summary>
             /// <remarks>
-            /// 十进制：79
+            /// Decimal:79
             /// <br/>
-            /// 十六进制：'\u004f'
+            /// Hex:'\u004f'
             /// </remarks>
             public const char LatinCapitalLetterO = '\u004f';
 
             /// <summary>
-            /// 拉丁文大写字母 P（“P”）。
+            /// Latin Capital Letter P ("P").
             /// </summary>
             /// <remarks>
-            /// 十进制：80
+            /// Decimal:80
             /// <br/>
-            /// 十六进制：'\u0050'
+            /// Hex:'\u0050'
             /// </remarks>
             public const char LatinCapitalLetterP = '\u0050';
 
             /// <summary>
-            /// 拉丁文大写字母 Q（“Q”）。
+            /// Latin Capital Letter Q ("Q").
             /// </summary>
             /// <remarks>
-            /// 十进制：81
+            /// Decimal:81
             /// <br/>
-            /// 十六进制：'\u0051'
+            /// Hex:'\u0051'
             /// </remarks>
             public const char LatinCapitalLetterQ = '\u0051';
 
             /// <summary>
-            /// 拉丁文大写字母 R（“R”）。
+            /// Latin Capital Letter R ("R").
             /// </summary>
             /// <remarks>
-            /// 十进制：82
+            /// Decimal:82
             /// <br/>
-            /// 十六进制：'\u0052'
+            /// Hex:'\u0052'
             /// </remarks>
             public const char LatinCapitalLetterR = '\u0052';
 
             /// <summary>
-            /// 拉丁文大写字母 S（“S”）。
+            /// Latin Capital Letter S ("S").
             /// </summary>
             /// <remarks>
-            /// 十进制：83
+            /// Decimal:83
             /// <br/>
-            /// 十六进制：'\u0053'
+            /// Hex:'\u0053'
             /// </remarks>
             public const char LatinCapitalLetterS = '\u0053';
 
             /// <summary>
-            /// 拉丁文大写字母 T（“T”）。
+            /// Latin Capital Letter T ("T").
             /// </summary>
             /// <remarks>
-            /// 十进制：84
+            /// Decimal:84
             /// <br/>
-            /// 十六进制：'\u0054'
+            /// Hex:'\u0054'
             /// </remarks>
             public const char LatinCapitalLetterT = '\u0054';
 
             /// <summary>
-            /// 拉丁文大写字母 U（“U”）。
+            /// Latin Capital Letter U ("U").
             /// </summary>
             /// <remarks>
-            /// 十进制：85
+            /// Decimal:85
             /// <br/>
-            /// 十六进制：'\u0055'
+            /// Hex:'\u0055'
             /// </remarks>
             public const char LatinCapitalLetterU = '\u0055';
 
             /// <summary>
-            /// 拉丁文大写字母 V（“V”）。
+            /// Latin Capital Letter V ("V").
             /// </summary>
             /// <remarks>
-            /// 十进制：86
+            /// Decimal:86
             /// <br/>
-            /// 十六进制：'\u0056'
+            /// Hex:'\u0056'
             /// </remarks>
             public const char LatinCapitalLetterV = '\u0056';
 
             /// <summary>
-            /// 拉丁文大写字母 W（“W”）。
+            /// Latin Capital Letter W ("W").
             /// </summary>
             /// <remarks>
-            /// 十进制：87
+            /// Decimal:87
             /// <br/>
-            /// 十六进制：'\u0057'
+            /// Hex:'\u0057'
             /// </remarks>
             public const char LatinCapitalLetterW = '\u0057';
 
             /// <summary>
-            /// 拉丁文大写字母 X（“X”）。
+            /// Latin Capital Letter X ("X").
             /// </summary>
             /// <remarks>
-            /// 十进制：88
+            /// Decimal:88
             /// <br/>
-            /// 十六进制：'\u0058'
+            /// Hex:'\u0058'
             /// </remarks>
             public const char LatinCapitalLetterX = '\u0058';
 
             /// <summary>
-            /// 拉丁文大写字母 Y（“Y”）。
+            /// Latin Capital Letter Y ("Y").
             /// </summary>
             /// <remarks>
-            /// 十进制：89
+            /// Decimal:89
             /// <br/>
-            /// 十六进制：'\u0059'
+            /// Hex:'\u0059'
             /// </remarks>
             public const char LatinCapitalLetterY = '\u0059';
 
             /// <summary>
-            /// 拉丁文大写字母 Z（“Z”）。
+            /// Latin Capital Letter Z ("Z").
             /// </summary>
             /// <remarks>
-            /// 十进制：90
+            /// Decimal:90
             /// <br/>
-            /// 十六进制：'\u005a'
+            /// Hex:'\u005a'
             /// </remarks>
             public const char LatinCapitalLetterZ = '\u005a';
 
             /// <summary>
-            /// 左方括号（“[”）。
+            /// Left Square Bracket ("[").
             /// </summary>
             /// <remarks>
-            /// 十进制：91
+            /// Decimal:91
             /// <br/>
-            /// 十六进制：'\u005b'
+            /// Hex:'\u005b'
             /// </remarks>
             public const char LeftSquareBracket = '\u005b';
 
             /// <summary>
-            /// 反斜线号（“\”）。
+            /// Reverse Solidus ("\").
             /// </summary>
             /// <remarks>
-            /// 十进制：92
+            /// Decimal:92
             /// <br/>
-            /// 十六进制：'\u005c'
+            /// Hex:'\u005c'
             /// </remarks>
             public const char ReverseSolidus = '\u005c';
 
             /// <summary>
-            /// 右方括号（“]”）。
+            /// Right Square Bracket ("]").
             /// </summary>
             /// <remarks>
-            /// 十进制：93
+            /// Decimal:93
             /// <br/>
-            /// 十六进制：'\u005d'
+            /// Hex:'\u005d'
             /// </remarks>
             public const char RightSquareBracket = '\u005d';
 
             /// <summary>
-            /// 扬抑符（“^”）。
+            /// Circumflex Accent ("^").
             /// </summary>
             /// <remarks>
-            /// 十进制：94
+            /// Decimal:94
             /// <br/>
-            /// 十六进制：'\u005e'
+            /// Hex:'\u005e'
             /// </remarks>
             public const char CircumflexAccent = '\u005e';
 
             /// <summary>
-            /// 下横线（“_”）。
+            /// Low Line ("_").
             /// </summary>
             /// <remarks>
-            /// 十进制：95
+            /// Decimal:95
             /// <br/>
-            /// 十六进制：'\u005f'
+            /// Hex:'\u005f'
             /// </remarks>
             public const char LowLine = '\u005f';
 
             /// <summary>
-            /// 抑音符（“`”）。
+            /// Grave Accent ("`").
             /// </summary>
             /// <remarks>
-            /// 十进制：96
+            /// Decimal:96
             /// <br/>
-            /// 十六进制：'\u0060'
+            /// Hex:'\u0060'
             /// </remarks>
             public const char GraveAccent = '\u0060';
 
             /// <summary>
-            /// 拉丁文小写字母 A（“a”）。
+            /// Latin Small Letter A ("a").
             /// </summary>
             /// <remarks>
-            /// 十进制：97
+            /// Decimal:97
             /// <br/>
-            /// 十六进制：'\u0061'
+            /// Hex:'\u0061'
             /// </remarks>
             public const char LatinSmallLetterA = '\u0061';
 
             /// <summary>
-            /// 拉丁文小写字母 B（“b”）。
+            /// Latin Small Letter B ("b").
             /// </summary>
             /// <remarks>
-            /// 十进制：98
+            /// Decimal:98
             /// <br/>
-            /// 十六进制：'\u0062'
+            /// Hex:'\u0062'
             /// </remarks>
             public const char LatinSmallLetterB = '\u0062';
 
             /// <summary>
-            /// 拉丁文小写字母 C（“c”）。
+            /// Latin Small Letter C ("c").
             /// </summary>
             /// <remarks>
-            /// 十进制：99
+            /// Decimal:99
             /// <br/>
-            /// 十六进制：'\u0063'
+            /// Hex:'\u0063'
             /// </remarks>
             public const char LatinSmallLetterC = '\u0063';
 
             /// <summary>
-            /// 拉丁文小写字母 D（“d”）。
+            /// Latin Small Letter D ("d").
             /// </summary>
             /// <remarks>
-            /// 十进制：100
+            /// Decimal:100
             /// <br/>
-            /// 十六进制：'\u0064'
+            /// Hex:'\u0064'
             /// </remarks>
             public const char LatinSmallLetterD = '\u0064';
 
             /// <summary>
-            /// 拉丁文小写字母 E（“e”）。
+            /// Latin Small Letter E ("e").
             /// </summary>
             /// <remarks>
-            /// 十进制：101
+            /// Decimal:101
             /// <br/>
-            /// 十六进制：'\u0065'
+            /// Hex:'\u0065'
             /// </remarks>
             public const char LatinSmallLetterE = '\u0065';
 
             /// <summary>
-            /// 拉丁文小写字母 F（“f”）。
+            /// Latin Small Letter F ("f").
             /// </summary>
             /// <remarks>
-            /// 十进制：102
+            /// Decimal:102
             /// <br/>
-            /// 十六进制：'\u0066'
+            /// Hex:'\u0066'
             /// </remarks>
             public const char LatinSmallLetterF = '\u0066';
 
             /// <summary>
-            /// 拉丁文小写字母 G（“g”）。
+            /// Latin Small Letter G ("g").
             /// </summary>
             /// <remarks>
-            /// 十进制：103
+            /// Decimal:103
             /// <br/>
-            /// 十六进制：'\u0067'
+            /// Hex:'\u0067'
             /// </remarks>
             public const char LatinSmallLetterG = '\u0067';
 
             /// <summary>
-            /// 拉丁文小写字母 H（“h”）。
+            /// Latin Small Letter H ("h").
             /// </summary>
             /// <remarks>
-            /// 十进制：104
+            /// Decimal:104
             /// <br/>
-            /// 十六进制：'\u0068'
+            /// Hex:'\u0068'
             /// </remarks>
             public const char LatinSmallLetterH = '\u0068';
 
             /// <summary>
-            /// 拉丁文小写字母 I（“i”）。
+            /// Latin Small Letter I ("i").
             /// </summary>
             /// <remarks>
-            /// 十进制：105
+            /// Decimal:105
             /// <br/>
-            /// 十六进制：'\u0069'
+            /// Hex:'\u0069'
             /// </remarks>
             public const char LatinSmallLetterI = '\u0069';
 
             /// <summary>
-            /// 拉丁文小写字母 J（“j”）。
+            /// Latin Small Letter J ("j").
             /// </summary>
             /// <remarks>
-            /// 十进制：106
+            /// Decimal:106
             /// <br/>
-            /// 十六进制：'\u006a'
+            /// Hex:'\u006a'
             /// </remarks>
             public const char LatinSmallLetterJ = '\u006a';
 
             /// <summary>
-            /// 拉丁文小写字母 K（“k”）。
+            /// Latin Small Letter K ("k").
             /// </summary>
             /// <remarks>
-            /// 十进制：107
+            /// Decimal:107
             /// <br/>
-            /// 十六进制：'\u006b'
+            /// Hex:'\u006b'
             /// </remarks>
             public const char LatinSmallLetterK = '\u006b';
 
             /// <summary>
-            /// 拉丁文小写字母 L（“l”）。
+            /// Latin Small Letter L ("l").
             /// </summary>
             /// <remarks>
-            /// 十进制：108
+            /// Decimal:108
             /// <br/>
-            /// 十六进制：'\u006c'
+            /// Hex:'\u006c'
             /// </remarks>
             public const char LatinSmallLetterL = '\u006c';
 
             /// <summary>
-            /// 拉丁文小写字母 M（“m”）。
+            /// Latin Small Letter M ("m").
             /// </summary>
             /// <remarks>
-            /// 十进制：109
+            /// Decimal:109
             /// <br/>
-            /// 十六进制：'\u006d'
+            /// Hex:'\u006d'
             /// </remarks>
             public const char LatinSmallLetterM = '\u006d';
 
             /// <summary>
-            /// 拉丁文小写字母 N（“n”）。
+            /// Latin Small Letter N ("n").
             /// </summary>
             /// <remarks>
-            /// 十进制：110
+            /// Decimal:110
             /// <br/>
-            /// 十六进制：'\u006e'
+            /// Hex:'\u006e'
             /// </remarks>
             public const char LatinSmallLetterN = '\u006e';
 
             /// <summary>
-            /// 拉丁文小写字母 O（“o”）。
+            /// Latin Small Letter O ("o").
             /// </summary>
             /// <remarks>
-            /// 十进制：111
+            /// Decimal:111
             /// <br/>
-            /// 十六进制：'\u006f'
+            /// Hex:'\u006f'
             /// </remarks>
             public const char LatinSmallLetterO = '\u006f';
 
             /// <summary>
-            /// 拉丁文小写字母 O（“o”）。
+            /// Latin Small Letter O ("o").
             /// </summary>
             /// <remarks>
-            /// 十进制：112
+            /// Decimal:112
             /// <br/>
-            /// 十六进制：'\u0070'
+            /// Hex:'\u0070'
             /// </remarks>
             public const char LatinSmallLetterP = '\u0070';
 
             /// <summary>
-            /// 拉丁文小写字母 Q（“q”）。
+            /// Latin Small Letter Q ("q").
             /// </summary>
             /// <remarks>
-            /// 十进制：113
+            /// Decimal:113
             /// <br/>
-            /// 十六进制：'\u0071'
+            /// Hex:'\u0071'
             /// </remarks>
             public const char LatinSmallLetterQ = '\u0071';
 
             /// <summary>
-            /// 拉丁文小写字母 R（“r”）。
+            /// Latin Small Letter R ("r").
             /// </summary>
             /// <remarks>
-            /// 十进制：114
+            /// Decimal:114
             /// <br/>
-            /// 十六进制：'\u0072'
+            /// Hex:'\u0072'
             /// </remarks>
             public const char LatinSmallLetterR = '\u0072';
 
             /// <summary>
-            /// 拉丁文小写字母 S（“s”）。
+            /// Latin Small Letter S ("s").
             /// </summary>
             /// <remarks>
-            /// 十进制：115
+            /// Decimal:115
             /// <br/>
-            /// 十六进制：'\u0073'
+            /// Hex:'\u0073'
             /// </remarks>
             public const char LatinSmallLetterS = '\u0073';
 
             /// <summary>
-            /// 拉丁文小写字母 T（“t”）。
+            /// Latin Small Letter T ("t").
             /// </summary>
             /// <remarks>
-            /// 十进制：116
+            /// Decimal:116
             /// <br/>
-            /// 十六进制：'\u0074'
+            /// Hex:'\u0074'
             /// </remarks>
             public const char LatinSmallLetterT = '\u0074';
 
             /// <summary>
-            /// 拉丁文小写字母 U（“u”）。
+            /// Latin Small Letter U ("u").
             /// </summary>
             /// <remarks>
-            /// 十进制：117
+            /// Decimal:117
             /// <br/>
-            /// 十六进制：'\u0075'
+            /// Hex:'\u0075'
             /// </remarks>
             public const char LatinSmallLetterU = '\u0075';
 
             /// <summary>
-            /// 拉丁文小写字母 V（“v”）。
+            /// Latin Small Letter V ("v").
             /// </summary>
             /// <remarks>
-            /// 十进制：118
+            /// Decimal:118
             /// <br/>
-            /// 十六进制：'\u0076'
+            /// Hex:'\u0076'
             /// </remarks>
             public const char LatinSmallLetterV = '\u0076';
 
             /// <summary>
-            /// 拉丁文小写字母 W（“w”）。
+            /// Latin Small Letter W ("w").
             /// </summary>
             /// <remarks>
-            /// 十进制：119
+            /// Decimal:119
             /// <br/>
-            /// 十六进制：'\u0077'
+            /// Hex:'\u0077'
             /// </remarks>
             public const char LatinSmallLetterW = '\u0077';
 
             /// <summary>
-            /// 拉丁文小写字母 X（“x”）。
+            /// Latin Small Letter X ("x").
             /// </summary>
             /// <remarks>
-            /// 十进制：120
+            /// Decimal:120
             /// <br/>
-            /// 十六进制：'\u0078'
+            /// Hex:'\u0078'
             /// </remarks>
             public const char LatinSmallLetterX = '\u0078';
 
             /// <summary>
-            /// 拉丁文小写字母 Y（“y”）。
+            /// Latin Small Letter Y ("y").
             /// </summary>
             /// <remarks>
-            /// 十进制：121
+            /// Decimal:121
             /// <br/>
-            /// 十六进制：'\u0079'
+            /// Hex:'\u0079'
             /// </remarks>
             public const char LatinSmallLetterY = '\u0079';
 
             /// <summary>
-            /// 拉丁文小写字母 Z（“z”）。
+            /// Latin Small Letter Z ("z").
             /// </summary>
             /// <remarks>
-            /// 十进制：122
+            /// Decimal:122
             /// <br/>
-            /// 十六进制：'\u007a'
+            /// Hex:'\u007a'
             /// </remarks>
             public const char LatinSmallLetterZ = '\u007a';
 
             /// <summary>
-            /// 左花括号（“{”）。
+            /// Left Curly Bracket ("{").
             /// </summary>
             /// <remarks>
-            /// 十进制：123
+            /// Decimal:123
             /// <br/>
-            /// 十六进制：'\u007b'
+            /// Hex:'\u007b'
             /// </remarks>
             public const char LeftCurlyBracket = '\u007b';
 
             /// <summary>
-            /// 竖线（“|”）。
+            /// Vertical Line ("|").
             /// </summary>
             /// <remarks>
-            /// 十进制：124
+            /// Decimal:124
             /// <br/>
-            /// 十六进制：'\u007c'
+            /// Hex:'\u007c'
             /// </remarks>
             public const char VerticalLine = '\u007c';
 
             /// <summary>
-            /// 右花括号（“}”）。
+            /// Right Curly Bracket ("}").
             /// </summary>
             /// <remarks>
-            /// 十进制：125
+            /// Decimal:125
             /// <br/>
-            /// 十六进制：'\u007d'
+            /// Hex:'\u007d'
             /// </remarks>
             public const char RightCurlyBracket = '\u007d';
 
             /// <summary>
-            /// 鄂化符及波浪号（“~”）。
+            /// Tilde ("~").
             /// </summary>
             /// <remarks>
-            /// 十进制：126
+            /// Decimal:126
             /// <br/>
-            /// 十六进制：'\u007e'
+            /// Hex:'\u007e'
             /// </remarks>
             public const char Tilde = '\u007e';
 
             /// <summary>
-            /// 删除。
+            /// Delete.
             /// </summary>
             /// <remarks>
-            /// 十进制：127
+            /// Decimal:127
             /// <br/>
-            /// 十六进制：'\u007f'
+            /// Hex:'\u007f'
             /// </remarks>
             public const char Delete = '\u007f';
 

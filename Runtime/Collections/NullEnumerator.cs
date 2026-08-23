@@ -3,12 +3,12 @@
 namespace Aurora.Collections
 {
     /// <summary>
-    /// 使用空对象模式实现 <see cref="IEnumerator"/>。
+    /// Implements <see cref="IEnumerator"/> using the null-object pattern.
     /// </summary>
     public sealed class NullEnumerator : IEnumerator
     {
         /// <summary>
-        /// 获取单一实例。
+        /// Gets the singleton instance.
         /// </summary>
         public static NullEnumerator Instance { get; } = new();
 

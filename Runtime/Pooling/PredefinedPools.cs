@@ -5,29 +5,29 @@ using System.Text;
 namespace Aurora.Pooling
 {
     /// <summary>
-    /// 提供一组预定义的公共对象池。
+    /// Provides a set of predefined public object pools.
     /// </summary>
     public static class PredefinedPools
     {
         /// <summary>
-        /// 长度为 4096 的字节数组池。
+        /// A pool of byte arrays of length 4096.
         /// </summary>
         public static readonly IPool<byte[]> ByteArrayLength4096 =
             new Pool<byte[]>(new PooledByteArrayLength4096Policy());
 
         /// <summary>
-        /// 内存流池。
+        /// A pool of memory streams.
         /// </summary>
         public static readonly IPool<MemoryStream> MemoryStream =
             new Pool<MemoryStream>(new PooledMemoryStreamPolicy());
 
         /// <summary>
-        /// 秒表池。
+        /// A pool of stopwatches.
         /// </summary>
         public static readonly IPool<Stopwatch> Stopwatch = new Pool<Stopwatch>(new PooledStopwatchPolicy());
 
         /// <summary>
-        /// 可变字符串池。
+        /// A pool of mutable strings.
         /// </summary>
         public static readonly IPool<StringBuilder> StringBuilder =
             new Pool<StringBuilder>(new PooledStringBuilderPolicy());

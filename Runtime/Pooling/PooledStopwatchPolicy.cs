@@ -3,7 +3,7 @@
 namespace Aurora.Pooling
 {
     /// <summary>
-    /// 管理池中的秒表的策略。
+    /// A strategy for managing stopwatches in the pool.
     /// </summary>
     public class PooledStopwatchPolicy : IPooledObjectPolicy<Stopwatch>
     {

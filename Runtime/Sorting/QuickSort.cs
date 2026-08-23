@@ -5,16 +5,16 @@ using Aurora.Pooling;
 namespace Aurora.Sorting
 {
     /// <summary>
-    /// 快速排序算法。
+    /// A quick-sort algorithm.
     /// </summary>
     public static class QuickSort
     {
         /// <summary>
-        /// 对集合中的元素进行排序。
+        /// Sorts the elements in the collection.
         /// </summary>
-        /// <param name="collection">集合。</param>
-        /// <typeparam name="T">集合中元素的类型。</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 为 <see langword="null"/>。</exception>
+        /// <param name="collection">The collection.</param>
+        /// <typeparam name="T">The type of the elements in the collection.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
         public static void Sort<T>(IList<T> collection)
         {
             if (collection == null)
@@ -30,12 +30,12 @@ namespace Aurora.Sorting
         }
 
         /// <summary>
-        /// 使用指定的比较器，对集合中的元素进行排序。
+        /// Sorts the elements in the collection using the specified comparer.
         /// </summary>
-        /// <param name="collection">集合。</param>
-        /// <param name="comparer">比较元素时使用的比较器。如果为 <see langword="null"/>，则使用默认的比较器（<see cref="Comparer{T}.Default"/>）。</param>
-        /// <typeparam name="T">集合中元素的类型。</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 为 <see langword="null"/>。</exception>
+        /// <param name="collection">The collection.</param>
+        /// <param name="comparer">The comparer used to compare elements. If it is <see langword="null"/>, the default comparer (<see cref="Comparer{T}.Default"/>) is used.</param>
+        /// <typeparam name="T">The type of the elements in the collection.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
         public static void Sort<T>(IList<T> collection, IComparer<T> comparer)
         {
             if (collection == null)
@@ -51,15 +51,15 @@ namespace Aurora.Sorting
         }
 
         /// <summary>
-        /// 使用指定的比较器，对集合中的部分元素进行排序。
+        /// Sorts part of the elements in the collection using the specified comparer.
         /// </summary>
-        /// <param name="collection">集合。</param>
-        /// <param name="index">排序范围的起始索引。</param>
-        /// <param name="count">排序范围内的元素数。</param>
-        /// <typeparam name="T">集合中元素的类型。</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> 小于 0，或者 <paramref name="count"/> 小于 0。</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> 加上 <paramref name="count"/> 大于 <paramref name="collection"/> 中包含的元素数。</exception>
+        /// <param name="collection">The collection.</param>
+        /// <param name="index">The starting index of the sort range.</param>
+        /// <param name="count">The number of elements in the sort range.</param>
+        /// <typeparam name="T">The type of the elements in the collection.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
+        /// <exception cref="ArgumentException"><paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="collection"/>.</exception>
         public static void Sort<T>(IList<T> collection, int index, int count)
         {
             if (collection == null)
@@ -76,7 +76,9 @@ namespace Aurora.Sorting
             }
             if (index + count > collection.Count)
             {
-                throw new ArgumentException($"{nameof(index)} 加上 {nameof(count)} 大于 {nameof(collection)} 中包含的元素数");
+                throw new ArgumentException(
+                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(collection)}'s number of elements"
+                );
             }
             if (count < 2)
             {
@@ -86,16 +88,16 @@ namespace Aurora.Sorting
         }
 
         /// <summary>
-        /// 使用指定的比较器，对集合中的部分元素进行排序。
+        /// Sorts part of the elements in the collection using the specified comparer.
         /// </summary>
-        /// <param name="collection">集合。</param>
-        /// <param name="index">排序范围的起始索引。</param>
-        /// <param name="count">排序范围内的元素数。</param>
-        /// <param name="comparer">比较元素时使用的比较器。如果为 <see langword="null"/>，则使用默认的比较器（<see cref="Comparer{T}.Default"/>）。</param>
-        /// <typeparam name="T">集合中元素的类型。</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> 小于 0，或者 <paramref name="count"/> 小于 0。</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> 加上 <paramref name="count"/> 大于 <paramref name="collection"/> 中包含的元素数。</exception>
+        /// <param name="collection">The collection.</param>
+        /// <param name="index">The starting index of the sort range.</param>
+        /// <param name="count">The number of elements in the sort range.</param>
+        /// <param name="comparer">The comparer used to compare elements. If it is <see langword="null"/>, the default comparer (<see cref="Comparer{T}.Default"/>) is used.</param>
+        /// <typeparam name="T">The type of the elements in the collection.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
+        /// <exception cref="ArgumentException"><paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="collection"/>.</exception>
         public static void Sort<T>(IList<T> collection, int index, int count, IComparer<T> comparer)
         {
             if (collection == null)
@@ -112,7 +114,9 @@ namespace Aurora.Sorting
             }
             if (index + count > collection.Count)
             {
-                throw new ArgumentException($"{nameof(index)} 加上 {nameof(count)} 大于 {nameof(collection)} 中包含的元素数");
+                throw new ArgumentException(
+                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(collection)}'s number of elements"
+                );
             }
             if (count < 2)
             {
@@ -122,14 +126,14 @@ namespace Aurora.Sorting
         }
 
         /// <summary>
-        /// 使用指定的排序器。对键集合中的元素进行排序，并对应地修改值集合中的元素的顺序。
+        /// Uses the specified sorter. Sorts the elements in the key collection and correspondingly changes the order of the elements in the value collection.
         /// </summary>
-        /// <param name="keys">键集合。</param>
-        /// <param name="values">值集合。</param>
-        /// <typeparam name="TKey">键集合中元素的类型。</typeparam>
-        /// <typeparam name="TValue">值集合中元素的类型。</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="keys"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentException"><paramref name="values"/> 不为 <see langword="null"/>，并且 <paramref name="values"/> 中包含的元素数小于 <paramref name="keys"/> 中包含的元素数。</exception>
+        /// <param name="keys">The key collection.</param>
+        /// <param name="values">The value collection.</param>
+        /// <typeparam name="TKey">The type of the elements in the key collection.</typeparam>
+        /// <typeparam name="TValue">The type of the elements in the value collection.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="keys"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="values"/> is not <see langword="null"/>, and the number of elements in <paramref name="values"/> is less than the number of elements in <paramref name="keys"/>.</exception>
         public static void Sort<TKey, TValue>(IList<TKey> keys, IList<TValue> values)
         {
             if (keys == null)
@@ -139,7 +143,10 @@ namespace Aurora.Sorting
             var count = keys.Count;
             if (values != null && values.Count < count)
             {
-                throw new ArgumentException($"{nameof(values)} 中包含的元素数小于 {nameof(keys)} 中包含的元素数", nameof(values));
+                throw new ArgumentException(
+                    $"{nameof(values)}'s number of elements is less than {nameof(keys)}'s number of elements",
+                    nameof(values)
+                );
             }
             if (count < 2)
             {
@@ -156,15 +163,15 @@ namespace Aurora.Sorting
         }
 
         /// <summary>
-        /// 使用指定的排序器。对键集合中的元素进行排序，并对应地修改值集合中的元素的顺序。
+        /// Uses the specified sorter. Sorts the elements in the key collection and correspondingly changes the order of the elements in the value collection.
         /// </summary>
-        /// <param name="keys">键集合。</param>
-        /// <param name="values">值集合。</param>
-        /// <param name="comparer">比较元素时使用的比较器。如果为 <see langword="null"/>，则使用默认的比较器（<see cref="Comparer{T}.Default"/>）。</param>
-        /// <typeparam name="TKey">键集合中元素的类型。</typeparam>
-        /// <typeparam name="TValue">值集合中元素的类型。</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="keys"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentException"><paramref name="values"/> 不为 <see langword="null"/>，并且 <paramref name="values"/> 中包含的元素数小于 <paramref name="keys"/> 中包含的元素数。</exception>
+        /// <param name="keys">The key collection.</param>
+        /// <param name="values">The value collection.</param>
+        /// <param name="comparer">The comparer used to compare elements. If it is <see langword="null"/>, the default comparer (<see cref="Comparer{T}.Default"/>) is used.</param>
+        /// <typeparam name="TKey">The type of the elements in the key collection.</typeparam>
+        /// <typeparam name="TValue">The type of the elements in the value collection.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="keys"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="values"/> is not <see langword="null"/>, and the number of elements in <paramref name="values"/> is less than the number of elements in <paramref name="keys"/>.</exception>
         public static void Sort<TKey, TValue>(IList<TKey> keys, IList<TValue> values, IComparer<TKey> comparer)
         {
             if (keys == null)
@@ -174,7 +181,10 @@ namespace Aurora.Sorting
             var count = keys.Count;
             if (values != null && values.Count < count)
             {
-                throw new ArgumentException($"{nameof(values)} 中包含的元素数小于 {nameof(keys)} 中包含的元素数", nameof(values));
+                throw new ArgumentException(
+                    $"{nameof(values)}'s number of elements is less than {nameof(keys)}'s number of elements",
+                    nameof(values)
+                );
             }
             if (count < 2)
             {
@@ -191,17 +201,17 @@ namespace Aurora.Sorting
         }
 
         /// <summary>
-        /// 使用指定的排序器。对键集合中的部分元素进行排序，并对应地修改值集合中的元素的顺序。
+        /// Uses the specified sorter. Sorts part of the elements in the key collection and correspondingly changes the order of the elements in the value collection.
         /// </summary>
-        /// <param name="keys">键集合。</param>
-        /// <param name="values">值集合。</param>
-        /// <param name="index">排序范围的起始索引。</param>
-        /// <param name="count">排序范围内的元素数。</param>
-        /// <typeparam name="TKey">键集合中元素的类型。</typeparam>
-        /// <typeparam name="TValue">值集合中元素的类型。</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="keys"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> 小于 0，或者 <paramref name="count"/> 小于 0。</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> 加上 <paramref name="count"/> 大于 <paramref name="keys"/> 中包含的元素数，或者 <paramref name="values"/> 不为 <see langword="null"/> 并且 <paramref name="index"/> 加上 <paramref name="count"/> 大于 <paramref name="values"/> 中包含的元素数。</exception>
+        /// <param name="keys">The key collection.</param>
+        /// <param name="values">The value collection.</param>
+        /// <param name="index">The starting index of the sort range.</param>
+        /// <param name="count">The number of elements in the sort range.</param>
+        /// <typeparam name="TKey">The type of the elements in the key collection.</typeparam>
+        /// <typeparam name="TValue">The type of the elements in the value collection.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="keys"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
+        /// <exception cref="ArgumentException"><paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="keys"/>, or <paramref name="values"/> is not <see langword="null"/> and <paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="values"/>.</exception>
         public static void Sort<TKey, TValue>(IList<TKey> keys, IList<TValue> values, int index, int count)
         {
             if (keys == null)
@@ -218,11 +228,15 @@ namespace Aurora.Sorting
             }
             if (index + count > keys.Count)
             {
-                throw new ArgumentException($"{nameof(index)} 加上 {nameof(count)} 大于 {nameof(keys)} 中包含的元素数");
+                throw new ArgumentException(
+                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(keys)}'s number of elements"
+                );
             }
             if (values != null && index + count > values.Count)
             {
-                throw new ArgumentException($"{nameof(index)} 加上 {nameof(count)} 大于 {nameof(values)} 中包含的元素数");
+                throw new ArgumentException(
+                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(values)}'s number of elements"
+                );
             }
             if (count < 2)
             {
@@ -239,18 +253,18 @@ namespace Aurora.Sorting
         }
 
         /// <summary>
-        /// 使用指定的排序器。对键集合中的部分元素进行排序，并对应地修改值集合中的元素的顺序。
+        /// Uses the specified sorter. Sorts part of the elements in the key collection and correspondingly changes the order of the elements in the value collection.
         /// </summary>
-        /// <param name="keys">键集合。</param>
-        /// <param name="values">值集合。</param>
-        /// <param name="index">排序范围的起始索引。</param>
-        /// <param name="count">排序范围内的元素数。</param>
-        /// <param name="comparer">比较元素时使用的比较器。如果为 <see langword="null"/>，则使用默认的比较器（<see cref="Comparer{T}.Default"/>）。</param>
-        /// <typeparam name="TKey">键集合中元素的类型。</typeparam>
-        /// <typeparam name="TValue">值集合中元素的类型。</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="keys"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> 小于 0，或者 <paramref name="count"/> 小于 0。</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> 加上 <paramref name="count"/> 大于 <paramref name="keys"/> 中包含的元素数，或者 <paramref name="values"/> 不为 <see langword="null"/> 并且 <paramref name="index"/> 加上 <paramref name="count"/> 大于 <paramref name="values"/> 中包含的元素数。</exception>
+        /// <param name="keys">The key collection.</param>
+        /// <param name="values">The value collection.</param>
+        /// <param name="index">The starting index of the sort range.</param>
+        /// <param name="count">The number of elements in the sort range.</param>
+        /// <param name="comparer">The comparer used to compare elements. If it is <see langword="null"/>, the default comparer (<see cref="Comparer{T}.Default"/>) is used.</param>
+        /// <typeparam name="TKey">The type of the elements in the key collection.</typeparam>
+        /// <typeparam name="TValue">The type of the elements in the value collection.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="keys"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
+        /// <exception cref="ArgumentException"><paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="keys"/>, or <paramref name="values"/> is not <see langword="null"/> and <paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="values"/>.</exception>
         public static void Sort<TKey, TValue>(
             IList<TKey>     keys,
             IList<TValue>   values,
@@ -272,11 +286,15 @@ namespace Aurora.Sorting
             }
             if (index + count > keys.Count)
             {
-                throw new ArgumentException($"{nameof(index)} 加上 {nameof(count)} 大于 {nameof(keys)} 中包含的元素数");
+                throw new ArgumentException(
+                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(keys)}'s number of elements"
+                );
             }
             if (values != null && index + count > values.Count)
             {
-                throw new ArgumentException($"{nameof(index)} 加上 {nameof(count)} 大于 {nameof(values)} 中包含的元素数");
+                throw new ArgumentException(
+                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(values)}'s number of elements"
+                );
             }
             if (count < 2)
             {

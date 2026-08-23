@@ -3,7 +3,7 @@
 namespace Aurora
 {
     /// <summary>
-    /// 明确表示结果为空。
+    /// Explicitly represents an empty result.
     /// </summary>
     public readonly struct VoidResult : IEquatable<VoidResult>
     {

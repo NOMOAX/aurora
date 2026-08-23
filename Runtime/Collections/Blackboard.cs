@@ -5,7 +5,7 @@ using System.Diagnostics;
 namespace Aurora.Collections
 {
     /// <summary>
-    /// 黑板。
+    /// A blackboard.
     /// </summary>
     [DebuggerTypeProxy(typeof(BlackboardDebugView))]
     public class Blackboard
@@ -15,11 +15,11 @@ namespace Aurora.Collections
         internal IDictionary<string, object> Dictionary => _dictionary;
 
         /// <summary>
-        /// 设置与指定的键关联的值。
+        /// Sets the value associated with the specified key.
         /// </summary>
-        /// <param name="key">键。</param>
-        /// <param name="value">值。</param>
-        /// <exception cref="ArgumentNullException"><paramref name="key"/> 为 <see langword="null"/>。</exception>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
         public void SetValue(string key, object value)
         {
             if (key == null)
@@ -30,14 +30,14 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 获取与指定的键关联的值。
+        /// Gets the value associated with the specified key.
         /// </summary>
-        /// <param name="key">键。</param>
-        /// <typeparam name="TValue">值的类型。</typeparam>
-        /// <returns>与指定的键关联的值。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="key"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="KeyNotFoundException">未找到指定的键。</exception>
-        /// <exception cref="InvalidCastException">与指定的键关联的值不能转换为 <typeparamref name="TValue"/> 类型。</exception>
+        /// <param name="key">The key.</param>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <returns>The value associated with the specified key.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
+        /// <exception cref="KeyNotFoundException">The specified key was not found.</exception>
+        /// <exception cref="InvalidCastException">The value associated with the specified key cannot be converted to type <typeparamref name="TValue"/>.</exception>
         public TValue GetValue<TValue>(string key)
         {
             if (key == null)
@@ -49,14 +49,14 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 获取与指定的键关联的值。
+        /// Gets the value associated with the specified key.
         /// </summary>
-        /// <param name="key">键。</param>
-        /// <param name="value">当此方法返回时，如果找到指定的键，则为与该键关联的值；否则为 <typeparamref name="TValue"/> 类型的默认值。</param>
-        /// <typeparam name="TValue">值的类型。</typeparam>
-        /// <returns>如果找到指定的键，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="key"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="InvalidCastException">与指定的键关联的值不能转换为 <typeparamref name="TValue"/> 类型。</exception>
+        /// <param name="key">The key.</param>
+        /// <param name="value">When this method returns, if the specified key was found, the value associated with that key; otherwise, the default value of type <typeparamref name="TValue"/>.</param>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <returns><see langword="true"/> if the specified key was found; otherwise, <see langword="false"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
+        /// <exception cref="InvalidCastException">The value associated with the specified key cannot be converted to type <typeparamref name="TValue"/>.</exception>
         public bool TryGetValue<TValue>(string key, out TValue value)
         {
             if (key == null)
@@ -73,11 +73,11 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 将具有指定的键的键值对从 <see cref="Blackboard"/> 移除。
+        /// Removes the key-value pair with the specified key from the <see cref="Blackboard"/>.
         /// </summary>
-        /// <param name="key">键。</param>
-        /// <returns>如果找到指定的键并移除键值对，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="key"/> 为 <see langword="null"/>。</exception>
+        /// <param name="key">The key.</param>
+        /// <returns><see langword="true"/> if the specified key was found and the key-value pair was removed; otherwise, <see langword="false"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
         public bool Remove(string key)
         {
             if (key == null)
@@ -88,7 +88,7 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 将所有键值对从 <see cref="Blackboard"/> 中移除。
+        /// Removes all key-value pairs from the <see cref="Blackboard"/>.
         /// </summary>
         public void Clear()
         {

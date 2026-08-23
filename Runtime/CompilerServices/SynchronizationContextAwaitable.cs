@@ -4,7 +4,7 @@ using System.Threading;
 namespace Aurora.CompilerServices
 {
     /// <summary>
-    /// 提供用于切换到目标 <see cref="SynchronizationContext"/> 的可等待上下文。
+    /// Provides an awaitable context for switching to the target <see cref="SynchronizationContext"/>.
     /// </summary>
     public readonly struct SynchronizationContextAwaitable : IAwaitable
     {
@@ -13,9 +13,9 @@ namespace Aurora.CompilerServices
         private readonly CancellationToken _cancellationToken;
 
         /// <summary>
-        /// 初始化 <see cref="SynchronizationContextAwaitable"/> 结构的新实例。
+        /// Initializes a new instance of the <see cref="SynchronizationContextAwaitable"/> struct.
         /// </summary>
-        /// <param name="synchronizationContext">同步上下文。</param>
+        /// <param name="synchronizationContext">The synchronization context.</param>
         public SynchronizationContextAwaitable(SynchronizationContext synchronizationContext)
         {
             _synchronizationContext = synchronizationContext;
@@ -23,10 +23,10 @@ namespace Aurora.CompilerServices
         }
 
         /// <summary>
-        /// 初始化 <see cref="SynchronizationContextAwaitable"/> 结构的新实例。
+        /// Initializes a new instance of the <see cref="SynchronizationContextAwaitable"/> struct.
         /// </summary>
-        /// <param name="synchronizationContext">同步上下文。</param>
-        /// <param name="cancellationToken">取消令牌。</param>
+        /// <param name="synchronizationContext">The synchronization context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
         public SynchronizationContextAwaitable(
             SynchronizationContext synchronizationContext,
             CancellationToken      cancellationToken)

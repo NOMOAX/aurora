@@ -4,16 +4,16 @@ using System.Text;
 namespace Aurora.Diagnostics
 {
     /// <summary>
-    /// 提供一组与记录有关的工具方法。
+    /// Provides a set of utility methods related to logging.
     /// </summary>
     public static class LogUtility
     {
         /// <summary>
-        /// 向可变字符串末尾添加当前线程 Id 的信息。
+        /// Appends information about the current thread Id to the end of the mutable string.
         /// </summary>
-        /// <param name="stringBuilder">可变字符串。</param>
-        /// <exception cref="ArgumentNullException"><paramref name="stringBuilder"/> 为 <see langword="null"/>。</exception>
-        /// <remarks>此方法仅被设计用于 <see cref="ILogger"/> 的实现类在其内部调用。</remarks>
+        /// <param name="stringBuilder">The mutable string.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="stringBuilder"/> is <see langword="null"/>.</exception>
+        /// <remarks>This method is designed to be called only from within implementations of <see cref="ILogger"/>.</remarks>
         public static void AppendCurrentThreadIdString(StringBuilder stringBuilder)
         {
             if (stringBuilder == null)
@@ -31,11 +31,11 @@ namespace Aurora.Diagnostics
         }
 
         /// <summary>
-        /// 向可变字符串末尾添加当前计算机的当前日期和时间的信息。
+        /// Appends information about the current date and time of the current machine to the end of the mutable string.
         /// </summary>
-        /// <param name="stringBuilder">可变字符串。</param>
-        /// <exception cref="ArgumentNullException"><paramref name="stringBuilder"/> 为 <see langword="null"/>。</exception>
-        /// <remarks>此方法仅被设计用于 <see cref="ILogger"/> 的实现类在其内部调用。</remarks>
+        /// <param name="stringBuilder">The mutable string.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="stringBuilder"/> is <see langword="null"/>.</exception>
+        /// <remarks>This method is designed to be called only from within implementations of <see cref="ILogger"/>.</remarks>
         public static void AppendDateTimeOffsetString(StringBuilder stringBuilder)
         {
             if (stringBuilder == null)

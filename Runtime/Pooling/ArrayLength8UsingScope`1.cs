@@ -1,20 +1,20 @@
-using System;
+﻿using System;
 using System.Threading;
 
 namespace Aurora.Pooling
 {
     /// <summary>
-    /// 使用长度为 8 的数组范围。
+    /// A using scope for an array of length 8.
     /// </summary>
-    /// <typeparam name="T">数组的元素的类型。</typeparam>
+    /// <typeparam name="T">The type of the array's elements.</typeparam>
     public class ArrayLength8UsingScope<T> : IDisposable
     {
         private T[] _array;
 
         /// <summary>
-        /// 初始化 <see cref="ArrayLength8UsingScope{T}"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="ArrayLength8UsingScope{T}"/> class.
         /// </summary>
-        /// <param name="array">此输出参数将被赋值为一个各元素都为默认值的长度为 8 的数组。</param>
+        /// <param name="array">This output parameter is assigned an array of length 8 whose elements are all default values.</param>
         public ArrayLength8UsingScope(out T[] array)
         {
             _array = PredefinedPools<T>.ArrayLength8.Get();

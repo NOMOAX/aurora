@@ -3,17 +3,17 @@
 namespace Aurora.Pooling
 {
     /// <summary>
-    /// 管理池中的可变字符串的策略。
+    /// A strategy for managing mutable strings in the pool.
     /// </summary>
     public class PooledStringBuilderPolicy : IPooledObjectPolicy<StringBuilder>
     {
         /// <summary>
-        /// 获取或设置池化的可变字符串的初始容量。
+        /// Gets or sets the initial capacity of pooled mutable strings.
         /// </summary>
         public int InitialCapacity { get; set; } = 256;
 
         /// <summary>
-        /// 获取或设置允许被放入池的可变字符串的最大容量。
+        /// Gets or sets the maximum capacity of mutable strings allowed into the pool.
         /// </summary>
         public int MaximumRetainedCapacity { get; set; } = 4096;
 

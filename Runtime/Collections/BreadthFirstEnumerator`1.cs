@@ -5,9 +5,9 @@ using Aurora.Pooling;
 namespace Aurora.Collections
 {
     /// <summary>
-    /// 广度优先地，按照“从上层到下层“的规则，枚举树的结点。
+    /// Breadth-first, enumerates the tree's nodes following the rule "from upper levels to lower levels".
     /// </summary>
-    /// <typeparam name="T">树的结点的类型。</typeparam>
+    /// <typeparam name="T">The type of the tree's nodes.</typeparam>
     public abstract class BreadthFirstEnumerator<T> : TreeEnumerator<T> where T : class
     {
         private Queue<T> _queue;
@@ -15,7 +15,7 @@ namespace Aurora.Collections
         private T _current;
 
         /// <summary>
-        /// 初始化 <see cref="BreadthFirstEnumerator{T}"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="BreadthFirstEnumerator{T}"/> class.
         /// </summary>
         /// <inheritdoc />
         protected BreadthFirstEnumerator(
@@ -75,10 +75,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 将当前结点经 <see cref="TreeEnumerator{T}.FuncGetChildren"/> 计算后得到的子结点集合添加到内部队列的结尾处。
+        /// Adds the children of the current node, computed by <see cref="TreeEnumerator{T}.FuncGetChildren"/>, to the end of the internal queue.
         /// </summary>
-        /// <param name="queue">队列。</param>
-        /// <param name="children">当前结点的子结点集合。</param>
+        /// <param name="queue">The queue.</param>
+        /// <param name="children">The children of the current node.</param>
         protected abstract void EnqueueChildren(Queue<T> queue, IEnumerable<T> children);
 
         /// <inheritdoc />

@@ -1,36 +1,36 @@
 ﻿namespace Aurora.Pooling
 {
     /// <summary>
-    /// 表示用于管理池化对象的策略。
+    /// Represents a policy for managing pooled objects.
     /// </summary>
-    /// <typeparam name="T">池化对象的类型。</typeparam>
+    /// <typeparam name="T">The type of pooled objects.</typeparam>
     public interface IPooledObjectPolicy<T> where T : class
     {
         /// <summary>
-        /// 创建一个 <typeparamref name="T"/>。
+        /// Creates a <typeparamref name="T"/>.
         /// </summary>
-        /// <returns>创建出来的 <typeparamref name="T"/>。</returns>
+        /// <returns>The created <typeparamref name="T"/>.</returns>
         T Create();
 
         /// <summary>
-        /// 在取出对象池中的可用的成员或创建新对象时，要对该成员或新对象执行的操作。
+        /// The operation to perform on an available pool member or a newly created object when it is retrieved from the pool or created.
         /// </summary>
-        /// <param name="obj">从对象池中取出的可用的成员，或创建的新对象。</param>
+        /// <param name="obj">An available member retrieved from the pool, or a newly created object.</param>
         void Get(T obj);
 
         /// <summary>
-        /// 判断对象是否可以放入池。
+        /// Determines whether an object can be returned to the pool.
         /// <br/>
-        /// 如果对象可以放入池，此方法还应初始化对象。
+        /// If the object can be returned to the pool, this method should also initialize it.
         /// </summary>
-        /// <param name="obj">要放入池的对象。</param>
-        /// <returns>如果应该把对象放入池，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
+        /// <param name="obj">The object to return to the pool.</param>
+        /// <returns><see langword="true"/> if the object should be returned to the pool; otherwise, <see langword="false"/>.</returns>
         bool Return(T obj);
 
         /// <summary>
-        /// 当池释放时，释放池中缓存的所有对象；或者当对象被拒绝放入池时，释放该对象。
+        /// When the pool is disposed, disposes all cached objects in the pool; or when an object is rejected for return, disposes that object.
         /// </summary>
-        /// <param name="obj">要释放的对象。</param>
+        /// <param name="obj">The object to dispose.</param>
         void Dispose(T obj);
     }
 }

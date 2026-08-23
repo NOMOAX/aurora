@@ -6,9 +6,9 @@ using System.Threading;
 namespace Aurora.Collections
 {
     /// <summary>
-    /// 有限状态机。
+    /// A finite state machine.
     /// </summary>
-    /// <typeparam name="T">状态的标识符的类型。</typeparam>
+    /// <typeparam name="T">The type of the state's identifier.</typeparam>
     /// <example>
     /// <code>
     /// public enum MyStateId
@@ -23,11 +23,11 @@ namespace Aurora.Collections
     ///     {
     ///         if (from != null)
     ///         {
-    ///             Console.WriteLine($"[{nameof(MyStateOne)}.{nameof(OnEnter)}] 从 {from.Id} 状态切换到 {Id} 状态");
+    ///             Console.WriteLine($"[{nameof(MyStateOne)}.{nameof(OnEnter)}] transitioned from state {from.Id} to state {Id}");
     ///         }
     ///         else
     ///         {
-    ///             Console.WriteLine($"[{nameof(MyStateOne)}.{nameof(OnEnter)}] 进入 {Id} 状态");
+    ///             Console.WriteLine($"[{nameof(MyStateOne)}.{nameof(OnEnter)}] entered state {Id}");
     ///         }
     ///         stateMachine.ScheduleTransitionTo(MyStateId.Two);
     ///     }
@@ -35,11 +35,11 @@ namespace Aurora.Collections
     ///     {
     ///         if (to != null)
     ///         {
-    ///             Console.WriteLine($"[{nameof(MyStateOne)}.{nameof(OnExit)}] 从 {Id} 状态切换到 {to.Id} 状态");
+    ///             Console.WriteLine($"[{nameof(MyStateOne)}.{nameof(OnExit)}] transitioned from state {Id} to state {to.Id}");
     ///         }
     ///         else
     ///         {
-    ///             Console.WriteLine($"[{nameof(MyStateOne)}.{nameof(OnExit)}] 退出 {Id} 状态");
+    ///             Console.WriteLine($"[{nameof(MyStateOne)}.{nameof(OnExit)}] exited state {Id}");
     ///         }
     ///     }
     /// }
@@ -50,11 +50,11 @@ namespace Aurora.Collections
     ///     {
     ///         if (from != null)
     ///         {
-    ///             Console.WriteLine($"[{nameof(MyStateTwo)}.{nameof(OnEnter)}] 从 {from.Id} 状态切换到 {Id} 状态");
+    ///             Console.WriteLine($"[{nameof(MyStateTwo)}.{nameof(OnEnter)}] transitioned from state {from.Id} to state {Id}");
     ///         }
     ///         else
     ///         {
-    ///             Console.WriteLine($"[{nameof(MyStateTwo)}.{nameof(OnEnter)}] 进入 {Id} 状态");
+    ///             Console.WriteLine($"[{nameof(MyStateTwo)}.{nameof(OnEnter)}] entered state {Id}");
     ///         }
     ///         stateMachine.ScheduleTransitionToNull();
     ///     }
@@ -62,11 +62,11 @@ namespace Aurora.Collections
     ///     {
     ///         if (to != null)
     ///         {
-    ///             Console.WriteLine($"[{nameof(MyStateTwo)}.{nameof(OnExit)}] 从 {Id} 状态切换到 {to.Id} 状态");
+    ///             Console.WriteLine($"[{nameof(MyStateTwo)}.{nameof(OnExit)}] transitioned from state {Id} to state {to.Id}");
     ///         }
     ///         else
     ///         {
-    ///             Console.WriteLine($"[{nameof(MyStateTwo)}.{nameof(OnExit)}] 退出 {Id} 状态");
+    ///             Console.WriteLine($"[{nameof(MyStateTwo)}.{nameof(OnExit)}] exited state {Id}");
     ///         }
     ///     }
     /// }
@@ -79,10 +79,10 @@ namespace Aurora.Collections
     /// {
     /// }
     /// // output:
-    /// // [MyStateOne.OnEnter] 进入 One 状态
-    /// // [MyStateOne.OnExit] 从 One 状态切换到 Two 状态
-    /// // [MyStateTwo.OnEnter] 从 One 状态切换到 Two 状态
-    /// // [MyStateTwo.OnExit] 退出 Two 状态
+    /// // [MyStateOne.OnEnter] entered One state
+    /// // [MyStateOne.OnExit] transitioned from One state to Two state
+    /// // [MyStateTwo.OnEnter] transitioned from One state to Two state
+    /// // [MyStateTwo.OnExit] exited Two state
     /// </code>
     /// </example>
     public class StateMachine<T>
@@ -102,7 +102,7 @@ namespace Aurora.Collections
         private Blackboard _blackboard;
 
         /// <summary>
-        /// 初始化 <see cref="StateMachine{T}"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="StateMachine{T}"/> class.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public StateMachine()
@@ -111,9 +111,9 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 使用指定的相等性比较器，初始化 <see cref="StateMachine{T}"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="StateMachine{T}"/> class with the specified equality comparer.
         /// </summary>
-        /// <param name="comparer">用于比较状态的标识符是否相等的 <see cref="IEqualityComparer{T}"/>。</param>
+        /// <param name="comparer">An <see cref="IEqualityComparer{T}"/> used to compare whether state identifiers are equal.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public StateMachine(IEqualityComparer<T> comparer)
         {
@@ -121,7 +121,7 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 获取当前状态。
+        /// Gets the current state.
         /// </summary>
         public IState<T> CurrentState
         {
@@ -130,7 +130,7 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 获取黑板。
+        /// Gets the blackboard.
         /// </summary>
         public Blackboard Blackboard
         {
@@ -146,7 +146,7 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 获取用于比较状态的标识符是否相等的 <see cref="IEqualityComparer{T}"/>。
+        /// Gets the <see cref="IEqualityComparer{T}"/> used to compare whether state identifiers are equal.
         /// </summary>
         public IEqualityComparer<T> Comparer
         {
@@ -155,11 +155,11 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 将指定的状态添加到 <see cref="StateMachine{T}"/> 中。
+        /// Adds the specified state to the <see cref="StateMachine{T}"/>.
         /// </summary>
-        /// <param name="state">状态。</param>
-        /// <exception cref="ArgumentNullException"><paramref name="state"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentException"><paramref name="state"/> 的标识符为 <see langword="null"/>，或者有限状态机已含有与 <paramref name="state"/> 具有相同标识符的状态，或者在子类的实现中拒绝添加 <paramref name="state"/> 到有限状态机。</exception>
+        /// <param name="state">The state.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="state"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="state"/>'s identifier is <see langword="null"/>, or the finite state machine already contains a state with the same identifier as <paramref name="state"/>, or a subclass implementation rejects adding <paramref name="state"/> to the finite state machine.</exception>
         public void AddState(IState<T> state)
         {
             if (state == null)
@@ -169,33 +169,33 @@ namespace Aurora.Collections
             var stateId = state.Id;
             if (stateId == null)
             {
-                throw new ArgumentException("状态标识符不能为空", nameof(state));
+                throw new ArgumentException("The state identifier cannot be null", nameof(state));
             }
             ThrowIfEnteringOrExiting();
             if (_states.ContainsKey(stateId))
             {
-                throw new ArgumentException($"已经存在标识符为 {stateId} 的状态");
+                throw new ArgumentException($"A state with identifier '{stateId}' already exists");
             }
             ThrowIfRejectState(state);
             _states.Add(stateId, state);
         }
 
         /// <summary>
-        /// 即将将指定的状态添加到 <see cref="StateMachine{T}"/>；若拒绝此行为，子类可重写此方法并在实现中抛出 <see cref="ArgumentException"/> 异常。
+        /// About to add the specified state to the <see cref="StateMachine{T}"/>; to reject this, a subclass may override this method and throw <see cref="ArgumentException"/> in its implementation.
         /// </summary>
-        /// <param name="state">状态。</param>
-        /// <exception cref="ArgumentException">在子类的实现中，拒绝添加 <paramref name="state"/> 到有限状态机。</exception>
+        /// <param name="state">The state.</param>
+        /// <exception cref="ArgumentException">In a subclass implementation, <paramref name="state"/> is rejected from being added to the finite state machine.</exception>
         protected virtual void ThrowIfRejectState(IState<T> state)
         {
         }
 
         /// <summary>
-        /// 将具有指定标识符的状态从 <see cref="StateMachine{T}"/> 中移除。
+        /// Removes the state with the specified identifier from the <see cref="StateMachine{T}"/>.
         /// </summary>
-        /// <param name="stateId">状态标识符。</param>
-        /// <returns>如果成功找到并移除具有指定标识符的状态，则为 <see langword="true"/> ；否则为 <see langword="false"/>。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="stateId"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="InvalidOperationException">有限状态机正在进入或退出状态。</exception>
+        /// <param name="stateId">The state identifier.</param>
+        /// <returns><see langword="true"/> if the state with the specified identifier was found and removed; otherwise, <see langword="false"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="stateId"/> is <see langword="null"/>.</exception>
+        /// <exception cref="InvalidOperationException">The finite state machine is entering or exiting a state.</exception>
         public bool RemoveState(T stateId)
         {
             if (stateId == null)
@@ -219,17 +219,17 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 让 <see cref="StateMachine{T}"/> 切换到具有指定标识符的状态。
+        /// Makes the <see cref="StateMachine{T}"/> transition to the state with the specified identifier.
         /// </summary>
-        /// <param name="stateId">状态标识符。</param>
-        /// <exception cref="ArgumentNullException"><paramref name="stateId"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="InvalidOperationException">有限状态机正在进入或退出状态。</exception>
-        /// <exception cref="ArgumentException">有限状态机不含有标识符为 <paramref name="stateId"/> 的状态。</exception>
+        /// <param name="stateId">The state identifier.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="stateId"/> is <see langword="null"/>.</exception>
+        /// <exception cref="InvalidOperationException">The finite state machine is entering or exiting a state.</exception>
+        /// <exception cref="ArgumentException">The finite state machine has no state with the identifier <paramref name="stateId"/>.</exception>
         public void TransitionTo(T stateId)
         {
             if (stateId == null)
             {
-                throw new ArgumentException("状态标识符不能为空", nameof(stateId));
+                throw new ArgumentException("The state identifier cannot be null", nameof(stateId));
             }
             ThrowIfEnteringOrExiting();
             InternalScheduleTransitionTo(stateId);
@@ -237,9 +237,9 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 让 <see cref="StateMachine{T}"/> 退出当前状态。
+        /// Makes the <see cref="StateMachine{T}"/> exit the current state.
         /// </summary>
-        /// <exception cref="InvalidOperationException">有限状态机正在进入或退出状态。</exception>
+        /// <exception cref="InvalidOperationException">The finite state machine is entering or exiting a state.</exception>
         public void TransitionToNull()
         {
             ThrowIfEnteringOrExiting();
@@ -248,26 +248,26 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 安排 <see cref="StateMachine{T}"/> 在下一次执行 <see cref="Update"/> 时切换到具有指定标识符的状态。
+        /// Schedules the <see cref="StateMachine{T}"/> to transition to the state with the specified identifier on the next execution of <see cref="Update"/>.
         /// </summary>
-        /// <param name="stateId">状态标识符。</param>
-        /// <exception cref="ArgumentNullException"><paramref name="stateId"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="InvalidOperationException">有限状态机正在退出状态。</exception>
-        /// <exception cref="ArgumentException">有限状态机不含有标识符为 <paramref name="stateId"/> 的状态。</exception>
+        /// <param name="stateId">The state identifier.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="stateId"/> is <see langword="null"/>.</exception>
+        /// <exception cref="InvalidOperationException">The finite state machine is exiting a state.</exception>
+        /// <exception cref="ArgumentException">The finite state machine has no state with the identifier <paramref name="stateId"/>.</exception>
         public void ScheduleTransitionTo(T stateId)
         {
             if (stateId == null)
             {
-                throw new ArgumentException("状态标识符不能为空", nameof(stateId));
+                throw new ArgumentException("The state identifier cannot be null", nameof(stateId));
             }
             ThrowIfExiting();
             InternalScheduleTransitionTo(stateId);
         }
 
         /// <summary>
-        /// 安排 <see cref="StateMachine{T}"/> 在下一次执行 <see cref="Update"/> 时退出当前状态。
+        /// Schedules the <see cref="StateMachine{T}"/> to exit the current state on the next execution of <see cref="Update"/>.
         /// </summary>
-        /// <exception cref="InvalidOperationException">有限状态机正在退出状态。</exception>
+        /// <exception cref="InvalidOperationException">The finite state machine is exiting a state.</exception>
         public void ScheduleTransitionToNull()
         {
             ThrowIfExiting();
@@ -279,7 +279,7 @@ namespace Aurora.Collections
         {
             if (!_states.TryGetValue(stateId, out var nextState))
             {
-                throw new ArgumentException($"不含有标识符为 {stateId} 的状态");
+                throw new ArgumentException($"No state with identifier '{stateId}' exists");
             }
             _isStateTransitionScheduled = true;
             _nextState                  = nextState;
@@ -293,10 +293,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 更新 <see cref="StateMachine{T}"/>。
+        /// Updates the <see cref="StateMachine{T}"/>.
         /// </summary>
-        /// <returns>如果执行了状态切换，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
-        /// <exception cref="InvalidOperationException">有限状态机正在进入或退出状态。</exception>
+        /// <returns><see langword="true"/> if a state transition was performed; otherwise, <see langword="false"/>.</returns>
+        /// <exception cref="InvalidOperationException">The finite state machine is entering or exiting a state.</exception>
         public bool Update()
         {
             ThrowIfEnteringOrExiting();
@@ -343,10 +343,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 若 <see cref="StateMachine{T}"/> 正在进入或退出状态，则抛出 <see cref="InvalidOperationException"/> 异常。
+        /// Throws <see cref="InvalidOperationException"/> if the <see cref="StateMachine{T}"/> is entering or exiting a state.
         /// </summary>
-        /// <exception cref="InvalidOperationException">有限状态机正在进入或退出状态。</exception>
-        /// <remarks>子类添加自定义操作时，应在操作开头调用此方法，以确保没有正在进入或退出状态。</remarks>
+        /// <exception cref="InvalidOperationException">The finite state machine is entering or exiting a state.</exception>
+        /// <remarks>When a subclass adds a custom operation, it should call this method at the beginning of the operation to ensure that no state is entering or exiting.</remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected void ThrowIfEnteringOrExiting()
         {
@@ -359,7 +359,7 @@ namespace Aurora.Collections
         {
             if (_isEntering)
             {
-                throw new InvalidOperationException("有限状态机正在进入状态");
+                throw new InvalidOperationException("The finite state machine is entering a state");
             }
         }
 
@@ -368,7 +368,7 @@ namespace Aurora.Collections
         {
             if (_isExiting)
             {
-                throw new InvalidOperationException("有限状态机正在退出状态");
+                throw new InvalidOperationException("The finite state machine is exiting a state");
             }
         }
     }

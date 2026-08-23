@@ -5,33 +5,33 @@ using System.Runtime.CompilerServices;
 namespace Aurora
 {
     /// <summary>
-    /// 为指定的枚举类型提供工具方法。
+    /// Provides utility methods for the specified enum type.
     /// </summary>
-    /// <typeparam name="TEnum">枚举类型。</typeparam>
+    /// <typeparam name="TEnum">The enum type.</typeparam>
     public static class EnumUtility<TEnum> where TEnum : struct, Enum
     {
         /// <summary>
-        /// 该枚举类型中的各个枚举成员的名称。
+        /// The names of the enum members in this enum type.
         /// </summary>
         public static readonly string[] Names;
 
         /// <summary>
-        /// 该枚举类型中的各个枚举成员的值。
+        /// The values of the enum members in this enum type.
         /// </summary>
         public static readonly TEnum[] Values;
 
         /// <summary>
-        /// 该枚举类型中的枚举成员的个数。
+        /// The number of enum members in this enum type.
         /// </summary>
         public static readonly int Count;
 
         /// <summary>
-        /// 该枚举类型的基础类型。
+        /// The underlying type of this enum type.
         /// </summary>
         public static readonly Type UnderlyingType;
 
         /// <summary>
-        /// 该枚举类型是否是按位枚举类型。
+        /// Whether this enum type is a flags enum type.
         /// </summary>
         public static readonly bool IsBitwise;
 
@@ -45,10 +45,10 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 判断该枚举类型中是否定义了指定的枚举成员。
+        /// Determines whether the specified enum member is defined in this enum type.
         /// </summary>
-        /// <param name="value">枚举成员。</param>
-        /// <returns>如果 <typeparamref name="TEnum"/> 枚举类型中定义了 <paramref name="value"/>，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
+        /// <param name="value">The enum member.</param>
+        /// <returns><see langword="true"/> if <paramref name="value"/> is defined in the <typeparamref name="TEnum"/> enum type; otherwise, <see langword="false"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsDefined(TEnum value)
         {
@@ -56,12 +56,12 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 获取表示枚举成员的字段信息。
+        /// Gets the field information that represents an enum member.
         /// </summary>
-        /// <param name="value">枚举成员。</param>
-        /// <returns>表示 <paramref name="value"/> 的字段信息。</returns>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> 不是在 <typeparamref name="TEnum"/> 枚举中定义的成员。</exception>
-        /// <remarks>如果存在其他枚举成员与 <paramref name="value"/> 具有相同的值，请改用 <see cref="GetFieldInfo(string)"/> 以确保获取准确的返回值。</remarks>
+        /// <param name="value">The enum member.</param>
+        /// <returns>The field information that represents <paramref name="value"/>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is not a member defined in the <typeparamref name="TEnum"/> enum.</exception>
+        /// <remarks>If another enum member has the same value as <paramref name="value"/>, use <see cref="GetFieldInfo(string)"/> instead to ensure an accurate return value.</remarks>
         public static FieldInfo GetFieldInfo(TEnum value)
         {
             if (!IsDefined(value))
@@ -73,12 +73,12 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 获取表示该枚举类型中具有指定名称的枚举成员的字段信息。
+        /// Gets the field information that represents the enum member with the specified name in this enum type.
         /// </summary>
-        /// <param name="name">枚举成员的名称。</param>
-        /// <returns>表示该枚举类型中名称为 <paramref name="name"/> 的枚举成员的字段信息。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="name"/> 为 <see langword="null"/>。</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="name"/> 不是任何 <typeparamref name="TEnum"/> 枚举成员的名称。</exception>
+        /// <param name="name">The name of the enum member.</param>
+        /// <returns>The field information that represents the enum member named <paramref name="name"/> in this enum type.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="name"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="name"/> is not the name of any <typeparamref name="TEnum"/> enum member.</exception>
         public static FieldInfo GetFieldInfo(string name)
         {
             if (name == null)
@@ -92,11 +92,11 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 获取指定枚举值是否带有 <see cref="ObsoleteAttribute"/> 特性。
+        /// Gets whether the specified enum value has the <see cref="ObsoleteAttribute"/> attribute.
         /// </summary>
-        /// <param name="value">枚举成员。</param>
-        /// <returns>如果 <paramref name="value"/> 带有 <see cref="ObsoleteAttribute"/> 特性，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> 不是在 <typeparamref name="TEnum"/> 枚举中定义的成员。</exception>
+        /// <param name="value">The enum member.</param>
+        /// <returns><see langword="true"/> if <paramref name="value"/> has the <see cref="ObsoleteAttribute"/> attribute; otherwise, <see langword="false"/>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is not a member defined in the <typeparamref name="TEnum"/> enum.</exception>
         public static bool IsObsolete(TEnum value)
         {
             if (!IsDefined(value))
@@ -108,11 +108,11 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 获取具有指定名称的枚举成员是否带有 <see cref="ObsoleteAttribute"/> 特性。
+        /// Gets whether the enum member with the specified name has the <see cref="ObsoleteAttribute"/> attribute.
         /// </summary>
-        /// <param name="name">枚举成员的名称。</param>
-        /// <returns>如果名称为 <paramref name="name"/> 的枚举成员带有 <see cref="ObsoleteAttribute"/> 特性，则为 <see langword="true"/>；否则为 <see langword="false"/>。</returns>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="name"/> 不是任何 <typeparamref name="TEnum"/> 枚举成员的名称。</exception>
+        /// <param name="name">The name of the enum member.</param>
+        /// <returns><see langword="true"/> if the enum member named <paramref name="name"/> has the <see cref="ObsoleteAttribute"/> attribute; otherwise, <see langword="false"/>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="name"/> is not the name of any <typeparamref name="TEnum"/> enum member.</exception>
         public static bool IsObsolete(string name)
         {
             var fieldInfo = GetFieldInfo(name);

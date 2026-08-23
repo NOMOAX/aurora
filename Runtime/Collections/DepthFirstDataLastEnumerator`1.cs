@@ -6,10 +6,10 @@ using Aurora.Pooling;
 namespace Aurora.Collections
 {
     /// <summary>
-    /// 深度优先、递归地，按照“后枚举根结点”的规则，枚举树的结点。
+    /// Depth-first, recursively enumerates the tree's nodes following the rule "enumerate the root node last".
     /// </summary>
-    /// <typeparam name="T">树的结点的类型。</typeparam>
-    /// <remarks>此枚举器将在构造函数中和 <see cref="IEnumerator.Reset"/> 中计算完每一步的枚举结果，请注意此行为导致的性能消耗。</remarks>
+    /// <typeparam name="T">The type of the tree's nodes.</typeparam>
+    /// <remarks>This enumerator computes the enumeration result of every step in the constructor and in <see cref="IEnumerator.Reset"/>. Be aware of the performance cost caused by this behavior.</remarks>
     public abstract class DepthFirstDataLastEnumerator<T> : TreeEnumerator<T> where T : class
     {
         private Stack<T> _stack;
@@ -17,7 +17,7 @@ namespace Aurora.Collections
         private T _current;
 
         /// <summary>
-        /// 初始化 <see cref="DepthFirstDataLastEnumerator{T}"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="DepthFirstDataLastEnumerator{T}"/> class.
         /// </summary>
         /// <inheritdoc />
         protected DepthFirstDataLastEnumerator(
@@ -52,10 +52,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// 将预计算结点经 <see cref="TreeEnumerator{T}.FuncGetChildren"/> 计算后得到的子结点集合添加到内部栈的顶部。
+        /// Adds the children of a precomputed node, computed by <see cref="TreeEnumerator{T}.FuncGetChildren"/>, to the top of the internal stack.
         /// </summary>
-        /// <param name="stack">栈。</param>
-        /// <param name="children">预计算结点的子结点集合。</param>
+        /// <param name="stack">The stack.</param>
+        /// <param name="children">The children of the precomputed node.</param>
         protected abstract void PushChildren(Stack<T> stack, IEnumerable<T> children);
 
         private void ThrowIfDisposed()

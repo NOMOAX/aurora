@@ -1,27 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Aurora.Threading
 {
     /// <summary>
-    /// 异步屏障，它阻塞参与者，直到所有其他参与者都发出信号。
+    /// An asynchronous barrier that blocks participants until all other participants have signaled.
     /// </summary>
     public class AsyncBarrier
     {
-        private static readonly Action<object> ActionCancel = Cancel;
+        private static readonly Action<object> Cancel = state =>
+        {
+            var (taskCompletionSource, cancellationToken) =
+                (Tuple<TaskCompletionSource<VoidResult>, CancellationToken>)state;
+            taskCompletionSource.TrySetCanceled(cancellationToken);
+        };
 
         private readonly int _participantCount;
 
         private readonly Stack<Waiter> _waiters;
 
         /// <summary>
-        /// 初始化 <see cref="AsyncBarrier"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="AsyncBarrier"/> class.
         /// </summary>
-        /// <param name="participants">参与者的数量。</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="participants"/> 小于 1。</exception>
+        /// <param name="participants">The number of participants.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="participants"/> is less than 1.</exception>
         public AsyncBarrier(int participants)
         {
             if (participants < 1)
@@ -33,10 +37,10 @@ namespace Aurora.Threading
         }
 
         /// <summary>
-        /// 一个参与者告知其已准备就绪，并且返回一个当所有其他参与者都准备就绪时完成的任务。
+        /// A participant signals that it is ready, and returns a task that completes when all other participants are ready.
         /// </summary>
-        /// <param name="cancellationToken">一个表示参与者对继续等待失去兴趣的取消令牌。即便如此，告知行为不会被取消。</param>
-        /// <returns>当最后一个参与者调用此方法时完成的方法。</returns>
+        /// <param name="cancellationToken">A cancellation token that indicates that the participant is no longer interested in continuing to wait. Even so, the signaling behavior is not canceled.</param>
+        /// <returns>The task that completes when the last participant calls this method.</returns>
         public Task SignalAndWait(CancellationToken cancellationToken = default)
         {
             lock (_waiters)
@@ -47,8 +51,8 @@ namespace Aurora.Threading
                         new TaskCompletionSource<VoidResult>(TaskCreationOptions.RunContinuationsAsynchronously);
                     var ctr = cancellationToken.CanBeCanceled
                                   ? cancellationToken.Register(
-                                      ActionCancel,
-                                      new State(taskCompletionSource, cancellationToken)
+                                      Cancel,
+                                      Tuple.Create(taskCompletionSource, cancellationToken)
                                   )
                                   : default;
                     _waiters.Push(new Waiter(taskCompletionSource, ctr));
@@ -67,19 +71,6 @@ namespace Aurora.Threading
             }
         }
 
-        private static void Cancel(object state)
-        {
-            Cancel((State)state);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void Cancel(State state)
-        {
-            var taskCompletionSource = state.TaskCompletionSource;
-            var cancellationToken    = state.Cancellation;
-            taskCompletionSource.TrySetCanceled(cancellationToken);
-        }
-
         private struct Waiter
         {
             internal readonly TaskCompletionSource<VoidResult> CompletionSource;
@@ -92,19 +83,6 @@ namespace Aurora.Threading
             {
                 CompletionSource         = completionSource;
                 CancellationRegistration = cancellationRegistration;
-            }
-        }
-
-        private sealed class State
-        {
-            internal readonly TaskCompletionSource<VoidResult> TaskCompletionSource;
-
-            internal readonly CancellationToken Cancellation;
-
-            internal State(TaskCompletionSource<VoidResult> taskCompletionSource, CancellationToken cancellation)
-            {
-                TaskCompletionSource = taskCompletionSource;
-                Cancellation         = cancellation;
             }
         }
     }

@@ -3,7 +3,7 @@
 namespace Aurora
 {
     /// <summary>
-    /// 提供解析 16 进制字符的工具。
+    /// Provides utilities for parsing hexadecimal characters.
     /// </summary>
     public static class HexCharParseUtility
     {
@@ -32,11 +32,11 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 解析 16 进制字符。
+        /// Parses a hexadecimal character.
         /// </summary>
-        /// <param name="c">16 进制字符。</param>
-        /// <returns>16 进制字符对应的数值（0到15）。</returns>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="c"/> 不是有效的 16 进制字符（0到9、A到F、a到f）。</exception>
+        /// <param name="c">The hexadecimal character.</param>
+        /// <returns>The numeric value (0 to 15) corresponding to the hexadecimal character.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="c"/> is not a valid hexadecimal character (0-9, A-F, a-f).</exception>
         public static byte Parse(char c)
         {
             if (c >= LookupLength)
@@ -48,23 +48,23 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 解析 16 进制字符。
+        /// Parses a hexadecimal character.
         /// </summary>
-        /// <param name="c">16 进制字符。</param>
-        /// <returns>16 进制字符对应的数值（0到15）。如果 <paramref name="c"/> 不是有效的 16 进制字符（0到9、A到F、a到f），则为 <see cref="byte.MaxValue"/>。</returns>
-        /// <exception cref="IndexOutOfRangeException"><paramref name="c"/> 大于 `f`。</exception>
-        /// <remarks>此方法不会进行检查。如果你确信 <paramref name="c"/> 是有效的 16 进制字符（0到9、A到F、a到f），则可以使用此方法。</remarks>
+        /// <param name="c">The hexadecimal character.</param>
+        /// <returns>The numeric value (0 to 15) corresponding to the hexadecimal character. If <paramref name="c"/> is not a valid hexadecimal character (0-9, A-F, a-f), it is <see cref="byte.MaxValue"/>.</returns>
+        /// <exception cref="IndexOutOfRangeException"><paramref name="c"/> is greater than `f`.</exception>
+        /// <remarks>This method does not perform any checks. You may use it if you are certain that <paramref name="c"/> is a valid hexadecimal character (0-9, A-F, a-f).</remarks>
         public static byte ParseNoCheck(char c)
         {
             return Lookup[c];
         }
 
         /// <summary>
-        /// 尝试解析 16 进制字符。
+        /// Tries to parse a hexadecimal character.
         /// </summary>
-        /// <param name="c">16 进制字符。</param>
-        /// <param name="value">16 进制字符对应的数值（0到15）。如果 <paramref name="c"/> 不是有效的 16 进制字符（0到9、A到F、a到f），则为 <see cref="byte.MaxValue"/>。</param>
-        /// <returns>如果 <paramref name="c"/> 是有效的 16 进制字符（0到9、A到F、a到f），则返回 <see langword="true"/>，否则返回 <see langword="false"/>。</returns>
+        /// <param name="c">The hexadecimal character.</param>
+        /// <param name="value">The numeric value (0 to 15) corresponding to the hexadecimal character. If <paramref name="c"/> is not a valid hexadecimal character (0-9, A-F, a-f), it is <see cref="byte.MaxValue"/>.</param>
+        /// <returns>Returns <see langword="true"/> if <paramref name="c"/> is a valid hexadecimal character (0-9, A-F, a-f); otherwise, returns <see langword="false"/>.</returns>
         public static bool TryParse(char c, out byte value)
         {
             if (c >= LookupLength)

@@ -3,17 +3,17 @@
 namespace Aurora
 {
     /// <summary>
-    /// 无参数且不返回值的调用。
+    /// An invocation that takes no parameters and returns no value.
     /// </summary>
     public sealed class InvocationAction : Invocation
     {
         private readonly Action _action;
 
         /// <summary>
-        /// 初始化 <see cref="InvocationAction"/> 类的新实例。
+        /// Initializes a new instance of the <see cref="InvocationAction"/> class.
         /// </summary>
-        /// <param name="action">无参数且不返回值的方法。</param>
-        /// <exception cref="ArgumentNullException"><paramref name="action"/> 为 <see langword="null"/>。</exception>
+        /// <param name="action">A method that takes no parameters and returns no value.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
         public InvocationAction(Action action)
         {
             _action = action ?? throw new ArgumentNullException(nameof(action));

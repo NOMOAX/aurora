@@ -3,17 +3,17 @@
 namespace Aurora
 {
     /// <summary>
-    /// 提供一组直接操作内存的方法。
+    /// Provides a set of methods that directly operate on memory.
     /// </summary>
     public static class Memory
     {
         /// <summary>
-        /// 将指定长度的一些字节从内存中的一个地址复制到另一个地址。如果两段内存有重叠部分，结果可能会不符合预期，请改用 <see cref="Move"/>。
+        /// Copies a specified number of bytes from one address in memory to another. If the two memory regions overlap, the result may be unexpected; use <see cref="Move"/> instead.
         /// </summary>
-        /// <param name="destination">指向用于存储复制内容的内存的指针。</param>
-        /// <param name="source">指向内存上要复制的数据源的指针。</param>
-        /// <param name="length">要复制的字节数。</param>
-        /// <exception cref="System.ArgumentNullException"><paramref name="source"/> 或 <paramref name="destination"/> 为 <see langword="null"/>。</exception>
+        /// <param name="destination">A pointer to the memory that stores the copied content.</param>
+        /// <param name="source">A pointer to the source of data to copy in memory.</param>
+        /// <param name="length">The number of bytes to copy.</param>
+        /// <exception cref="System.ArgumentNullException"><paramref name="source"/> or <paramref name="destination"/> is <see langword="null"/>.</exception>
         public static unsafe void Copy(void* destination, void* source, ulong length)
         {
             if (destination == null)
@@ -40,12 +40,12 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 将指定长度的一些字节从内存中的一个地址复制到另一个地址。
+        /// Copies a specified number of bytes from one address in memory to another.
         /// </summary>
-        /// <param name="destination">指向用于存储复制内容的内存的指针。</param>
-        /// <param name="source">指向内存上要复制的数据源的指针。</param>
-        /// <param name="length">要复制的字节数。</param>
-        /// <exception cref="System.ArgumentNullException"><paramref name="source"/> 或 <paramref name="destination"/> 为 <see langword="null"/>。</exception>
+        /// <param name="destination">A pointer to the memory that stores the copied content.</param>
+        /// <param name="source">A pointer to the source of data to copy in memory.</param>
+        /// <param name="length">The number of bytes to copy.</param>
+        /// <exception cref="System.ArgumentNullException"><paramref name="source"/> or <paramref name="destination"/> is <see langword="null"/>.</exception>
         public static unsafe void Move(void* destination, void* source, ulong length)
         {
             if (destination == null)
@@ -81,12 +81,12 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 将某一段内存上的每个字节设置为指定的 8 位无符号整数。
+        /// Sets every byte in a region of memory to the specified 8-bit unsigned integer.
         /// </summary>
-        /// <param name="destination">指向要设置值的内存的指针。</param>
-        /// <param name="value">要给每个字节设置的 8 位无符号整数。</param>
-        /// <param name="length">要设置的字节数。</param>
-        /// <exception cref="System.ArgumentNullException"><paramref name="destination"/> 为 <see langword="null"/>。</exception>
+        /// <param name="destination">A pointer to the memory to set values on.</param>
+        /// <param name="value">The 8-bit unsigned integer to set on every byte.</param>
+        /// <param name="length">The number of bytes to set.</param>
+        /// <exception cref="System.ArgumentNullException"><paramref name="destination"/> is <see langword="null"/>.</exception>
         public static unsafe void Set(void* destination, byte value, ulong length)
         {
             if (destination == null)
@@ -105,11 +105,11 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 将某一段内存清空。
+        /// Clears a region of memory.
         /// </summary>
-        /// <param name="destination">指向要被清空的内存的指针。</param>
-        /// <param name="length">要清空的字节数。</param>
-        /// <exception cref="System.ArgumentNullException"><paramref name="destination"/> 为 <see langword="null"/>。</exception>
+        /// <param name="destination">A pointer to the memory to be cleared.</param>
+        /// <param name="length">The number of bytes to clear.</param>
+        /// <exception cref="System.ArgumentNullException"><paramref name="destination"/> is <see langword="null"/>.</exception>
         public static unsafe void Clear(void* destination, ulong length)
         {
             if (destination == null)
@@ -120,13 +120,13 @@ namespace Aurora
         }
 
         /// <summary>
-        /// 比较两段内存。
+        /// Compares two regions of memory.
         /// </summary>
-        /// <param name="pointer1">指向第一段内存的指针。</param>
-        /// <param name="pointer2">指向第二段内存的指针。</param>
-        /// <param name="length">要比较的字节数。</param>
-        /// <returns>依次比较两段内存的每个字节，若不相等则返回差值，若相等则继续比较下一组字节；若比较到最后一组字节时他们依然相等，则返回 0。</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="pointer1"/> 或 <paramref name="pointer2"/> 为 <see langword="null"/>。</exception>
+        /// <param name="pointer1">A pointer to the first region of memory.</param>
+        /// <param name="pointer2">A pointer to the second region of memory.</param>
+        /// <param name="length">The number of bytes to compare.</param>
+        /// <returns>Compares each byte of the two memory regions in order; if they are not equal, returns the difference; if they are equal, continues to the next byte; if the last byte pair is still equal, returns 0.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="pointer1"/> or <paramref name="pointer2"/> is <see langword="null"/>.</exception>
         public static unsafe int Compare(void* pointer1, void* pointer2, ulong length)
         {
             if (pointer1 == null)

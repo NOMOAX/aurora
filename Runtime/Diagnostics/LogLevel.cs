@@ -1,32 +1,32 @@
 ﻿namespace Aurora.Diagnostics
 {
     /// <summary>
-    /// 记录等级。
+    /// Log level.
     /// </summary>
     public enum LogLevel : byte
     {
         /// <summary>
-        /// 详尽（verbose）。
+        /// Verbose.
         /// </summary>
         V,
 
         /// <summary>
-        /// 调试（debug）。
+        /// Debug.
         /// </summary>
         D,
 
         /// <summary>
-        /// 常规信息（info）。
+        /// Info.
         /// </summary>
         I,
 
         /// <summary>
-        /// 警告（warning）。
+        /// Warning.
         /// </summary>
         W,
 
         /// <summary>
-        /// 错误（error）。
+        /// Error.
         /// </summary>
         E
     }
