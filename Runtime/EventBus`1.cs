@@ -115,7 +115,7 @@ namespace Aurora
         /// <param name="args">An array of objects that are the arguments to pass to the event associated with <paramref name="id"/>.</param>
         /// <returns>The object returned by the event associated with <paramref name="id"/>, or <see langword="null"/> if <paramref name="id"/> is not found.</returns>
         /// <exception cref="TargetParameterCountException">The <paramref name="args"/> array does not have the correct number of arguments.</exception>
-        /// <exception cref="ArgumentException">The element of the <paramref name="args"/> array do not match the signature of the event associated with <paramref name="id"/>.</exception>
+        /// <exception cref="ArgumentException">The element of the <paramref name="args"/> array does not match the signature of the event associated with <paramref name="id"/>.</exception>
         public static object Publish(T id, params object[] args)
         {
             return Delegates.TryGetValue(id, out var @delegate) ? Invoke(@delegate, args) : null;
@@ -128,7 +128,7 @@ namespace Aurora
         /// <param name="args">An array of objects that are the arguments to pass to the event associated with <paramref name="id"/>.</param>
         /// <returns>An array of objects that are returned by each of the invocation list of the event associated with <paramref name="id"/>, or an empty array if <paramref name="id"/> is not found.</returns>
         /// <exception cref="TargetParameterCountException">The <paramref name="args"/> array does not have the correct number of arguments.</exception>
-        /// <exception cref="ArgumentException">The element of the <paramref name="args"/> array do not match the signature of the event associated with <paramref name="id"/>.</exception>
+        /// <exception cref="ArgumentException">The element of the <paramref name="args"/> array does not match the signature of the event associated with <paramref name="id"/>.</exception>
         public static object[] PublishAll(T id, params object[] args)
         {
             return Delegates.TryGetValue(id, out var @delegate) ? InvokeAll(@delegate, args) : Array.Empty<object>();

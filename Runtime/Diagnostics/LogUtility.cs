@@ -9,7 +9,7 @@ namespace Aurora.Diagnostics
     public static class LogUtility
     {
         /// <summary>
-        /// Appends information about the current thread Id to the end of the mutable string.
+        /// Appends information about the identifier of the current thread to the end of the mutable string.
         /// </summary>
         /// <param name="stringBuilder">The mutable string.</param>
         /// <exception cref="ArgumentNullException"><paramref name="stringBuilder"/> is <see langword="null"/>.</exception>

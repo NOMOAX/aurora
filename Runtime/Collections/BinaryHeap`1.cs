@@ -7,7 +7,7 @@ namespace Aurora.Collections
     /// <summary>
     /// A binary heap.
     /// </summary>
-    /// <typeparam name="T">The type of the members in the binary heap.</typeparam>
+    /// <typeparam name="T">The type of the elements in the binary heap.</typeparam>
     public sealed class BinaryHeap<T> : IEnumerable<T>
     {
         private readonly IComparer<T> _comparer;
@@ -68,7 +68,7 @@ namespace Aurora.Collections
         public int Count => _size;
 
         /// <summary>
-        /// Adds a member to this binary heap.
+        /// Adds an element to this binary heap.
         /// </summary>
         /// <param name="t">The object to add to this binary heap.</param>
         /// <exception cref="OverflowException">The capacity of this binary heap is not enough to hold the object to add and needs to grow, but it cannot grow (the capacity has reached the maximum value of <see cref="int"/>).</exception>
@@ -92,9 +92,9 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// Adds all members of the specified sequence to the <see cref="BinaryHeap{T}"/>.
+        /// Adds all elements of the specified sequence to the <see cref="BinaryHeap{T}"/>.
         /// </summary>
-        /// <param name="enumerable">The sequence whose members are all added to this binary heap.</param>
+        /// <param name="enumerable">The sequence whose elements are all added to this binary heap.</param>
         /// <exception cref="ArgumentNullException"><paramref name="enumerable"/> is <see langword="null"/>.</exception>
         /// <exception cref="OverflowException">The capacity of this binary heap is not enough to hold the object to add and needs to grow, but it cannot grow (the capacity has reached the maximum value of <see cref="int"/>).</exception>
         public void AddRange(IEnumerable<T> enumerable)
@@ -110,10 +110,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// Removes and returns the smallest member (per the comparer) in this binary heap.
+        /// Removes and returns the smallest element (per the comparer) in this binary heap.
         /// </summary>
         /// <returns>The smallest member (per the comparer) in this binary heap.</returns>
-        /// <exception cref="InvalidOperationException">This binary heap has no members.</exception>
+        /// <exception cref="InvalidOperationException">This binary heap has no elements.</exception>
         public T Take()
         {
             if (_size == 0)
@@ -128,10 +128,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// Returns the smallest member (per the comparer) in this binary heap.
+        /// Returns the smallest element (per the comparer) in this binary heap.
         /// </summary>
         /// <returns>The smallest member (per the comparer) in this binary heap.</returns>
-        /// <exception cref="InvalidOperationException">This binary heap has no members.</exception>
+        /// <exception cref="InvalidOperationException">This binary heap has no elements.</exception>
         public T Peek()
         {
             if (_size == 0)
@@ -165,7 +165,7 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// Removes a member from this binary heap.
+        /// Removes an element from this binary heap.
         /// </summary>
         /// <param name="t">The object to remove from this binary heap.</param>
         /// <returns><see langword="true"/> if <paramref name="t"/> is found in this binary heap; otherwise, <see langword="false"/>.</returns>
@@ -188,7 +188,7 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// Removes all members from this binary heap.
+        /// Removes all elements from this binary heap.
         /// </summary>
         public void Clear()
         {
@@ -261,9 +261,9 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// Gets an enumerator that can enumerate the members of this binary heap.
+        /// Gets an enumerator that can enumerate the elements of this binary heap.
         /// </summary>
-        /// <returns>An enumerator that can enumerate the members of this binary heap.</returns>
+        /// <returns>An enumerator that can enumerate the elements of this binary heap.</returns>
         public IEnumerator<T> GetEnumerator()
         {
             return new Enumerator(this);

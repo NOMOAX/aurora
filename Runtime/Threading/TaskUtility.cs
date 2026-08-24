@@ -135,6 +135,9 @@ namespace Aurora.Threading
         /// <summary>
         /// Creates a continuation task that executes synchronously when the task completes.
         /// </summary>
+        /// <param name="task">The task to which the continuation task is attached.</param>
+        /// <param name="continuationAction">The action to run when the task completes.</param>
+        /// <returns>A new continuation <see cref="Task"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="task"/> is <see langword="null"/>.</exception>
         /// <remarks>If the task has already completed, the continuation task executes immediately.</remarks>
         /// <seealso cref="Task.ContinueWith(System.Action{System.Threading.Tasks.Task})"/>
@@ -155,6 +158,10 @@ namespace Aurora.Threading
         /// <summary>
         /// Creates a continuation task that executes synchronously when the task completes.
         /// </summary>
+        /// <param name="task">The task to which the continuation task is attached.</param>
+        /// <param name="continuationAction">The action to run when the task completes.</param>
+        /// <param name="state">The state to pass to <paramref name="continuationAction"/>.</param>
+        /// <returns>A new continuation <see cref="Task"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="task"/> is <see langword="null"/>.</exception>
         /// <remarks>If the task has already completed, the continuation task executes immediately.</remarks>
         /// <seealso cref="Task.ContinueWith(System.Action{System.Threading.Tasks.Task,object},object)"/>
@@ -176,6 +183,9 @@ namespace Aurora.Threading
         /// <summary>
         /// Creates a continuation task that executes synchronously when the task completes.
         /// </summary>
+        /// <param name="task">The task to which the continuation task is attached.</param>
+        /// <param name="continuationFunction">The function to run when the task completes.</param>
+        /// <returns>A new continuation <see cref="Task{TResult}"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="task"/> is <see langword="null"/>.</exception>
         /// <remarks>If the task has already completed, the continuation task executes immediately.</remarks>
         /// <seealso cref="Task.ContinueWith{TResult}(System.Func{System.Threading.Tasks.Task,TResult})"/>
@@ -198,6 +208,10 @@ namespace Aurora.Threading
         /// <summary>
         /// Creates a continuation task that executes synchronously when the task completes.
         /// </summary>
+        /// <param name="task">The task to which the continuation task is attached.</param>
+        /// <param name="continuationFunction">The function to run when the task completes.</param>
+        /// <param name="state">The state to pass to <paramref name="continuationFunction"/>.</param>
+        /// <returns>A new continuation <see cref="Task{TResult}"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="task"/> is <see langword="null"/>.</exception>
         /// <remarks>If the task has already completed, the continuation task executes immediately.</remarks>
         /// <seealso cref="Task.ContinueWith{TResult}(System.Func{System.Threading.Tasks.Task,object,TResult},object)"/>
@@ -222,6 +236,9 @@ namespace Aurora.Threading
         /// <summary>
         /// Creates a continuation task that executes synchronously when the task completes.
         /// </summary>
+        /// <param name="task">The task to which the continuation task is attached.</param>
+        /// <param name="continuationAction">The action to run when the task completes.</param>
+        /// <returns>A new continuation <see cref="Task"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="task"/> is <see langword="null"/>.</exception>
         /// <remarks>If the task has already completed, the continuation task executes immediately.</remarks>
         /// <seealso cref="Task{TResult}.ContinueWith(System.Action{System.Threading.Tasks.Task{TResult}})"/>
@@ -244,6 +261,10 @@ namespace Aurora.Threading
         /// <summary>
         /// Creates a continuation task that executes synchronously when the task completes.
         /// </summary>
+        /// <param name="task">The task to which the continuation task is attached.</param>
+        /// <param name="continuationAction">The action to run when the task completes.</param>
+        /// <param name="state">The state to pass to <paramref name="continuationAction"/>.</param>
+        /// <returns>A new continuation <see cref="Task"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="task"/> is <see langword="null"/>.</exception>
         /// <remarks>If the task has already completed, the continuation task executes immediately.</remarks>
         /// <seealso cref="Task{TResult}.ContinueWith(System.Action{System.Threading.Tasks.Task{TResult},object},object)"/>
@@ -268,6 +289,9 @@ namespace Aurora.Threading
         /// <summary>
         /// Creates a continuation task that executes synchronously when the task completes.
         /// </summary>
+        /// <param name="task">The task to which the continuation task is attached.</param>
+        /// <param name="continuationFunction">The function to run when the task completes.</param>
+        /// <returns>A new continuation <see cref="Task{TNewResult}"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="task"/> is <see langword="null"/>.</exception>
         /// <remarks>If the task has already completed, the continuation task executes immediately.</remarks>
         /// <seealso cref="Task{TResult}.ContinueWith{TNewResult}(System.Func{System.Threading.Tasks.Task{TResult},TNewResult})"/>
@@ -290,6 +314,10 @@ namespace Aurora.Threading
         /// <summary>
         /// Creates a continuation task that executes synchronously when the task completes.
         /// </summary>
+        /// <param name="task">The task to which the continuation task is attached.</param>
+        /// <param name="continuationFunction">The function to run when the task completes.</param>
+        /// <param name="state">The state to pass to <paramref name="continuationFunction"/>.</param>
+        /// <returns>A new continuation <see cref="Task{TNewResult}"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="task"/> is <see langword="null"/>.</exception>
         /// <remarks>If the task has already completed, the continuation task executes immediately.</remarks>
         /// <seealso cref="Task{TResult}.ContinueWith{TNewResult}(System.Func{System.Threading.Tasks.Task{TResult},object,TNewResult},object)"/>

@@ -7,7 +7,7 @@ namespace Aurora.Pooling
     /// <summary>
     /// A using scope for a hash set.
     /// </summary>
-    /// <typeparam name="T">The type of the hash set's members.</typeparam>
+    /// <typeparam name="T">The type of the elements in the hash set.</typeparam>
     public sealed class HashSetUsingScope<T> : IDisposable
     {
         private HashSet<T> _hashSet;

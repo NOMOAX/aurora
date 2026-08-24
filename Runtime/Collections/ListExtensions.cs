@@ -32,7 +32,7 @@ namespace Aurora.Collections
         /// <typeparam name="T">The type of the elements in the collection.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> and <paramref name="count"/> do not specify a valid range within <paramref name="collection"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in <paramref name="collection"/>.</exception>
         public static void ShuffleInPlace<T>(this IList<T> collection, int index, int count)
         {
             if (collection == null)
@@ -71,7 +71,7 @@ namespace Aurora.Collections
         /// <typeparam name="TSource">The type of the elements in the collection.</typeparam>
         /// <typeparam name="TState">The type of <paramref name="state"/>.</typeparam>
         /// <returns>If the first element matching the condition defined by <paramref name="match"/> is found, that element; otherwise, the default value of type <typeparamref name="TSource"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="match"/> is <see langword="null"/>。</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="match"/> is <see langword="null"/>.</exception>
         public static TSource Find<TSource, TState>(
             this IList<TSource>                     collection,
             ParameterizedPredicate<TSource, TState> match,
@@ -104,7 +104,7 @@ namespace Aurora.Collections
         /// <typeparam name="TSource">The type of the elements in the collection.</typeparam>
         /// <typeparam name="TState">The type of <paramref name="state"/>.</typeparam>
         /// <returns>If the first element matching the condition defined by <paramref name="match"/> is found, the zero-based index of that element; otherwise, -1.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="match"/> is <see langword="null"/>。</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="match"/> is <see langword="null"/>.</exception>
         public static int FindIndex<TSource, TState>(
             this IList<TSource>                     collection,
             ParameterizedPredicate<TSource, TState> match,
@@ -137,7 +137,7 @@ namespace Aurora.Collections
         /// <typeparam name="TSource">The type of the elements in the collection.</typeparam>
         /// <typeparam name="TState">The type of <paramref name="state"/>.</typeparam>
         /// <returns>If the last element matching the condition defined by <paramref name="match"/> is found, that element; otherwise, the default value of type <typeparamref name="TSource"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="match"/> is <see langword="null"/>。</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="match"/> is <see langword="null"/>.</exception>
         public static TSource FindLast<TSource, TState>(
             this IList<TSource>                     collection,
             ParameterizedPredicate<TSource, TState> match,
@@ -171,7 +171,7 @@ namespace Aurora.Collections
         /// <typeparam name="TSource">The type of the elements in the collection.</typeparam>
         /// <typeparam name="TState">The type of <paramref name="state"/>.</typeparam>
         /// <returns>If the last element matching the condition defined by <paramref name="match"/> is found, the zero-based index of that element; otherwise, -1.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="match"/> is <see langword="null"/>。</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="match"/> is <see langword="null"/>.</exception>
         public static int FindLastIndex<TSource, TState>(
             this IList<TSource>                     collection,
             ParameterizedPredicate<TSource, TState> match,
@@ -236,7 +236,7 @@ namespace Aurora.Collections
         /// <typeparam name="TSource">The type of the elements in the collection.</typeparam>
         /// <typeparam name="TState">The type of <paramref name="state"/>.</typeparam>
         /// <returns>The number of elements removed from the <see cref="IList{T}"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="match"/> is <see langword="null"/>。</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="match"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="collection"/> is read-only.</exception>
         public static int RemoveAll<TSource, TState>(
             this IList<TSource>                     collection,

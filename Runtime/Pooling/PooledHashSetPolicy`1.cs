@@ -5,7 +5,7 @@ namespace Aurora.Pooling
     /// <summary>
     /// A strategy for managing hash sets in the pool.
     /// </summary>
-    /// <typeparam name="T">The type of the hash set's members.</typeparam>
+    /// <typeparam name="T">The type of the elements in the hash set.</typeparam>
     public class PooledHashSetPolicy<T> : IPooledObjectPolicy<HashSet<T>>
     {
         /// <summary>

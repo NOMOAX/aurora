@@ -3,13 +3,13 @@
     /// <summary>
     /// An object pool.
     /// </summary>
-    /// <typeparam name="T">The type of the members in the object pool.</typeparam>
+    /// <typeparam name="T">The type of the objects in the pool.</typeparam>
     public interface IPool<T> where T : class
     {
         /// <summary>
-        /// If the pool has an available member, retrieves it; otherwise, creates a new object.
+        /// Gets an object from the pool if one is available; otherwise, creates a new object.
         /// </summary>
-        /// <returns>A member retrieved from the pool or a newly created object.</returns>
+        /// <returns>An object retrieved from the pool or a newly created object.</returns>
         T Get();
 
         /// <summary>
@@ -19,7 +19,7 @@
         void Return(T obj);
 
         /// <summary>
-        /// Removes all members from the pool.
+        /// Removes all objects from the pool.
         /// </summary>
         void Clear();
     }

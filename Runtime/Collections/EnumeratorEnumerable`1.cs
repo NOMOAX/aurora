@@ -28,7 +28,7 @@ namespace Aurora.Collections
         /// </summary>
         /// <param name="enumerator">The enumerator.</param>
         /// <exception cref="ArgumentNullException"><paramref name="enumerator"/> is <see langword="null"/>.</exception>
-        /// <remarks>If the enumerated object cannot be converted to type <typeparamref name="T"/>, an <see cref="InvalidCastException"/> is thrown during enumeration.</remarks>
+        /// <remarks>If an element in the source sequence cannot be cast to type <typeparamref name="T"/>, an <see cref="InvalidCastException"/> is thrown during enumeration.</remarks>
         public EnumeratorEnumerable(IEnumerator enumerator)
         {
             if (enumerator == null)

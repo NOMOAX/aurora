@@ -7,7 +7,7 @@ namespace Aurora.Pooling
     /// <summary>
     /// An object pool.
     /// </summary>
-    /// <typeparam name="T">The type of the members in the object pool.</typeparam>
+    /// <typeparam name="T">The type of the objects in the pool.</typeparam>
     public sealed class Pool<T> : IPool<T> where T : class
     {
         private readonly Func<T> _createFunc;

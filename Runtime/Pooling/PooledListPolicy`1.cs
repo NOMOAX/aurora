@@ -5,7 +5,7 @@ namespace Aurora.Pooling
     /// <summary>
     /// A strategy for managing lists in the pool.
     /// </summary>
-    /// <typeparam name="T">The type of the list's members.</typeparam>
+    /// <typeparam name="T">The type of the elements in the list.</typeparam>
     public class PooledListPolicy<T> : IPooledObjectPolicy<List<T>>
     {
         /// <summary>

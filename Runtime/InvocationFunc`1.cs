@@ -5,7 +5,7 @@ namespace Aurora
     /// <summary>
     /// An invocation that takes no parameters and returns a value.
     /// </summary>
-    /// <typeparam name="TResult"></typeparam>
+    /// <typeparam name="TResult">The type of the return value.</typeparam>
     public sealed class InvocationFunc<TResult> : Invocation<TResult>
     {
         private readonly Func<TResult> _func;

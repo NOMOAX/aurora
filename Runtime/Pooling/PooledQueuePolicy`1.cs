@@ -5,7 +5,7 @@ namespace Aurora.Pooling
     /// <summary>
     /// A strategy for managing queues in the pool.
     /// </summary>
-    /// <typeparam name="T">The type of the queue's members.</typeparam>
+    /// <typeparam name="T">The type of the elements in the queue.</typeparam>
     public class PooledQueuePolicy<T> : IPooledObjectPolicy<Queue<T>>
     {
         /// <summary>

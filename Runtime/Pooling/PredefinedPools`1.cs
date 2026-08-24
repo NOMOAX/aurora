@@ -6,7 +6,7 @@ namespace Aurora.Pooling
     /// <summary>
     /// Provides a set of predefined public object pools with 1 type parameter.
     /// </summary>
-    /// <typeparam name="T">The type parameter required by the pool's members.</typeparam>
+    /// <typeparam name="T">The type of the pooled objects.</typeparam>
     public static class PredefinedPools<T>
     {
         /// <summary>

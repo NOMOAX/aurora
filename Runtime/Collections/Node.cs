@@ -298,7 +298,7 @@ namespace Aurora.Collections
         /// </summary>
         /// <param name="child">The child node to add.</param>
         /// <exception cref="ArgumentNullException"><paramref name="child"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="child"/> is this node itself, or <paramref name="child"/> is the parent of this node, or <paramref name="child"/> type's implementation rejects setting this node as <paramref name="child"/>'s direct parent, or this type's implementation rejects adding <see langword="child"/> to this node's list of direct children.</exception>
+        /// <exception cref="ArgumentException"><paramref name="child"/> is this node itself, or <paramref name="child"/> is the parent of this node, or <paramref name="child"/> type's implementation rejects setting this node as <paramref name="child"/>'s direct parent, or this type's implementation rejects adding <paramref name="child"/> to this node's list of direct children.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Add(Node child)
         {
@@ -407,7 +407,7 @@ namespace Aurora.Collections
         /// </summary>
         /// <param name="order">The enumeration order.</param>
         /// <returns>An enumerator used to enumerate this <see cref="Node"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="order"/> is not a member defined in the <see cref="TreeEnumOrder"/> enum.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="order"/> is not a member defined in the <see cref="TreeEnumOrder"/> enum.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerator<Node> GetEnumerator(TreeEnumOrder order)
         {
@@ -509,7 +509,7 @@ namespace Aurora.Collections
             {
                 if (_node == null)
                 {
-                    throw new ObjectDisposedException(GetType().Name);
+                    throw new ObjectDisposedException(nameof(DirectChildEnumerator));
                 }
                 if (_version != _node.Version)
                 {

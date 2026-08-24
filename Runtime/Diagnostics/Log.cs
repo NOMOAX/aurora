@@ -35,7 +35,7 @@ namespace Aurora.Diagnostics
         }
 
         /// <summary>
-        /// Gets or sets whether the current thread Id is logged.
+        /// Gets or sets whether the identifier of the current thread is logged.
         /// </summary>
         public static bool WithCurrentThreadId { get; set; } = true;
 

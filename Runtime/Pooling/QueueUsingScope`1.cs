@@ -7,7 +7,7 @@ namespace Aurora.Pooling
     /// <summary>
     /// A using scope for a queue.
     /// </summary>
-    /// <typeparam name="T">The type of the queue's members.</typeparam>
+    /// <typeparam name="T">The type of the elements in the queue.</typeparam>
     public sealed class QueueUsingScope<T> : IDisposable
     {
         private Queue<T> _queue;

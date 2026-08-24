@@ -5,7 +5,7 @@ namespace Aurora.Pooling
     /// <summary>
     /// A strategy for managing deques in the pool.
     /// </summary>
-    /// <typeparam name="T">The type of the deque's members.</typeparam>
+    /// <typeparam name="T">The type of the elements in the deque.</typeparam>
     public class PooledDequePolicy<T> : IPooledObjectPolicy<Deque<T>>
     {
         /// <summary>

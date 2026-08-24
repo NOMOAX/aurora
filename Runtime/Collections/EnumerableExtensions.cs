@@ -13,7 +13,7 @@ namespace Aurora.Collections
         /// </summary>
         /// <param name="source">The sequence to search.</param>
         /// <param name="value">The object to search for in <paramref name="source"/>.</param>
-        /// <typeparam name="TSource">The type of the members in the sequence.</typeparam>
+        /// <typeparam name="TSource">The type of the elements in the sequence.</typeparam>
         /// <returns>The zero-based index of the first match of <paramref name="value"/> in the whole <paramref name="source"/>, if found; otherwise, a negative number.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
         public static int IndexOf<TSource>(this IEnumerable<TSource> source, TSource value)
@@ -60,7 +60,7 @@ namespace Aurora.Collections
         /// <param name="source">The sequence to search.</param>
         /// <param name="value">The object to search for in <paramref name="source"/>.</param>
         /// <param name="equalityComparer">A comparer used to determine whether two <typeparamref name="TSource"/> objects are equal.</param>
-        /// <typeparam name="TSource">The type of the members in the sequence.</typeparam>
+        /// <typeparam name="TSource">The type of the elements in the sequence.</typeparam>
         /// <returns>The index of the first match of <paramref name="value"/> in the whole <paramref name="source"/>, if found; otherwise, a negative number.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
         public static int IndexOf<TSource>(
@@ -101,7 +101,7 @@ namespace Aurora.Collections
         /// </summary>
         /// <param name="source">The sequence to search.</param>
         /// <param name="value">The object to search for in <paramref name="source"/>.</param>
-        /// <typeparam name="TSource">The type of the members in the sequence.</typeparam>
+        /// <typeparam name="TSource">The type of the elements in the sequence.</typeparam>
         /// <returns>The zero-based index of the last match of <paramref name="value"/> in the whole <paramref name="source"/>, if found; otherwise, a negative number.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
         public static int LastIndexOf<TSource>(this IEnumerable<TSource> source, TSource value)
@@ -147,7 +147,7 @@ namespace Aurora.Collections
         /// <param name="source">The sequence to search.</param>
         /// <param name="value">The object to search for in <paramref name="source"/>.</param>
         /// <param name="equalityComparer">A comparer used to determine whether two <typeparamref name="TSource"/> objects are equal.</param>
-        /// <typeparam name="TSource">The type of the members in the sequence.</typeparam>
+        /// <typeparam name="TSource">The type of the elements in the sequence.</typeparam>
         /// <returns>The zero-based index of the last match of <paramref name="value"/> in the whole <paramref name="source"/>, if found; otherwise, a negative number.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
         public static int LastIndexOf<TSource>(
@@ -183,11 +183,11 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// Searches the current <see cref="IEnumerable{T}"/> for matching members using the specified condition, and returns the index of its first match.
+        /// Searches the current <see cref="IEnumerable{T}"/> for matching elements using the specified condition, and returns the index of its first match.
         /// </summary>
         /// <param name="source">The sequence to search.</param>
-        /// <param name="match">The condition used to search the members of <paramref name="source"/>.</param>
-        /// <typeparam name="TSource">The type of the members in the sequence.</typeparam>
+        /// <param name="match">The condition used to search the elements of <paramref name="source"/>.</param>
+        /// <typeparam name="TSource">The type of the elements in the sequence.</typeparam>
         /// <returns>The index of the first match satisfying <paramref name="match"/> in the whole <paramref name="source"/>, if found; otherwise, a negative number.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="match"/> is <see langword="null"/>.</exception>
         public static int FindIndex<TSource>(this IEnumerable<TSource> source, Predicate<TSource> match)
@@ -224,11 +224,11 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// Searches the current <see cref="IEnumerable{T}"/> for matching members using the specified condition, and returns the index of its last match.
+        /// Searches the current <see cref="IEnumerable{T}"/> for matching elements using the specified condition, and returns the index of its last match.
         /// </summary>
         /// <param name="source">The sequence to search.</param>
         /// <param name="match">The condition used to search the objects of <paramref name="source"/>.</param>
-        /// <typeparam name="TSource">The type of the members in the sequence.</typeparam>
+        /// <typeparam name="TSource">The type of the elements in the sequence.</typeparam>
         /// <returns>The index of the last match satisfying <paramref name="match"/> in the whole <paramref name="source"/>, if found; otherwise, a negative number.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="match"/> is <see langword="null"/>.</exception>
         public static int FindLastIndex<TSource>(this IEnumerable<TSource> source, Predicate<TSource> match)

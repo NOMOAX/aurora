@@ -94,7 +94,7 @@ namespace Aurora.Collections
         /// <summary>
         /// Gets or sets the element at the specified index in the <see cref="Deque{T}"/>.
         /// </summary>
-        /// <param name="index"></param>
+        /// <param name="index">The zero-based index of the element to get or set.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or is greater than or equal to the number of elements in the <see cref="Deque{T}"/>.</exception>
         public T this[int index]
         {
@@ -120,7 +120,7 @@ namespace Aurora.Collections
         /// <summary>
         /// Returns the object at the head of the <see cref="Deque{T}"/>.
         /// </summary>
-        /// <returns><see cref="Deque{T}"/> The object at the head.</returns>
+        /// <returns>The object at the head of the <see cref="Deque{T}"/>.</returns>
         public T PeekFirst()
         {
             if (_size == 0)
@@ -133,7 +133,7 @@ namespace Aurora.Collections
         /// <summary>
         /// Assigns the object at the head of the <see cref="Deque{T}"/> to the <paramref name="result"/> parameter.
         /// </summary>
-        /// <param name="result"><see cref="Deque{T}"/> The object at the head.</param>
+        /// <param name="result">The object at the head of the <see cref="Deque{T}"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="Deque{T}"/> is not empty; otherwise, <see langword="false"/>.</returns>
         public bool TryPeekFirst(out T result)
         {
@@ -149,7 +149,7 @@ namespace Aurora.Collections
         /// <summary>
         /// Returns the object at the tail of the <see cref="Deque{T}"/>.
         /// </summary>
-        /// <returns><see cref="Deque{T}"/> The object at the tail.</returns>
+        /// <returns>The object at the tail of the <see cref="Deque{T}"/>.</returns>
         public T PeekLast()
         {
             if (_size == 0)
@@ -164,7 +164,7 @@ namespace Aurora.Collections
         /// <summary>
         /// Assigns the object at the tail of the <see cref="Deque{T}"/> to the <paramref name="result"/> parameter.
         /// </summary>
-        /// <param name="result"><see cref="Deque{T}"/> The object at the tail.</param>
+        /// <param name="result">The object at the tail of the <see cref="Deque{T}"/>.</param>
         /// <returns><see langword="true"/> if the <see cref="Deque{T}"/> is not empty; otherwise, <see langword="false"/>.</returns>
         public bool TryPeekLast(out T result)
         {
@@ -182,7 +182,7 @@ namespace Aurora.Collections
         /// <summary>
         /// Adds an object to the head of the <see cref="Deque{T}"/>.
         /// </summary>
-        /// <param name="item">The element to add.</param>
+        /// <param name="item">The object to add to the head of the <see cref="Deque{T}"/>.</param>
         public void EnqueueFirst(T item)
         {
             if (_size == _array.Length)
@@ -198,7 +198,7 @@ namespace Aurora.Collections
         /// <summary>
         /// Adds an object to the tail of the <see cref="Deque{T}"/>.
         /// </summary>
-        /// <param name="item">The element to add.</param>
+        /// <param name="item">The object to add to the tail of the <see cref="Deque{T}"/>.</param>
         public void EnqueueLast(T item)
         {
             if (_size == _array.Length)
@@ -221,7 +221,7 @@ namespace Aurora.Collections
         /// </summary>
         /// <param name="index">The zero-based index at which to insert <paramref name="item"/>.</param>
         /// <param name="item">The object to insert.</param>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or is greater than the number of elements in the <see cref="Deque{T}"/>.</exception>
         public void Insert(int index, T item)
         {
             if (index < 0 || index > _size)
@@ -480,7 +480,7 @@ namespace Aurora.Collections
         /// Copies all elements from the <see cref="Deque{T}"/> into the specified array.
         /// </summary>
         /// <param name="array">The array into which the elements of the <see cref="Deque{T}"/> are copied.</param>
-        /// <param name="arrayIndex"><paramref name="array"/> , the zero-based index at which copying begins.</param>
+        /// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
         /// <exception cref="ArgumentNullException"><paramref name="array"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="arrayIndex"/> is less than 0 or greater than the length of <paramref name="array"/>.</exception>
         /// <exception cref="ArgumentException">The number of elements in the <see cref="Deque{T}"/> is greater than the available space in <paramref name="array"/> from <paramref name="arrayIndex"/> to the end.</exception>

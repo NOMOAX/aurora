@@ -11,9 +11,9 @@ namespace Aurora
         /// <summary>
         /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">The 1st hash code involved in the combination.</param>
-        /// <param name="h2">The 2nd hash code involved in the combination.</param>
-        /// <returns>The combined result of 2 hash codes.</returns>
+        /// <param name="h1">The first hash code involved in the combination.</param>
+        /// <param name="h2">The second hash code involved in the combination.</param>
+        /// <returns>The combined result of two hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(int h1, int h2)
         {
@@ -23,10 +23,10 @@ namespace Aurora
         /// <summary>
         /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">The 1st hash code involved in the combination.</param>
-        /// <param name="h2">The 2nd hash code involved in the combination.</param>
-        /// <param name="h3">The 3rd hash code involved in the combination.</param>
-        /// <returns>The combined result of 3 hash codes.</returns>
+        /// <param name="h1">The first hash code involved in the combination.</param>
+        /// <param name="h2">The second hash code involved in the combination.</param>
+        /// <param name="h3">The third hash code involved in the combination.</param>
+        /// <returns>The combined result of three hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(int h1, int h2, int h3)
         {
@@ -36,11 +36,11 @@ namespace Aurora
         /// <summary>
         /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">The 1st hash code involved in the combination.</param>
-        /// <param name="h2">The 2nd hash code involved in the combination.</param>
-        /// <param name="h3">The 3rd hash code involved in the combination.</param>
-        /// <param name="h4">The 4th hash code involved in the combination.</param>
-        /// <returns>The combined result of 4 hash codes.</returns>
+        /// <param name="h1">The first hash code involved in the combination.</param>
+        /// <param name="h2">The second hash code involved in the combination.</param>
+        /// <param name="h3">The third hash code involved in the combination.</param>
+        /// <param name="h4">The fourth hash code involved in the combination.</param>
+        /// <returns>The combined result of four hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(int h1, int h2, int h3, int h4)
         {
@@ -50,12 +50,12 @@ namespace Aurora
         /// <summary>
         /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">The 1st hash code involved in the combination.</param>
-        /// <param name="h2">The 2nd hash code involved in the combination.</param>
-        /// <param name="h3">The 3rd hash code involved in the combination.</param>
-        /// <param name="h4">The 4th hash code involved in the combination.</param>
-        /// <param name="h5">The 5th hash code involved in the combination.</param>
-        /// <returns>The combined result of 5 hash codes.</returns>
+        /// <param name="h1">The first hash code involved in the combination.</param>
+        /// <param name="h2">The second hash code involved in the combination.</param>
+        /// <param name="h3">The third hash code involved in the combination.</param>
+        /// <param name="h4">The fourth hash code involved in the combination.</param>
+        /// <param name="h5">The fifth hash code involved in the combination.</param>
+        /// <returns>The combined result of five hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(int h1, int h2, int h3, int h4, int h5)
         {
@@ -65,13 +65,13 @@ namespace Aurora
         /// <summary>
         /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">The 1st hash code involved in the combination.</param>
-        /// <param name="h2">The 2nd hash code involved in the combination.</param>
-        /// <param name="h3">The 3rd hash code involved in the combination.</param>
-        /// <param name="h4">The 4th hash code involved in the combination.</param>
-        /// <param name="h5">The 5th hash code involved in the combination.</param>
-        /// <param name="h6">The 6th hash code involved in the combination.</param>
-        /// <returns>The combined result of 6 hash codes.</returns>
+        /// <param name="h1">The first hash code involved in the combination.</param>
+        /// <param name="h2">The second hash code involved in the combination.</param>
+        /// <param name="h3">The third hash code involved in the combination.</param>
+        /// <param name="h4">The fourth hash code involved in the combination.</param>
+        /// <param name="h5">The fifth hash code involved in the combination.</param>
+        /// <param name="h6">The sixth hash code involved in the combination.</param>
+        /// <returns>The combined result of six hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(int h1, int h2, int h3, int h4, int h5, int h6)
         {
@@ -81,14 +81,14 @@ namespace Aurora
         /// <summary>
         /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">The 1st hash code involved in the combination.</param>
-        /// <param name="h2">The 2nd hash code involved in the combination.</param>
-        /// <param name="h3">The 3rd hash code involved in the combination.</param>
-        /// <param name="h4">The 4th hash code involved in the combination.</param>
-        /// <param name="h5">The 5th hash code involved in the combination.</param>
-        /// <param name="h6">The 6th hash code involved in the combination.</param>
-        /// <param name="h7">The 7th hash code involved in the combination.</param>
-        /// <returns>The combined result of 7 hash codes.</returns>
+        /// <param name="h1">The first hash code involved in the combination.</param>
+        /// <param name="h2">The second hash code involved in the combination.</param>
+        /// <param name="h3">The third hash code involved in the combination.</param>
+        /// <param name="h4">The fourth hash code involved in the combination.</param>
+        /// <param name="h5">The fifth hash code involved in the combination.</param>
+        /// <param name="h6">The sixth hash code involved in the combination.</param>
+        /// <param name="h7">The seventh hash code involved in the combination.</param>
+        /// <returns>The combined result of seven hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(int h1, int h2, int h3, int h4, int h5, int h6, int h7)
         {
@@ -98,15 +98,15 @@ namespace Aurora
         /// <summary>
         /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">The 1st hash code involved in the combination.</param>
-        /// <param name="h2">The 2nd hash code involved in the combination.</param>
-        /// <param name="h3">The 3rd hash code involved in the combination.</param>
-        /// <param name="h4">The 4th hash code involved in the combination.</param>
-        /// <param name="h5">The 5th hash code involved in the combination.</param>
-        /// <param name="h6">The 6th hash code involved in the combination.</param>
-        /// <param name="h7">The 7th hash code involved in the combination.</param>
-        /// <param name="h8">The 8th hash code involved in the combination.</param>
-        /// <returns>The combined result of 8 hash codes.</returns>
+        /// <param name="h1">The first hash code involved in the combination.</param>
+        /// <param name="h2">The second hash code involved in the combination.</param>
+        /// <param name="h3">The third hash code involved in the combination.</param>
+        /// <param name="h4">The fourth hash code involved in the combination.</param>
+        /// <param name="h5">The fifth hash code involved in the combination.</param>
+        /// <param name="h6">The sixth hash code involved in the combination.</param>
+        /// <param name="h7">The seventh hash code involved in the combination.</param>
+        /// <param name="h8">The eighth hash code involved in the combination.</param>
+        /// <returns>The combined result of eight hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(int h1, int h2, int h3, int h4, int h5, int h6, int h7, int h8)
         {
@@ -116,16 +116,16 @@ namespace Aurora
         /// <summary>
         /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">The 1st hash code involved in the combination.</param>
-        /// <param name="h2">The 2nd hash code involved in the combination.</param>
-        /// <param name="h3">The 3rd hash code involved in the combination.</param>
-        /// <param name="h4">The 4th hash code involved in the combination.</param>
-        /// <param name="h5">The 5th hash code involved in the combination.</param>
-        /// <param name="h6">The 6th hash code involved in the combination.</param>
-        /// <param name="h7">The 7th hash code involved in the combination.</param>
-        /// <param name="h8">The 8th hash code involved in the combination.</param>
-        /// <param name="h9">The 9th hash code involved in the combination.</param>
-        /// <returns>The combined result of 9 hash codes.</returns>
+        /// <param name="h1">The first hash code involved in the combination.</param>
+        /// <param name="h2">The second hash code involved in the combination.</param>
+        /// <param name="h3">The third hash code involved in the combination.</param>
+        /// <param name="h4">The fourth hash code involved in the combination.</param>
+        /// <param name="h5">The fifth hash code involved in the combination.</param>
+        /// <param name="h6">The sixth hash code involved in the combination.</param>
+        /// <param name="h7">The seventh hash code involved in the combination.</param>
+        /// <param name="h8">The eighth hash code involved in the combination.</param>
+        /// <param name="h9">The ninth hash code involved in the combination.</param>
+        /// <returns>The combined result of nine hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(int h1, int h2, int h3, int h4, int h5, int h6, int h7, int h8, int h9)
         {
@@ -135,17 +135,17 @@ namespace Aurora
         /// <summary>
         /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">The 1st hash code involved in the combination.</param>
-        /// <param name="h2">The 2nd hash code involved in the combination.</param>
-        /// <param name="h3">The 3rd hash code involved in the combination.</param>
-        /// <param name="h4">The 4th hash code involved in the combination.</param>
-        /// <param name="h5">The 5th hash code involved in the combination.</param>
-        /// <param name="h6">The 6th hash code involved in the combination.</param>
-        /// <param name="h7">The 7th hash code involved in the combination.</param>
-        /// <param name="h8">The 8th hash code involved in the combination.</param>
-        /// <param name="h9">The 9th hash code involved in the combination.</param>
-        /// <param name="h10">The 10th hash code involved in the combination.</param>
-        /// <returns>The combined result of 10 hash codes.</returns>
+        /// <param name="h1">The first hash code involved in the combination.</param>
+        /// <param name="h2">The second hash code involved in the combination.</param>
+        /// <param name="h3">The third hash code involved in the combination.</param>
+        /// <param name="h4">The fourth hash code involved in the combination.</param>
+        /// <param name="h5">The fifth hash code involved in the combination.</param>
+        /// <param name="h6">The sixth hash code involved in the combination.</param>
+        /// <param name="h7">The seventh hash code involved in the combination.</param>
+        /// <param name="h8">The eighth hash code involved in the combination.</param>
+        /// <param name="h9">The ninth hash code involved in the combination.</param>
+        /// <param name="h10">The tenth hash code involved in the combination.</param>
+        /// <returns>The combined result of ten hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(
             int h1,
@@ -165,18 +165,18 @@ namespace Aurora
         /// <summary>
         /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">The 1st hash code involved in the combination.</param>
-        /// <param name="h2">The 2nd hash code involved in the combination.</param>
-        /// <param name="h3">The 3rd hash code involved in the combination.</param>
-        /// <param name="h4">The 4th hash code involved in the combination.</param>
-        /// <param name="h5">The 5th hash code involved in the combination.</param>
-        /// <param name="h6">The 6th hash code involved in the combination.</param>
-        /// <param name="h7">The 7th hash code involved in the combination.</param>
-        /// <param name="h8">The 8th hash code involved in the combination.</param>
-        /// <param name="h9">The 9th hash code involved in the combination.</param>
-        /// <param name="h10">The 10th hash code involved in the combination.</param>
-        /// <param name="h11">The 11th hash code involved in the combination.</param>
-        /// <returns>The combined result of 11 hash codes.</returns>
+        /// <param name="h1">The first hash code involved in the combination.</param>
+        /// <param name="h2">The second hash code involved in the combination.</param>
+        /// <param name="h3">The third hash code involved in the combination.</param>
+        /// <param name="h4">The fourth hash code involved in the combination.</param>
+        /// <param name="h5">The fifth hash code involved in the combination.</param>
+        /// <param name="h6">The sixth hash code involved in the combination.</param>
+        /// <param name="h7">The seventh hash code involved in the combination.</param>
+        /// <param name="h8">The eighth hash code involved in the combination.</param>
+        /// <param name="h9">The ninth hash code involved in the combination.</param>
+        /// <param name="h10">The tenth hash code involved in the combination.</param>
+        /// <param name="h11">The eleventh hash code involved in the combination.</param>
+        /// <returns>The combined result of eleven hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(
             int h1,
@@ -197,19 +197,19 @@ namespace Aurora
         /// <summary>
         /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">The 1st hash code involved in the combination.</param>
-        /// <param name="h2">The 2nd hash code involved in the combination.</param>
-        /// <param name="h3">The 3rd hash code involved in the combination.</param>
-        /// <param name="h4">The 4th hash code involved in the combination.</param>
-        /// <param name="h5">The 5th hash code involved in the combination.</param>
-        /// <param name="h6">The 6th hash code involved in the combination.</param>
-        /// <param name="h7">The 7th hash code involved in the combination.</param>
-        /// <param name="h8">The 8th hash code involved in the combination.</param>
-        /// <param name="h9">The 9th hash code involved in the combination.</param>
-        /// <param name="h10">The 10th hash code involved in the combination.</param>
-        /// <param name="h11">The 11th hash code involved in the combination.</param>
-        /// <param name="h12">The 12th hash code involved in the combination.</param>
-        /// <returns>The combined result of 12 hash codes.</returns>
+        /// <param name="h1">The first hash code involved in the combination.</param>
+        /// <param name="h2">The second hash code involved in the combination.</param>
+        /// <param name="h3">The third hash code involved in the combination.</param>
+        /// <param name="h4">The fourth hash code involved in the combination.</param>
+        /// <param name="h5">The fifth hash code involved in the combination.</param>
+        /// <param name="h6">The sixth hash code involved in the combination.</param>
+        /// <param name="h7">The seventh hash code involved in the combination.</param>
+        /// <param name="h8">The eighth hash code involved in the combination.</param>
+        /// <param name="h9">The ninth hash code involved in the combination.</param>
+        /// <param name="h10">The tenth hash code involved in the combination.</param>
+        /// <param name="h11">The eleventh hash code involved in the combination.</param>
+        /// <param name="h12">The twelfth hash code involved in the combination.</param>
+        /// <returns>The combined result of twelve hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(
             int h1,
@@ -231,20 +231,20 @@ namespace Aurora
         /// <summary>
         /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">The 1st hash code involved in the combination.</param>
-        /// <param name="h2">The 2nd hash code involved in the combination.</param>
-        /// <param name="h3">The 3rd hash code involved in the combination.</param>
-        /// <param name="h4">The 4th hash code involved in the combination.</param>
-        /// <param name="h5">The 5th hash code involved in the combination.</param>
-        /// <param name="h6">The 6th hash code involved in the combination.</param>
-        /// <param name="h7">The 7th hash code involved in the combination.</param>
-        /// <param name="h8">The 8th hash code involved in the combination.</param>
-        /// <param name="h9">The 9th hash code involved in the combination.</param>
-        /// <param name="h10">The 10th hash code involved in the combination.</param>
-        /// <param name="h11">The 11th hash code involved in the combination.</param>
-        /// <param name="h12">The 12th hash code involved in the combination.</param>
-        /// <param name="h13">The 13th hash code involved in the combination.</param>
-        /// <returns>The combined result of 13 hash codes.</returns>
+        /// <param name="h1">The first hash code involved in the combination.</param>
+        /// <param name="h2">The second hash code involved in the combination.</param>
+        /// <param name="h3">The third hash code involved in the combination.</param>
+        /// <param name="h4">The fourth hash code involved in the combination.</param>
+        /// <param name="h5">The fifth hash code involved in the combination.</param>
+        /// <param name="h6">The sixth hash code involved in the combination.</param>
+        /// <param name="h7">The seventh hash code involved in the combination.</param>
+        /// <param name="h8">The eighth hash code involved in the combination.</param>
+        /// <param name="h9">The ninth hash code involved in the combination.</param>
+        /// <param name="h10">The tenth hash code involved in the combination.</param>
+        /// <param name="h11">The eleventh hash code involved in the combination.</param>
+        /// <param name="h12">The twelfth hash code involved in the combination.</param>
+        /// <param name="h13">The thirteenth hash code involved in the combination.</param>
+        /// <returns>The combined result of thirteen hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(
             int h1,
@@ -267,21 +267,21 @@ namespace Aurora
         /// <summary>
         /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">The 1st hash code involved in the combination.</param>
-        /// <param name="h2">The 2nd hash code involved in the combination.</param>
-        /// <param name="h3">The 3rd hash code involved in the combination.</param>
-        /// <param name="h4">The 4th hash code involved in the combination.</param>
-        /// <param name="h5">The 5th hash code involved in the combination.</param>
-        /// <param name="h6">The 6th hash code involved in the combination.</param>
-        /// <param name="h7">The 7th hash code involved in the combination.</param>
-        /// <param name="h8">The 8th hash code involved in the combination.</param>
-        /// <param name="h9">The 9th hash code involved in the combination.</param>
-        /// <param name="h10">The 10th hash code involved in the combination.</param>
-        /// <param name="h11">The 11th hash code involved in the combination.</param>
-        /// <param name="h12">The 12th hash code involved in the combination.</param>
-        /// <param name="h13">The 13th hash code involved in the combination.</param>
-        /// <param name="h14">The 14th hash code involved in the combination.</param>
-        /// <returns>The combined result of 14 hash codes.</returns>
+        /// <param name="h1">The first hash code involved in the combination.</param>
+        /// <param name="h2">The second hash code involved in the combination.</param>
+        /// <param name="h3">The third hash code involved in the combination.</param>
+        /// <param name="h4">The fourth hash code involved in the combination.</param>
+        /// <param name="h5">The fifth hash code involved in the combination.</param>
+        /// <param name="h6">The sixth hash code involved in the combination.</param>
+        /// <param name="h7">The seventh hash code involved in the combination.</param>
+        /// <param name="h8">The eighth hash code involved in the combination.</param>
+        /// <param name="h9">The ninth hash code involved in the combination.</param>
+        /// <param name="h10">The tenth hash code involved in the combination.</param>
+        /// <param name="h11">The eleventh hash code involved in the combination.</param>
+        /// <param name="h12">The twelfth hash code involved in the combination.</param>
+        /// <param name="h13">The thirteenth hash code involved in the combination.</param>
+        /// <param name="h14">The fourteenth hash code involved in the combination.</param>
+        /// <returns>The combined result of fourteen hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(
             int h1,
@@ -305,22 +305,22 @@ namespace Aurora
         /// <summary>
         /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">The 1st hash code involved in the combination.</param>
-        /// <param name="h2">The 2nd hash code involved in the combination.</param>
-        /// <param name="h3">The 3rd hash code involved in the combination.</param>
-        /// <param name="h4">The 4th hash code involved in the combination.</param>
-        /// <param name="h5">The 5th hash code involved in the combination.</param>
-        /// <param name="h6">The 6th hash code involved in the combination.</param>
-        /// <param name="h7">The 7th hash code involved in the combination.</param>
-        /// <param name="h8">The 8th hash code involved in the combination.</param>
-        /// <param name="h9">The 9th hash code involved in the combination.</param>
-        /// <param name="h10">The 10th hash code involved in the combination.</param>
-        /// <param name="h11">The 11th hash code involved in the combination.</param>
-        /// <param name="h12">The 12th hash code involved in the combination.</param>
-        /// <param name="h13">The 13th hash code involved in the combination.</param>
-        /// <param name="h14">The 14th hash code involved in the combination.</param>
-        /// <param name="h15">The 15th hash code involved in the combination.</param>
-        /// <returns>The combined result of 15 hash codes.</returns>
+        /// <param name="h1">The first hash code involved in the combination.</param>
+        /// <param name="h2">The second hash code involved in the combination.</param>
+        /// <param name="h3">The third hash code involved in the combination.</param>
+        /// <param name="h4">The fourth hash code involved in the combination.</param>
+        /// <param name="h5">The fifth hash code involved in the combination.</param>
+        /// <param name="h6">The sixth hash code involved in the combination.</param>
+        /// <param name="h7">The seventh hash code involved in the combination.</param>
+        /// <param name="h8">The eighth hash code involved in the combination.</param>
+        /// <param name="h9">The ninth hash code involved in the combination.</param>
+        /// <param name="h10">The tenth hash code involved in the combination.</param>
+        /// <param name="h11">The eleventh hash code involved in the combination.</param>
+        /// <param name="h12">The twelfth hash code involved in the combination.</param>
+        /// <param name="h13">The thirteenth hash code involved in the combination.</param>
+        /// <param name="h14">The fourteenth hash code involved in the combination.</param>
+        /// <param name="h15">The fifteenth hash code involved in the combination.</param>
+        /// <returns>The combined result of fifteen hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(
             int h1,
@@ -345,23 +345,23 @@ namespace Aurora
         /// <summary>
         /// Combines hash codes.
         /// </summary>
-        /// <param name="h1">The 1st hash code involved in the combination.</param>
-        /// <param name="h2">The 2nd hash code involved in the combination.</param>
-        /// <param name="h3">The 3rd hash code involved in the combination.</param>
-        /// <param name="h4">The 4th hash code involved in the combination.</param>
-        /// <param name="h5">The 5th hash code involved in the combination.</param>
-        /// <param name="h6">The 6th hash code involved in the combination.</param>
-        /// <param name="h7">The 7th hash code involved in the combination.</param>
-        /// <param name="h8">The 8th hash code involved in the combination.</param>
-        /// <param name="h9">The 9th hash code involved in the combination.</param>
-        /// <param name="h10">The 10th hash code involved in the combination.</param>
-        /// <param name="h11">The 11th hash code involved in the combination.</param>
-        /// <param name="h12">The 12th hash code involved in the combination.</param>
-        /// <param name="h13">The 13th hash code involved in the combination.</param>
-        /// <param name="h14">The 14th hash code involved in the combination.</param>
-        /// <param name="h15">The 15th hash code involved in the combination.</param>
-        /// <param name="h16">The 16th hash code involved in the combination.</param>
-        /// <returns>The combined result of 16 hash codes.</returns>
+        /// <param name="h1">The first hash code involved in the combination.</param>
+        /// <param name="h2">The second hash code involved in the combination.</param>
+        /// <param name="h3">The third hash code involved in the combination.</param>
+        /// <param name="h4">The fourth hash code involved in the combination.</param>
+        /// <param name="h5">The fifth hash code involved in the combination.</param>
+        /// <param name="h6">The sixth hash code involved in the combination.</param>
+        /// <param name="h7">The seventh hash code involved in the combination.</param>
+        /// <param name="h8">The eighth hash code involved in the combination.</param>
+        /// <param name="h9">The ninth hash code involved in the combination.</param>
+        /// <param name="h10">The tenth hash code involved in the combination.</param>
+        /// <param name="h11">The eleventh hash code involved in the combination.</param>
+        /// <param name="h12">The twelfth hash code involved in the combination.</param>
+        /// <param name="h13">The thirteenth hash code involved in the combination.</param>
+        /// <param name="h14">The fourteenth hash code involved in the combination.</param>
+        /// <param name="h15">The fifteenth hash code involved in the combination.</param>
+        /// <param name="h16">The sixteenth hash code involved in the combination.</param>
+        /// <returns>The combined result of sixteen hash codes.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CombineHashCodes(
             int h1,

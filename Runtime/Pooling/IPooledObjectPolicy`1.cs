@@ -13,9 +13,9 @@
         T Create();
 
         /// <summary>
-        /// The operation to perform on an available pool member or a newly created object when it is retrieved from the pool or created.
+        /// The operation to perform on an available pooled object or a newly created object when it is retrieved from the pool or created.
         /// </summary>
-        /// <param name="obj">An available member retrieved from the pool, or a newly created object.</param>
+        /// <param name="obj">An available object retrieved from the pool, or a newly created object.</param>
         void Get(T obj);
 
         /// <summary>

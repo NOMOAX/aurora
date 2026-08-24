@@ -5,7 +5,7 @@ namespace Aurora.Pooling
     /// <summary>
     /// A strategy for managing stacks in the pool.
     /// </summary>
-    /// <typeparam name="T">The type of the stack's members.</typeparam>
+    /// <typeparam name="T">The type of the elements in the stack.</typeparam>
     public class PooledStackPolicy<T> : IPooledObjectPolicy<Stack<T>>
     {
         /// <summary>

@@ -46,7 +46,7 @@ namespace Aurora.Collections
         /// <param name="isFixedFunc">A method whose return value is <see cref="bool"/>. The return value indicates whether the node is fixed.</param>
         /// <param name="fixAsyncFunc">A method whose return value is <see cref="Task"/>. The return value is a task; executing it attempts to fix the node asynchronously.</param>
         /// <param name="priority">The priority. A parent node accesses and processes children with a smaller priority first.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="isFixedFunc"/> or <paramref name="fixAsyncFunc"/> is <see langword="null"/></exception>
+        /// <exception cref="ArgumentNullException"><paramref name="isFixedFunc"/> or <paramref name="fixAsyncFunc"/> is <see langword="null"/>.</exception>
         public Fixer(Func<bool> isFixedFunc, Func<CancellationToken, Task> fixAsyncFunc, int priority)
         {
             _isFixedFunc  = isFixedFunc ?? throw new ArgumentNullException(nameof(isFixedFunc));

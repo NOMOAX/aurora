@@ -7,7 +7,7 @@ namespace Aurora.Pooling
     /// <summary>
     /// A using scope for a stack.
     /// </summary>
-    /// <typeparam name="T">The type of the stack's members.</typeparam>
+    /// <typeparam name="T">The type of the elements in the stack.</typeparam>
     public sealed class StackUsingScope<T> : IDisposable
     {
         private Stack<T> _stack;

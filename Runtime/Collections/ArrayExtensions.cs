@@ -11,7 +11,7 @@ namespace Aurora.Collections
         /// Shuffles the order of elements in the current array.
         /// </summary>
         /// <param name="array">The array to shuffle.</param>
-        /// <typeparam name="T">The type of the elements in the collection.</typeparam>
+        /// <typeparam name="T">The type of the elements in the array.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="array"/> is <see langword="null"/>.</exception>
         public static void ShuffleInPlace<T>(this T[] array)
         {
@@ -28,10 +28,10 @@ namespace Aurora.Collections
         /// <param name="array">The array to shuffle.</param>
         /// <param name="index">The starting index of the range to shuffle.</param>
         /// <param name="count">The number of elements in the range to shuffle.</param>
-        /// <typeparam name="T">The type of the elements in the collection.</typeparam>
+        /// <typeparam name="T">The type of the elements in the array.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="array"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> and <paramref name="count"/> do not specify a valid range within <paramref name="array"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in <paramref name="array"/>.</exception>
         public static void ShuffleInPlace<T>(this T[] array, int index, int count)
         {
             if (array == null)

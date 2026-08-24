@@ -7,7 +7,7 @@ namespace Aurora.Pooling
     /// <summary>
     /// A using scope for a list.
     /// </summary>
-    /// <typeparam name="T">The type of the list's members.</typeparam>
+    /// <typeparam name="T">The type of the elements in the list.</typeparam>
     public sealed class ListUsingScope<T> : IDisposable
     {
         private List<T> _list;
