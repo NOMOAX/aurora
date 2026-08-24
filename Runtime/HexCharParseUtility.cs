@@ -64,7 +64,7 @@ namespace Aurora
         /// </summary>
         /// <param name="c">The hexadecimal character.</param>
         /// <param name="value">The numeric value (0 to 15) corresponding to the hexadecimal character. If <paramref name="c"/> is not a valid hexadecimal character (0-9, A-F, a-f), it is <see cref="byte.MaxValue"/>.</param>
-        /// <returns>Returns <see langword="true"/> if <paramref name="c"/> is a valid hexadecimal character (0-9, A-F, a-f); otherwise, returns <see langword="false"/>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="c"/> is a valid hexadecimal character (0-9, A-F, a-f); otherwise, returns <see langword="false"/>.</returns>
         public static bool TryParse(char c, out byte value)
         {
             if (c >= LookupLength)
