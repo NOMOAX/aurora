@@ -56,26 +56,26 @@ namespace Aurora.IO
             {
                 throw new ArgumentNullException(nameof(path));
             }
-            var normalizedRelativeTo = ReplaceBackslashWithForwardSlash(Path.GetFullPath(relativeTo));
-            var normalizedPath       = ReplaceBackslashWithForwardSlash(Path.GetFullPath(path));
-            var normalizedRelativePath =
-                ReplaceBackslashWithForwardSlash(Path.GetRelativePath(normalizedRelativeTo, normalizedPath));
+            var relativeTo1  = Path.GetFullPath(relativeTo);
+            var path1        = Path.GetFullPath(path);
+            var relativePath = Path.GetRelativePath(relativeTo1, path1);
 
-            if (normalizedRelativePath is ".")
+            if (relativePath is ".")
             {
                 relationship = PathRelationship.IsEqualTo;
                 return ".";
             }
-            if (normalizedRelativePath == normalizedPath)
+            if (relativePath == path1)
             {
                 relationship = PathRelationship.AreUnrelated;
                 return null;
             }
             relationship =
-                normalizedRelativePath is ".." || normalizedRelativePath.StartsWith("../", StringComparison.Ordinal)
+                relativePath is ".." || relativePath.Length >= 3 && relativePath[0] is '.' && relativePath[1] is '.' &&
+                relativePath[2] is '/' or '\\'
                     ? PathRelationship.IsNeitherChildOfNorEqualTo
                     : PathRelationship.IsChildOf;
-            return normalizedRelativePath;
+            return relativePath;
         }
     }
 }
