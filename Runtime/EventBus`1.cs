@@ -2,39 +2,182 @@
 using System.Collections.Concurrent;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Aurora
 {
     /// <summary>
-    /// Manages event registration, unregistration, and publishing.
+    /// Manages event registration, unregistration, publishing, and awaiting publication.
     /// </summary>
     /// <typeparam name="T">The type of event identifier.</typeparam>
     public static class EventBus<T>
     {
-        /// <remarks>Represents the signature of the private <c>TryRemoveInternal</c> method in <c>ConcurrentDictionary&lt;T, Delegate&gt;</c> class.</remarks>
+        private class Promise : TaskCompletionSource<VoidResult>
+        {
+            private readonly T _id;
+
+            private readonly Delegate _delegate;
+
+            internal Promise(T id)
+            {
+                _id       = id;
+                _delegate = (Action)Complete;
+                Subscribe();
+            }
+
+            private void Complete()
+            {
+                if (TrySetResult(new VoidResult()))
+                {
+                    CleanUp();
+                }
+            }
+
+            protected virtual void CleanUp()
+            {
+                Unsubscribe();
+            }
+
+            private void Subscribe()
+            {
+                while (true)
+                {
+                    if (PromiseDelegates.TryGetValue(_id, out var oldDelegate))
+                    {
+                        var newDelegate = Delegate.Combine(oldDelegate, _delegate);
+                        if (PromiseDelegates.TryUpdate(_id, newDelegate, oldDelegate))
+                        {
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        if (PromiseDelegates.TryAdd(_id, _delegate))
+                        {
+                            return;
+                        }
+                    }
+                }
+            }
+
+            private void Unsubscribe()
+            {
+                while (true)
+                {
+                    if (!PromiseDelegates.TryGetValue(_id, out var oldDelegate))
+                    {
+                        return;
+                    }
+                    var newDelegate = Delegate.Remove(oldDelegate, _delegate);
+                    if (newDelegate != null)
+                    {
+                        if (PromiseDelegates.TryUpdate(_id, newDelegate, oldDelegate))
+                        {
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        if (TryRemoveFromPromiseDelegates(_id, oldDelegate))
+                        {
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+        private sealed class PromiseWithCancellation : Promise
+        {
+            private static readonly Action<object> Cancel = state =>
+            {
+                var (promiseWithCancellation, cancellationToken) =
+                    (Tuple<PromiseWithCancellation, CancellationToken>)state;
+                if (promiseWithCancellation.TrySetCanceled(cancellationToken))
+                {
+                    promiseWithCancellation.CleanUp();
+                }
+            };
+
+            private readonly CancellationTokenRegistration _cancellationTokenRegistration;
+
+            internal PromiseWithCancellation(T id, CancellationToken cancellationToken) : base(id)
+            {
+                _cancellationTokenRegistration = cancellationToken.Register(
+                    Cancel,
+                    Tuple.Create(this, cancellationToken)
+                );
+                if (Task.IsCompleted)
+                {
+                    _cancellationTokenRegistration.Dispose();
+                }
+            }
+
+            protected override void CleanUp()
+            {
+                _cancellationTokenRegistration.Dispose();
+                base.CleanUp();
+            }
+        }
+
+        /// <remarks>Represents the signature of the private <c>TryRemoveInternal</c> method of the <c>ConcurrentDictionary&lt;T, Delegate&gt;</c> class.</remarks>
         private delegate bool TryRemoveInternalMethodSignature(
             T            key,
             out Delegate value,
             bool         matchValue,
             Delegate     oldValue);
 
+        /// <summary>
+        /// The events.
+        /// </summary>
         private static readonly ConcurrentDictionary<T, Delegate> Delegates = new();
 
         /// <remarks>Represents the private <c>TryRemoveInternal</c> method of the <see cref="Delegates"/> instance.</remarks>
-        private static readonly TryRemoveInternalMethodSignature TryRemoveInternal;
+        private static readonly TryRemoveInternalMethodSignature TryRemoveInternalForDelegates;
+
+        /// <summary>
+        /// The <see cref="Promise.Complete"/> methods of promises.
+        /// </summary>
+        /// <remarks>The type of values is actually <see cref="Action"/>.</remarks>
+        private static readonly ConcurrentDictionary<T, Delegate> PromiseDelegates = new();
+
+        /// <remarks>Represents the private <c>TryRemoveInternal</c> method of the <see cref="PromiseDelegates"/> instance.</remarks>
+        private static readonly TryRemoveInternalMethodSignature TryRemoveInternalForPromiseDelegates;
 
         static EventBus()
         {
-            TryRemoveInternal = (TryRemoveInternalMethodSignature)Delegate.CreateDelegate(
+            const string name = "TryRemoveInternal";
+            const BindingFlags bindingAttr = BindingFlags.Instance | BindingFlags.NonPublic;
+            const Binder binder = null;
+            const CallingConventions callConvention = CallingConventions.Standard | CallingConventions.HasThis;
+            var types = new[] { typeof(T), typeof(Delegate).MakeByRefType(), typeof(bool), typeof(Delegate) };
+            const ParameterModifier[] modifiers = null;
+
+            TryRemoveInternalForDelegates = (TryRemoveInternalMethodSignature)Delegate.CreateDelegate(
                 typeof(TryRemoveInternalMethodSignature),
                 Delegates,
                 typeof(ConcurrentDictionary<T, Delegate>).GetMethod(
-                    "TryRemoveInternal",
-                    BindingFlags.Instance | BindingFlags.NonPublic,
-                    null,
-                    CallingConventions.Standard | CallingConventions.HasThis,
-                    new[] { typeof(T), typeof(Delegate).MakeByRefType(), typeof(bool), typeof(Delegate) },
-                    null
+                    name,
+                    bindingAttr,
+                    binder,
+                    callConvention,
+                    types,
+                    modifiers
+                )!,
+                true
+            );
+
+            TryRemoveInternalForPromiseDelegates = (TryRemoveInternalMethodSignature)Delegate.CreateDelegate(
+                typeof(TryRemoveInternalMethodSignature),
+                PromiseDelegates,
+                typeof(ConcurrentDictionary<T, Delegate>).GetMethod(
+                    name,
+                    bindingAttr,
+                    binder,
+                    callConvention,
+                    types,
+                    modifiers
                 )!,
                 true
             );
@@ -118,7 +261,17 @@ namespace Aurora
         /// <exception cref="ArgumentException">The element of the <paramref name="args"/> array does not match the signature of the event associated with <paramref name="id"/>.</exception>
         public static object Publish(T id, params object[] args)
         {
-            return Delegates.TryGetValue(id, out var @delegate) ? Invoke(@delegate, args) : null;
+            try
+            {
+                return Delegates.TryGetValue(id, out var @delegate) ? Invoke(@delegate, args) : null;
+            }
+            finally
+            {
+                if (PromiseDelegates.TryGetValue(id, out var promiseDelegate))
+                {
+                    ((Action)promiseDelegate)();
+                }
+            }
         }
 
         /// <summary>
@@ -131,7 +284,19 @@ namespace Aurora
         /// <exception cref="ArgumentException">The element of the <paramref name="args"/> array does not match the signature of the event associated with <paramref name="id"/>.</exception>
         public static object[] PublishAll(T id, params object[] args)
         {
-            return Delegates.TryGetValue(id, out var @delegate) ? InvokeAll(@delegate, args) : Array.Empty<object>();
+            try
+            {
+                return Delegates.TryGetValue(id, out var @delegate)
+                           ? InvokeAll(@delegate, args)
+                           : Array.Empty<object>();
+            }
+            finally
+            {
+                if (PromiseDelegates.TryGetValue(id, out var promiseDelegate))
+                {
+                    ((Action)promiseDelegate)();
+                }
+            }
         }
 
         /// <summary>
@@ -140,6 +305,54 @@ namespace Aurora
         public static void Clear()
         {
             Delegates.Clear();
+            while (!PromiseDelegates.IsEmpty)
+            {
+                var snapshot = PromiseDelegates.ToArray();
+                foreach (var (_, promiseDelegate) in snapshot)
+                {
+                    ((Action)promiseDelegate)();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns a task that completes when the event identified by the specified identifier is published.
+        /// </summary>
+        /// <param name="id">The unique identifier of the event.</param>
+        /// <returns>A task that completes when the event identified by <paramref name="id"/> is published.</returns>
+        /// <remarks>
+        /// The task is completed when <see cref="Publish"/> or <see cref="PublishAll"/> is called with <paramref name="id"/>.
+        /// If the event has already been published before this method is called, the returned task will never complete.
+        /// </remarks>
+        public static Task WhenPublished(T id)
+        {
+            var promise = new Promise(id);
+            return promise.Task;
+        }
+
+        /// <summary>
+        /// Returns a task that completes when the event identified by the specified identifier is published, or when the cancellation token is canceled.
+        /// </summary>
+        /// <param name="id">The unique identifier of the event.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the wait.</param>
+        /// <returns>A task that completes when the event identified by <paramref name="id"/> is published, or when <paramref name="cancellationToken"/> is canceled.</returns>
+        /// <exception cref="OperationCanceledException">The <paramref name="cancellationToken"/> was canceled.</exception>
+        /// <remarks>
+        /// The task is completed when <see cref="Publish"/> or <see cref="PublishAll"/> is called with <paramref name="id"/>.
+        /// If the event has already been published before this method is called, the returned task will never complete.
+        /// </remarks>
+        public static Task WhenPublished(T id, CancellationToken cancellationToken)
+        {
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return Task.FromCanceled(cancellationToken);
+            }
+            var promise = cancellationToken.CanBeCanceled switch
+            {
+                false => new Promise(id),
+                true  => new PromiseWithCancellation(id, cancellationToken)
+            };
+            return promise.Task;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -162,12 +375,23 @@ namespace Aurora
         }
 
         /// <summary>
-        /// Removes a key and value from <see cref="Delegates"/>. Both the key and value must match the entry in the dictionary for it to be removed.
+        /// Removes a key and value from <see cref="Delegates"/>.
         /// </summary>
+        /// <remarks>Both the specified key and value must match the entry in the dictionary for it to be removed.</remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool TryRemove(T key, Delegate oldValue)
         {
-            return TryRemoveInternal(key, out _, true, oldValue);
+            return TryRemoveInternalForDelegates(key, out _, true, oldValue);
+        }
+
+        /// <summary>
+        /// Removes a key and value from <see cref="PromiseDelegates"/>.
+        /// </summary>
+        /// <remarks>Both the specified key and value must match the entry in the dictionary for it to be removed.</remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool TryRemoveFromPromiseDelegates(T key, Delegate oldValue)
+        {
+            return TryRemoveInternalForPromiseDelegates(key, out _, true, oldValue);
         }
     }
 }
