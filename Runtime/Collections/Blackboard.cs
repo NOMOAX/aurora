@@ -73,6 +73,28 @@ namespace Aurora.Collections
         }
 
         /// <summary>
+        /// Removes the key-value pair with the specified key from the <see cref="Blackboard"/> and returns the value.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <returns>The value associated with the specified key.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
+        /// <exception cref="KeyNotFoundException">The specified key was not found.</exception>
+        /// <exception cref="InvalidCastException">The value associated with the specified key cannot be converted to type <typeparamref name="TValue"/>.</exception>
+        public TValue GetAndRemoveValue<TValue>(string key)
+        {
+            if (key == null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+            if (!_dictionary.Remove(key, out var value))
+            {
+                throw new KeyNotFoundException($"The key '{key}' was not found.");
+            }
+            return (TValue)value;
+        }
+
+        /// <summary>
         /// Removes the key-value pair with the specified key from the <see cref="Blackboard"/>.
         /// </summary>
         /// <param name="key">The key.</param>
