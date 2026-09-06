@@ -1,9 +1,19 @@
-﻿namespace Aurora.Collections
+﻿using System;
+
+namespace Aurora.Collections
 {
     /// <summary>
     /// A state (in a finite state machine).
     /// </summary>
     /// <typeparam name="T">The type of the state's identifier.</typeparam>
+    /// <remarks>
+    /// Types recommended for use as the state's identifier:
+    /// <list type="bullet">
+    /// <item><description><see cref="Type"/> (most recommended)</description></item>
+    /// <item><description>an enumeration type</description></item>
+    /// <item><description><see cref="string"/></description></item>
+    /// </list>
+    /// </remarks>
     public interface IState<T>
     {
         /// <summary>

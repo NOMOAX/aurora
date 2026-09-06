@@ -9,80 +9,80 @@ namespace Aurora.Collections
     /// A finite state machine.
     /// </summary>
     /// <typeparam name="T">The type of the state's identifier.</typeparam>
+    /// <remarks>
+    /// Types recommended for use as the state's identifier:
+    /// <list type="bullet">
+    /// <item><description><see cref="Type"/> (most recommended)</description></item>
+    /// <item><description>an enumeration type</description></item>
+    /// <item><description><see cref="string"/></description></item>
+    /// </list>
+    /// </remarks>
     /// <example>
     /// <code>
-    /// public enum MyStateId
+    /// public sealed class MyStateOne : IState&lt;Type&gt;
     /// {
-    ///     One,
-    ///     Two
-    /// }
-    /// public sealed class MyStateOne : IState&lt;MyStateId&gt;
-    /// {
-    ///     public override MyStateId Id => MyStateId.One;
-    ///     public void OnEnter(StateMachine&lt;MyStateId&gt; stateMachine, IState&lt;MyStateId&gt; from)
+    ///     public Type Id => typeof(MyStateOne);
+    ///     public void OnEnter(StateMachine&lt;Type&gt; stateMachine, IState&lt;Type&gt; from)
     ///     {
-    ///         if (from != null)
+    ///         if (from == null)
     ///         {
-    ///             Console.WriteLine($"[{nameof(MyStateOne)}.{nameof(OnEnter)}] transitioned from state {from.Id} to state {Id}");
+    ///             Console.WriteLine($"[{nameof(MyStateOne)}.{nameof(OnEnter)}] NULL -> {Id}");
     ///         }
     ///         else
     ///         {
-    ///             Console.WriteLine($"[{nameof(MyStateOne)}.{nameof(OnEnter)}] entered state {Id}");
+    ///             Console.WriteLine($"[{nameof(MyStateOne)}.{nameof(OnEnter)}] {from.Id} -> {Id}");
     ///         }
-    ///         stateMachine.ScheduleTransitionTo(MyStateId.Two);
+    ///         stateMachine.ScheduleTransitionTo(typeof(MyStateTwo));
     ///     }
-    ///     public void OnExit(StateMachine&lt;MyStateId&gt; stateMachine, IState&lt;MyStateId&gt; to)
+    ///     public void OnExit(StateMachine&lt;Type&gt; stateMachine, IState&lt;Type&gt; to)
     ///     {
     ///         if (to != null)
     ///         {
-    ///             Console.WriteLine($"[{nameof(MyStateOne)}.{nameof(OnExit)}] transitioned from state {Id} to state {to.Id}");
+    ///             Console.WriteLine($"[{nameof(MyStateOne)}.{nameof(OnExit)}] {Id} -> {to.Id}");
     ///         }
     ///         else
     ///         {
-    ///             Console.WriteLine($"[{nameof(MyStateOne)}.{nameof(OnExit)}] exited state {Id}");
+    ///             Console.WriteLine($"[{nameof(MyStateOne)}.{nameof(OnExit)}] {Id} -> NULL");
     ///         }
     ///     }
     /// }
-    /// public sealed class MyStateTwo : IState&lt;MyStateId&gt;
+    /// public sealed class MyStateTwo : IState&lt;Type&gt;
     /// {
-    ///     public override MyStateId Id => MyStateId.Two;
-    ///     public void OnEnter(StateMachine&lt;MyStateId&gt; stateMachine, IState&lt;MyStateId&gt; from)
+    ///     public Type Id => typeof(MyStateTwo);
+    ///     public void OnEnter(StateMachine&lt;Type&gt; stateMachine, IState&lt;Type&gt; from)
     ///     {
-    ///         if (from != null)
+    ///         if (from == null)
     ///         {
-    ///             Console.WriteLine($"[{nameof(MyStateTwo)}.{nameof(OnEnter)}] transitioned from state {from.Id} to state {Id}");
+    ///             Console.WriteLine($"[{nameof(MyStateTwo)}.{nameof(OnEnter)}] NULL -> {Id}");
     ///         }
     ///         else
     ///         {
-    ///             Console.WriteLine($"[{nameof(MyStateTwo)}.{nameof(OnEnter)}] entered state {Id}");
+    ///             Console.WriteLine($"[{nameof(MyStateTwo)}.{nameof(OnEnter)}] {from.Id} -> {Id}");
     ///         }
     ///         stateMachine.ScheduleTransitionToNull();
     ///     }
-    ///     public void OnExit(StateMachine&lt;MyStateId&gt; stateMachine, IState&lt;MyStateId&gt; to)
+    ///     public void OnExit(StateMachine&lt;Type&gt; stateMachine, IState&lt;Type&gt; to)
     ///     {
     ///         if (to != null)
     ///         {
-    ///             Console.WriteLine($"[{nameof(MyStateTwo)}.{nameof(OnExit)}] transitioned from state {Id} to state {to.Id}");
+    ///             Console.WriteLine($"[{nameof(MyStateTwo)}.{nameof(OnExit)}] {Id} -> {to.Id}");
     ///         }
     ///         else
     ///         {
-    ///             Console.WriteLine($"[{nameof(MyStateTwo)}.{nameof(OnExit)}] exited state {Id}");
+    ///             Console.WriteLine($"[{nameof(MyStateTwo)}.{nameof(OnExit)}] {Id} -> NULL");
     ///         }
     ///     }
     /// }
     /// // state machine owner code
-    /// var stateMachine = new StateMachine&lt;MyStateId&gt;();
+    /// var stateMachine = new StateMachine&lt;Type&gt;();
     /// stateMachine.AddState(new MyStateOne());
     /// stateMachine.AddState(new MyStateTwo());
-    /// stateMachine.ScheduleTransitionTo(MyStateId.One);
-    /// while (stateMachine.Update())
-    /// {
-    /// }
-    /// // output:
-    /// // [MyStateOne.OnEnter] entered One state
-    /// // [MyStateOne.OnExit] transitioned from One state to Two state
-    /// // [MyStateTwo.OnEnter] transitioned from One state to Two state
-    /// // [MyStateTwo.OnExit] exited Two state
+    /// stateMachine.ScheduleTransitionTo(typeof(MyStateOne));
+    /// stateMachine.Update(); // output 1: [MyStateOne.OnEnter] NULL -> MyStateOne
+    /// stateMachine.Update(); // output 2: [MyStateOne.OnExit] MyStateOne -> MyStateTwo
+    ///                        // output 3: [MyStateTwo.OnEnter] MyStateOne -> MyStateTwo
+    /// stateMachine.Update(); // output 4: [MyStateTwo.OnExit] MyStateTwo -> NULL
+    /// var updated = stateMachine.Update(); // updated: false
     /// </code>
     /// </example>
     public class StateMachine<T>
@@ -225,6 +225,7 @@ namespace Aurora.Collections
         /// <exception cref="ArgumentNullException"><paramref name="stateId"/> is <see langword="null"/>.</exception>
         /// <exception cref="InvalidOperationException">The finite state machine is entering or exiting a state.</exception>
         /// <exception cref="ArgumentException">The finite state machine has no state with the identifier <paramref name="stateId"/>.</exception>
+        /// <remarks>This method must not be called from within the finite state machine (for example, from <see cref="IState{T}.OnEnter"/> or <see cref="IState{T}.OnExit"/>). In this case, call <see cref="ScheduleTransitionTo(T)"/> instead.</remarks>
         public void TransitionTo(T stateId)
         {
             if (stateId == null)
@@ -233,17 +234,6 @@ namespace Aurora.Collections
             }
             ThrowIfEnteringOrExiting();
             InternalScheduleTransitionTo(stateId);
-            InternalUpdate();
-        }
-
-        /// <summary>
-        /// Makes the <see cref="StateMachine{T}"/> exit the current state.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">The finite state machine is entering or exiting a state.</exception>
-        public void TransitionToNull()
-        {
-            ThrowIfEnteringOrExiting();
-            InternalScheduleTransitionToNull();
             InternalUpdate();
         }
 
@@ -264,16 +254,6 @@ namespace Aurora.Collections
             InternalScheduleTransitionTo(stateId);
         }
 
-        /// <summary>
-        /// Schedules the <see cref="StateMachine{T}"/> to exit the current state on the next execution of <see cref="Update"/>.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">The finite state machine is exiting a state.</exception>
-        public void ScheduleTransitionToNull()
-        {
-            ThrowIfExiting();
-            InternalScheduleTransitionToNull();
-        }
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void InternalScheduleTransitionTo(T stateId)
         {
@@ -283,6 +263,28 @@ namespace Aurora.Collections
             }
             _isStateTransitionScheduled = true;
             _nextState                  = nextState;
+        }
+
+        /// <summary>
+        /// Makes the <see cref="StateMachine{T}"/> exit the current state.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">The finite state machine is entering or exiting a state.</exception>
+        /// <remarks>This method must not be called from within the finite state machine (for example, from <see cref="IState{T}.OnEnter"/> or <see cref="IState{T}.OnExit"/>). In this case, call <see cref="ScheduleTransitionToNull"/> instead.</remarks>
+        public void TransitionToNull()
+        {
+            ThrowIfEnteringOrExiting();
+            InternalScheduleTransitionToNull();
+            InternalUpdate();
+        }
+
+        /// <summary>
+        /// Schedules the <see cref="StateMachine{T}"/> to exit the current state on the next execution of <see cref="Update"/>.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">The finite state machine is exiting a state.</exception>
+        public void ScheduleTransitionToNull()
+        {
+            ThrowIfExiting();
+            InternalScheduleTransitionToNull();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -297,6 +299,7 @@ namespace Aurora.Collections
         /// </summary>
         /// <returns><see langword="true"/> if a state transition was performed; otherwise, <see langword="false"/>.</returns>
         /// <exception cref="InvalidOperationException">The finite state machine is entering or exiting a state.</exception>
+        /// <remarks>This method must not be called from within the finite state machine (for example, from <see cref="IState{T}.OnEnter"/> or <see cref="IState{T}.OnExit"/>).</remarks>
         public bool Update()
         {
             ThrowIfEnteringOrExiting();
