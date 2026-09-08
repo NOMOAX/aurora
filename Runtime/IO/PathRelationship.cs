@@ -1,4 +1,4 @@
-﻿namespace Aurora.IO
+namespace Aurora.IO
 {
     /// <summary>
     /// Represents the relationship between the <c>relativeTo</c> and <c>path</c> parameters of the <see cref="PathUtility.GetRelativePath"/> method.

@@ -1,4 +1,4 @@
-﻿namespace Aurora.Interpolations
+namespace Aurora.Interpolations
 {
     /// <summary>
     /// Interpolation modes.

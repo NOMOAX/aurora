@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Aurora.Collections
@@ -53,7 +53,7 @@ namespace Aurora.Collections
             }
             for (var i = index + count - 1; i > index; i--)
             {
-                var j = RandomUtility.Shared.Next(index, i + 1);
+                var j = AuroraRandom.Instance.Next(index, i + 1);
                 if (i == j)
                 {
                     continue;

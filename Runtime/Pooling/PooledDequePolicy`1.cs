@@ -1,4 +1,4 @@
-﻿using Aurora.Collections;
+using Aurora.Collections;
 
 namespace Aurora.Pooling
 {

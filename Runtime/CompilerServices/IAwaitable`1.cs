@@ -1,4 +1,4 @@
-﻿namespace Aurora.CompilerServices
+namespace Aurora.CompilerServices
 {
     /// <summary>
     /// Provides a context to await while switching to the target environment.

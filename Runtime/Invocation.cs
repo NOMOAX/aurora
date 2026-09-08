@@ -1,4 +1,4 @@
-﻿namespace Aurora
+namespace Aurora
 {
     /// <summary>
     /// An invocation that returns no value.

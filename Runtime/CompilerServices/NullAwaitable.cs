@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Aurora.Diagnostics;
 
 namespace Aurora.CompilerServices

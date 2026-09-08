@@ -1,4 +1,4 @@
-﻿namespace Aurora.Diagnostics
+namespace Aurora.Diagnostics
 {
     /// <summary>
     /// The format used when logging the date and time.

@@ -1,4 +1,4 @@
-﻿namespace Aurora
+namespace Aurora
 {
     internal sealed class InvocationResult<TResult> : Invocation<TResult>
     {

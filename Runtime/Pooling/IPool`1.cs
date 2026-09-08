@@ -1,4 +1,4 @@
-﻿namespace Aurora.Pooling
+namespace Aurora.Pooling
 {
     /// <summary>
     /// An object pool.

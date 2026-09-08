@@ -1,4 +1,4 @@
-﻿namespace Aurora.Collections
+namespace Aurora.Collections
 {
     /// <summary>
     /// The order in which a tree structure is enumerated.

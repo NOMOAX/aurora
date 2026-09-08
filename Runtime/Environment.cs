@@ -1,4 +1,4 @@
-﻿namespace Aurora
+namespace Aurora
 {
     /// <summary>
     /// The runtime environment.

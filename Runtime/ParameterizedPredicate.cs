@@ -1,4 +1,4 @@
-﻿namespace Aurora
+namespace Aurora
 {
     /// <summary>
     /// Represents a method that defines a set of conditions and determines whether a specified object satisfies them.

@@ -1,4 +1,4 @@
-﻿namespace Aurora.Diagnostics
+namespace Aurora.Diagnostics
 {
     /// <summary>
     /// A program logger.

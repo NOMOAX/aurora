@@ -1,4 +1,4 @@
-﻿namespace Aurora.Pooling
+namespace Aurora.Pooling
 {
     /// <summary>
     /// Represents a policy for managing pooled objects.
