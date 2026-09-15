@@ -1,7 +1,7 @@
-﻿# Aurora
+# Aurora
 
 ![许可](https://img.shields.io/github/license/NOMOAX/aurora)
-![版本](https://img.shields.io/badge/version-1.0.0-blue)
+![版本](https://img.shields.io/badge/version-1.5.1-blue)
 ![最低 Unity 版本](https://img.shields.io/badge/Unity-2021.2%2B-blue)
 
 适用于 Unity 的高性能、低内存消耗的 C# 工具包。
@@ -30,13 +30,22 @@ public static void OnMessageReceived(string sender, string content)
     Console.WriteLine($"{sender} : {content}");
 }
 
-EventBus<int>.Subscribe(Id.SendMessage, (Action<string>)OnMessageReceived);   // 注册事件
+EventBus<int>.Subscribe(Id.SendMessage, (Action<string>)OnMessageReceived); // 注册事件
 EventBus<int>.Unsubscribe(Id.SendMessage, (Action<string>)OnMessageReceived); // 取消注册事件
-EventBus<int>.Publish(Id.SendMessage, "Kevin", "Hello world!");               // 发布事件
+EventBus<int>.Publish(Id.SendMessage, "Kevin", "Hello world!"); // 发布事件
 
 // 如果事件的委托类型具有返回值，则可以在发布事件时一次性收集所有返回值
 var phoneNumbers = (string[])EventBus<int>.PublishAll(Id.GetPhoneNumber);
+
+// 等待事件发布
+await EventBus<int>.WhenPublished(Id.SendMessage);
+
+// 也可以传入 CancellationToken，在取消时结束等待
+await EventBus<int>.WhenPublished(Id.SendMessage, cancellationToken);
 ```
+
+`WhenPublished` 返回一个 `Task`，它在指定事件被 `Publish` / `PublishAll` 发布时完成。如果该事件在调用之前已经发布过，
+那么这次调用不会因为那次发布而完成。`Clear` 会让所有正在等待的 `Task` 完成。
 
 ## 日志
 
@@ -52,10 +61,10 @@ Log.D("调试信息，仅 DEBUG 构建时输出");
 Log.W("可用磁盘空间不足");
 Log.E("参数为 null");
 
-Log.Level = LogLevel.I;                               // 只记录 I / W / E 级别
-Log.WithCurrentThreadId = true;                       // 附带当前线程标识
+Log.Level = LogLevel.I; // 只记录 I / W / E 级别
+Log.WithCurrentThreadId = true; // 附带当前线程标识
 Log.DateTimeOffsetFormat = LogDateTimeOffsetFormat.S; // 附带 ISO 8601 时间戳
-Log.Logger = new MyLogger();                          // 切换自定义实现
+Log.Logger = new MyLogger(); // 切换自定义实现
 
 public sealed class MyLogger : ILogger
 {
@@ -70,25 +79,25 @@ public sealed class MyLogger : ILogger
 
 ### 双端队列
 
-`Deque<T>` 使用环状缓冲区实现，从头部与尾部增删均为 O (1)。实现 `IList<T>` / `IReadOnlyList<T>`，支持按索引读写，容量不足时自动增长。
+`Deque<T>` 使用环状缓冲区实现，从头部与尾部增删均为 O(1)。实现 `IList<T>` / `IReadOnlyList<T>`，支持按索引读写，容量不足时自动增长。
 
 ```csharp
 var deque = new Deque<int>();
-deque.EnqueueLast(10);  // [10]
+deque.EnqueueLast(10); // [10]
 deque.EnqueueFirst(20); // [20, 10]
-deque.EnqueueLast(30);  // [20, 10, 30]
+deque.EnqueueLast(30); // [20, 10, 30]
 
 var head = deque.DequeueFirst(); // 20
-var tail = deque.DequeueLast();  // 30
+var tail = deque.DequeueLast(); // 30
 
 // 不移除地查看头部
-if (deque.TryPeekFirst(out var first)) 
+if (deque.TryPeekFirst(out var first))
 {
     // ...
 }
 
 // 队空时安全取出
-if (deque.TryDequeueLast(out var last)) 
+if (deque.TryDequeueLast(out var last))
 {
     // ...
 }
@@ -113,8 +122,8 @@ heap.AddRange(new[] { 2, 0, 5 }); // [0, 1, 2, 3, 5]
 
 var count = heap.Count; // 5
 
-heap.Peek();    // 0
-heap.Take();    // 0
+heap.Peek(); // 0
+heap.Take(); // 0
 heap.Remove(5); // 按值移除
 heap.Clear();
 
@@ -138,12 +147,12 @@ root.Add(a);
 root.Add(b);
 a.Add(new Node());
 
-root.IsRoot;   // true
-b.IsLeaf;      // true
-a.Level;       // 1
-root.Root;     // 根节点自身
-root.IsParentOf(b);   // true
-b.IsChildOf(root);    // true
+root.IsRoot; // true
+b.IsLeaf; // true
+a.Level; // 1
+root.Root; // 根节点自身
+root.IsParentOf(b); // true
+b.IsChildOf(root); // true
 ```
 
 ```csharp
@@ -211,11 +220,11 @@ foreach (Node node in root.GetEnumerator(TreeEnumOrder.BreadthFirstLr))
 `StateMachine<T>` 是通用有限状态机，`T` 为状态的标识符类型。支持进入/退出回调、立即切换与延迟切换、切换期间的状态保护。
 
 ```csharp
-// 建议使用 Type 作为状态的标识符类型
+// 建议使用 System.Type 作为状态的标识符类型
 
 public sealed class IdleState : IState<Type>
 {
-    IState<Type>.Id => typeof(IdleState);
+    Type IState<Type>.Id => typeof(IdleState);
 
     void IState<Type>.OnEnter(StateMachine<Type> stateMachine, IState<Type> from)
     {
@@ -225,6 +234,7 @@ public sealed class IdleState : IState<Type>
 
     void IState<Type>.OnExit(StateMachine<Type> stateMachine, IState<Type> to)
     {
+        // 离开该状态时无需额外处理
     }
 }
 
@@ -232,13 +242,13 @@ public sealed class WorkingState : IState<Type>
 {
     private int _current = 0;
 
-    public int _total = 100;
+    private int _total = 100;
 
-    Type IState<Type>.Id => OperationId.Working;
+    Type IState<Type>.Id => typeof(WorkingState);
 
     void IState<Type>.OnEnter(StateMachine<Type> stateMachine, IState<Type> from)
     {
-        Console.WriteLine*("Start working.");
+        Console.WriteLine("Start working.");
         _current++;
         if (_current < _total)
         {
@@ -246,7 +256,7 @@ public sealed class WorkingState : IState<Type>
         }
         else
         {
-            stateMachine.ScheduleTransitionTo(null);
+            stateMachine.ScheduleTransitionToNull();
         }
     }
 
@@ -254,11 +264,11 @@ public sealed class WorkingState : IState<Type>
     {
         if (_current < _total)
         {
-            Console.WriteLine*("Have a rest.");
+            Console.WriteLine("Have a rest.");
         }
         else
         {
-            Console.WriteLine*("Stop working.");
+            Console.WriteLine("Stop working.");
         }
     }
 }
@@ -266,7 +276,7 @@ public sealed class WorkingState : IState<Type>
 var stateMachine = new StateMachine<Type>();
 stateMachine.AddState(new IdleState());
 stateMachine.AddState(new WorkingState());
-stateMachine.ScheduleTransitionTo(Type.Idle);
+stateMachine.ScheduleTransitionTo(typeof(IdleState));
 
 Console.WriteLine(stateMachine.CurrentState); // null
 // 持续更新状态机，直到中止
@@ -277,12 +287,12 @@ while (stateMachine.Update())
 Console.WriteLine(stateMachine.CurrentState); // null
 ```
 
-| 方法                       | 允许被谁调用   | 何时生效      |
-|----------------------------|----------------|---------------|
-| `TransitionTo`             | 状态机的持有者 | 立即          |
-| `TransitionToNull`         | 状态机的持有者 | 立即          |
-| `ScheduleTransitionTo`     | 任意           | 下一次 Update |
-| `ScheduleTransitionToNull` | 任意           | 下一次 Update |
+| 方法                       | 允许被谁调用       | 何时生效      |
+|----------------------------|--------------------|---------------|
+| `TransitionTo`             | 状态机的直接持有者 | 立即          |
+| `TransitionToNull`         | 状态机的直接持有者 | 立即          |
+| `ScheduleTransitionTo`     | 任意               | 下一次 Update |
+| `ScheduleTransitionToNull` | 任意               | 下一次 Update |
 
 #### 黑板
 
@@ -298,6 +308,8 @@ if (blackboard.TryGetValue("hp", out var hp1))
     Console.WriteLine(hp1);
 }
 
+var removed = blackboard.GetAndRemoveValue<int>("hp"); // 取值的同时移除
+
 blackboard.Remove("hp");
 blackboard.Clear();
 
@@ -312,7 +324,7 @@ stateMachine.Blackboard.SetValue("coin", 100);
 
 一个简单的例子：
 
-- 假设你正在 Unity 中开发笔记功能
+- 假设你正在开发笔记应用
 - 有一个笔记窗口（以下简称为 `A`），它有关闭按钮
 - 在 `A` 下，有一个图片列表子窗口（以下简称为 `B`）和一个笔记正文子窗口（以下简称为 `C`）
 - 假设用户正在 `B` 中上传图片，但仍在上传中，上传的异步任务为 `B.uploadTask`
@@ -364,6 +376,7 @@ private async void OnCloseButtonClicked()
         {
             // 保存并关闭
             case 0:
+            {
                 bool isFixed;
                 bool isCanceled;
                 fullScreenMask.SetActive(true); // 挡住整个屏幕，防止用户这时候点击界面元素
@@ -374,7 +387,7 @@ private async void OnCloseButtonClicked()
                     isFixed = await fixerA.EnsureFixedAsync();
                     isCanceled = false;
                 }
-                catch (OperationCanceledException e)
+                catch (OperationCanceledException)
                 {
                     isFixed = false;
                     isCanceled = true;
@@ -397,8 +410,10 @@ private async void OnCloseButtonClicked()
                     Log.W("上传图片/保存笔记正文失败，请重试");
                 }
                 break;
+            }
             // 关闭
             case 1:
+            {
                 // 在新的上下文中等待 _uploadTask 和 _saveTask，确保它们的异常会被捕获
                 if (_uploadTask != null)
                 {
@@ -418,12 +433,17 @@ private async void OnCloseButtonClicked()
                 }
                 Close();
                 break;
+            }
             // 取消
             case 2:
+            {
                 // 用户点击了取消，什么都不做
                 break;
+            }
             default:
+            {
                 throw new ArgumentOutOfRangeException(nameof(result));
+            }
         }
     }
 }
@@ -435,9 +455,12 @@ private async void OnCloseButtonClicked()
 `NullEnumerator` / `NullEnumerator<T>` 是空对象模式，不产生任何元素。
 
 ```csharp
-IEnumerator<int> enumerator = GetExistingEnumerator();             // 已有的枚举器
+IEnumerator<int> enumerator = GetExistingEnumerator(); // 已有的枚举器
 IEnumerable<int> enumerable = new EnumeratorEnumerable<int>(enumerator);
-foreach (var item in enumerable) { }   // 直接迭代
+foreach (var item in enumerable)
+{
+    // 直接迭代
+}
 
 // 空序列（单例）
 IEnumerable<int> empty = new EnumeratorEnumerable<int>(NullEnumerator<int>.Instance);
@@ -451,16 +474,14 @@ IEnumerable<int> empty = new EnumeratorEnumerable<int>(NullEnumerator<int>.Insta
 
 ```csharp
 int[] numbers = { 1, 2, 3, 4, 5 };
-numbers.ShuffleInPlace();                     // 就地洗牌
 
-int firstEven = numbers.Find((n, _) => n % 2 == 0, null);       // 2
-int index      = numbers.FindIndex((n, _) => n % 2 == 0, null); // 1
+// 判据通过 state 传入，避免闭包分配
+int firstElementGreaterThanThree = numbers.Find((element, state) => element > state, 3); // 4
+int firstElementIndexGreaterThanThree = numbers.FindIndex((element, state) => element > state, 3); // 3
+int lastElementLessThanThree = numbers.FindLast((element, state) => element < state, 3); // 2
+int lastElementIndexLessThanThree = numbers.FindLastIndex((element, state) => element < state, 3); // 1
 
-// 带状态参数的重载，需要捕获上下文时无需闭包
-int firstBig  = numbers.Find((n, state) => n > state, 3);        // 第一个大于 3 的元素
-int lastIndex = numbers.FindLastIndex((n, state) => n > state, 3);
-
-string[] texts = numbers.ConvertAll((n, _) => n.ToString(), null);
+numbers.ShuffleInPlace(); // 就地洗牌
 ```
 
 ### 列表扩展方法
@@ -469,10 +490,11 @@ string[] texts = numbers.ConvertAll((n, _) => n.ToString(), null);
 
 ```csharp
 List<int> list = new() { 1, 2, 3, 4, 5 };
-list.ShuffleInPlace();
 
-int removed = list.RemoveAll((n, _) => n % 2 == 0, null);   // 删除全部偶数，返回删除数量
-int found   = list.FindLast((n, _) => n > 2, null);         // 5
+int firstElementGreaterThanThree = list.Find((element, state) => element > state, 3); // 4
+int removedElementCount = list.RemoveAll((element, state) => element > state, 3); // 删除全部大于 3 的元素，返回删除数量
+
+list.ShuffleInPlace(); // 就地洗牌
 ```
 
 ### 序列索引检索
@@ -481,47 +503,38 @@ int found   = list.FindLast((n, _) => n > 2, null);         // 5
 **索引**。
 
 ```csharp
-IEnumerable<string> sequence = GetNames();   // 任意序列
-int i = sequence.IndexOf("target");          // 第一个匹配的索引，找不到为 -1
+IEnumerable<string> sequence = GetNames(); // 任意序列
+int i = sequence.IndexOf("target"); // 第一个匹配的索引，找不到为 -1
 int j = sequence.LastIndexOf("target");
 int k = sequence.FindIndex(s => s.StartsWith("A"));
-```
-
-### 扩展方法与快速路径
-
-以上方法均以扩展方法的形式对 `IEnumerable<T>` 提供。当输入实际是数组或 `List<T>` 时会自动走 `Array.IndexOf` /
-`List.IndexOf` 等快速路径。
-
-```csharp
-string[] array = { "a", "b", "c" };
-int idx = array.IndexOf("b");    // 数组同样可以直接调用，走快速路径
 ```
 
 ## 排序
 
 ### 快速排序
 
-`QuickSort` 对 `IList<T>`（数组、`List<T>` 等）就地排序，支持指定范围、自定义比较器与键值数组同步排序。
+`QuickSort` 使用标准快速排序算法实现，但在内部避免了递归，因此不会因为待排序序列过长而栈溢出。
 
 ```csharp
 List<int> list = new() { 5, 3, 8, 1, 9 };
-QuickSort.Sort(list);                                              // 默认比较器
-QuickSort.Sort(list, Comparer<int>.Default);                       // 指定比较器
-QuickSort.Sort(list, 1, 3);                                        // 仅排序部分范围
+QuickSort.Sort(list); // 默认比较器
+QuickSort.Sort(list, Comparer<int>.Default); // 指定比较器
+QuickSort.Sort(list, 1, 3); // 仅排序部分范围
 
 var items = new List<Item>();
-QuickSort.Sort(items, Comparer<Item>.Create((a, b) => a.Price.CompareTo(b.Price)));   // 自定义比较器
-QuickSort.Sort(keys, values);                                      // 键与值同步排序
+QuickSort.Sort(items, Comparer<Item>.Create((a, b) => a.Price.CompareTo(b.Price))); // 自定义比较器
+QuickSort.Sort(keys, values); // 如果 keys 中的元素被交换了位置，也相应地交换 values 中对应位置的元素，从而确保 key 和 value 始终匹配
 ```
 
 ### Tim 排序
 
-`TimSort` 提供与 `QuickSort` 相同的能力（就地排序、范围、自定义比较器、键值同步排序），适合对接近有序的序列表现更稳定的场景。
+`TimSort` 是从 Java 源码中的原逻辑复刻而来。它提供与 `QuickSort` 相同的能力（就地排序、范围、自定义比较器、键值同步排序），速度稍慢于
+`QuickSort`，但它是稳定的——相等元素在排序前后的相对顺序不会改变。
 
 ```csharp
 List<int> list = new() { 5, 3, 8, 1, 9 };
-TimSort.Sort(list);                                // 默认比较器
-TimSort.Sort(list, Comparer<int>.Default);         // 指定比较器
+TimSort.Sort(list); // 默认比较器
+TimSort.Sort(list, Comparer<int>.Default); // 指定比较器
 ```
 
 ### 比较器工具
@@ -547,7 +560,7 @@ QuickSort.Sort(items, byName);
 `PredefinedPools` 提供常用类型的现成池，按需借用、用完归还即可：
 
 - `ByteArrayLength4096`（`byte[4096]`）、`MemoryStream`、`Stopwatch`、`StringBuilder`
-- `PredefinedPools<T>`：`ArrayLength2` / `ArrayLength4` / `ArrayLength8`、`HashSet<T>`、`List<T>`、`Queue<T>`、`Stack<T>`、
+- `PredefinedPools<T>`：`ArrayLength2`、`ArrayLength4`、`ArrayLength8`、`HashSet<T>`、`List<T>`、`Queue<T>`、`Stack<T>`、
   `Deque<T>`
 - `PredefinedPools<T1, T2>`：`Dictionary<TKey, TValue>`
 
@@ -560,7 +573,7 @@ try
 }
 finally
 {
-    PredefinedPools.StringBuilder.Return(builder);   // 归还并复位
+    PredefinedPools.StringBuilder.Return(builder); // 归还并复位
 }
 ```
 
@@ -587,22 +600,37 @@ sb.Append("...");
 自定义对象池：实现 `IPooledObjectPolicy<T>` 的创建、取出、归还与销毁策略，交给 `Pool<T>` 管理。
 
 ```csharp
-public sealed class BulletPolicy : IPooledObjectPolicy<Bullet>
+public sealed class PooledBulletPolicy : IPooledObjectPolicy<Bullet>
 {
-    public Bullet Create() => new Bullet();
-
-    public void Get(Bullet obj) { obj.Active = true; }    // 取出时激活
-
-    public bool Return(Bullet obj)                        // 返回 true 表示可回收
+    public Bullet Create()
     {
-        obj.Active = false;                               // 归还时复位
-        return true;
+        return new Bullet();
     }
 
-    public void Dispose(Bullet obj) { }                   // 池销毁或拒绝回收时释放
+    public void Get(Bullet obj)
+    {
+        // 取出时激活
+        obj.Active = true;
+    }
+
+    public bool Return(Bullet obj)
+    {
+        if (obj == null)
+        {
+            return false; // 返回 false 表示不可回收
+        }
+        obj.Active = false; // 归还时复位
+        return true; // 返回 true 表示可回收
+    }
+
+    public void Dispose(Bullet obj)
+    {
+        // 池销毁或拒绝回收时释放资源
+        obj?.Dispose(); // 释放 Bullet 自身占用的资源
+    }
 }
 
-IPool<Bullet> pool = new Pool<Bullet>(new BulletPolicy(), maximumRetained: 64);
+IPool<Bullet> pool = new Pool<Bullet>(new PooledBulletPolicy(), maximumRetained: 64);
 Bullet bullet = pool.Get();
 pool.Return(bullet);
 ```
@@ -611,7 +639,7 @@ pool.Return(bullet);
 
 基于 C# awaitable 约定的自定义 awaiter，用于 `async` 方法中的上下文切换。
 
-- `NullAwaitable`：立即完成，用于消除 CS1998（async 方法缺少 await）警告
+- `NullAwaitable`：立即完成，用于消除 CS1998（async 方法缺少 await）警告；请只用于临时用途。
 - `SynchronizationContextAwaitable`：切换到指定的 `SynchronizationContext`（如主线程）
 - `ThreadPoolThreadAwaitable`：切换到线程池线程
 
@@ -624,13 +652,13 @@ public async Task HeavyWorkAsync()
 
     // 切回主线程（主线程上保存的同步上下文）
     await new SynchronizationContextAwaitable(_mainContext);
-    ApplyResult();   // 在这里可以安全执行需要主线程的操作
+    ApplyResult(); // 在这里可以安全执行需要主线程的操作
 }
 
 public async Task PlaceholderAsync()
 {
-    await new NullAwaitable();   // 消除 CS1998 警告
-    // 尚未实现的逻辑
+    await new NullAwaitable(); // 消除 CS1998 警告
+    // TODO 尚未实现的逻辑
 }
 ```
 
@@ -638,74 +666,55 @@ public async Task PlaceholderAsync()
 
 ### 任务工具类
 
-`TaskUtility` 提供任务异常处理、结果转发与同步执行延续等辅助：
+`TaskUtility` 提供任务错误处理、状态转发与同步执行延续等辅助：
 
-- `BeginAwait`：在新上下文中等待任务
-- `ThrowIfFaultedOrCanceled`：任务出错抛出底层异常，取消则抛 `TaskCanceledException`
-- `GetBaseException`：获取任务失败的根源异常
-- `HandleFaultsAndCancellation`：把任务的完成/故障/取消转发给 `TaskCompletionSource`
+- `BeginAwait`：在新上下文中等待任务，不阻塞当前程序执行流
+- `ThrowIfFaultedOrCanceled`：任务处于错误状态时抛出底层异常，处于取消状态时抛 `TaskCanceledException`
+- `GetBaseException`：获取任务错误的根源异常
+- `HandleFaultsAndCancellation`：当任务处于错误或取消状态时，相应地让 `TaskCompletionSource` 也进入错误或取消状态
 - `ContinueWithSynchronously`：创建同步执行的延续任务
-
-```csharp
-Task job = RunAsync();
-
-TaskUtility.ContinueWithSynchronously(job, t => OnJobCompleted());   // 同步执行延续
-
-var tcs = new TaskCompletionSource<MyResult>();
-TaskUtility.HandleFaultsAndCancellation(job, tcs);   // 自动传播结果/异常/取消
-MyResult result = await tcs.Task;
-
-try
-{
-    TaskUtility.ThrowIfFaultedOrCanceled(job);
-}
-catch (Exception e)
-{
-    // 处理失败或取消
-}
-```
 
 ### 异步屏障
 
 `AsyncBarrier` 阻塞参与者，直到指定数量的参与者都发出来到信号后才一起继续，适合多任务阶段同步。
 
 ```csharp
-var barrier = new AsyncBarrier(3);   // 3 个参与者
+var barrier = new AsyncBarrier(3); // 3 个参与者
 
 // 三个并发任务各自执行：
-await barrier.SignalAndWait();       // 等待其余参与者全部到达
+await barrier.SignalAndWait(); // 等待其余参与者全部到达
 // 全部到达后各任务继续
 ```
 
-### `CancellationTokenSourceUtility`
+### CancellationTokenSourceUtility
 
 `CancellationTokenSourceUtility.IsDisposed` 检测 `CancellationTokenSource` 是否已被释放（官方 API 没有公开的检测手段）。
 
-```csharp
-if (CancellationTokenSourceUtility.IsDisposed(cts))
-{
-    // 已释放，进行相应处理
-}
-```
-
 ## 随机数工具
 
-- `RandomUtility`：全局共享的线程安全随机数（`RandomUtility.Shared`）
+- `RandomUtility`：全局随机数工具（内部使用 `AuroraRandom.Instance`）
 - `P(probability)`：按概率返回布尔值
-- `Choose` / `TryChoose`：按权重从集合中随机选取一个元素（可指定范围）
-- `GetChosenIndex`：按权重返回被选中的索引
-- `ThreadSafeRandom`：线程安全的 `Random` 子类；`NextDoubleIncludingOne` 返回 `[0, 1]` 闭区间
+- `Choose` / `TryChoose`：按权重从集合中随机选取一个元素，也可只在集合的一段范围内选取
+- `GetChosenIndex`：按权重返回被选中的索引，参数形式同上
+- `AuroraRandom`：`Random` 的派生类；`Instance` 是当前线程的实例（每个线程一个，避免多线程竞争）
+    - `NextDoubleIncludingOne()`：返回 `[0, 1]` 闭区间的 `double`
 
 ```csharp
-if (RandomUtility.P(0.3)) { /* 30% 概率 */ }
+if (RandomUtility.P(0.3))
+{
+    // 30% 概率
+}
 
-var items   = new List<string> { "普通", "稀有", "史诗" };
+var items = new List<string> { "普通", "稀有", "史诗" };
 var weights = new List<double> { 0.7, 0.2, 0.1 };
-string chosen = RandomUtility.Choose(items, weights);    // 按权重选取
-bool ok = RandomUtility.TryChoose(items, weights, out string picked);
-int index = RandomUtility.GetChosenIndex(weights);
+var chosen = RandomUtility.Choose(items, weights); // 按权重选取
+var ok = RandomUtility.TryChoose(items, weights, out var picked);
+var index = RandomUtility.GetChosenIndex(weights);
 
-double d = RandomUtility.Shared.NextDoubleIncludingOne();   // [0, 1] 闭区间
+// 只在集合的指定范围内选取
+var chosenInRange = RandomUtility.Choose(items, weights, 1, 2);
+
+var d = AuroraRandom.Instance.NextDoubleIncludingOne(); // [0, 1] 闭区间
 ```
 
 ## 枚举工具类
@@ -713,60 +722,67 @@ double d = RandomUtility.Shared.NextDoubleIncludingOne();   // [0, 1] 闭区间
 `EnumUtility<TEnum>` 提供枚举的常见反射与校验操作，结果已静态缓存，性能好。
 
 ```csharp
-foreach (string name in EnumUtility<MyEnum>.Names) { }     // 全部名称
-MyEnum[] values = EnumUtility<MyEnum>.Values;              // 全部值
+foreach (string name in EnumUtility<MyEnum>.Names)
+{
+    // 全部名称
+}
+MyEnum[] values = EnumUtility<MyEnum>.Values; // 全部值
 int count = EnumUtility<MyEnum>.Count;
 Type underlying = EnumUtility<MyEnum>.UnderlyingType;
-bool isBitwise = EnumUtility<MyEnum>.IsBitwise;            // 是否标志位枚举
+bool isBitwise = EnumUtility<MyEnum>.IsBitwise; // 是否标志位枚举
 
-bool defined = EnumUtility<MyEnum>.IsDefined(MyEnum.Value1);
+bool isDefined = EnumUtility<MyEnum>.IsDefined(MyEnum.Value1);
 
-FieldInfo field = EnumUtility<MyEnum>.GetFieldInfo("Value1");
-bool obsolete = EnumUtility<MyEnum>.IsObsolete(MyEnum.Value1);   // 是否标记了 Obsolete
+FieldInfo fieldInfo = EnumUtility<MyEnum>.GetFieldInfo("Value1");
+bool isObsolete = EnumUtility<MyEnum>.IsObsolete(MyEnum.Value1); // 是否标记了 Obsolete
 ```
 
 ## IO 工具类与 `Stream`、`TextReader` 扩展
 
 - `IOUtility`：查询磁盘剩余空间、不足时抛出专用异常、创建指定长度的空文件
+- `PathUtility`：路径字符串操作（替换路径分隔符、计算相对路径并给出两条路径的关系）
 - `StreamExtensions`：`CopyToFrugally` / `CopyToFrugallyAsync`，复用缓冲池复制流，减少分配
 - `TextReaderExtensions`：`SkipWhiteSpaces`，跳过连续空白字符
 - 配套异常：`FileTooLargeException`、`NotEnoughAvailableFreeSpaceOnDriveException`
 
 ```csharp
 long free = IOUtility.GetAvailableFreeSpaceOnDrive(@"D:\");
-IOUtility.ThrowIfNotEnoughAvailableFreeSpaceOnDrive(@"D:\", 1024 * 1024);   // 不足则抛异常
+IOUtility.ThrowIfNotEnoughAvailableFreeSpaceOnDrive(@"D:\", 1024 * 1024); // 不足则抛异常
 
-IOUtility.CreateEmptyFile(@"D:\data.bin", 1024 * 1024);   // 创建 1MB 空文件
+IOUtility.CreateEmptyFile(@"D:\data.bin", 1024 * 1024); // 创建 1MB 空文件
 
 using (var src = File.OpenRead("in.bin"))
 using (var dst = File.Create("out.bin"))
 {
-    src.CopyToFrugally(dst);   // 复用缓冲池复制
+    src.CopyToFrugally(dst); // 复用缓冲池复制
     // 异步版本：await src.CopyToFrugallyAsync(dst, cancellationToken);
 }
 
 using var reader = new StringReader("   hello");
-reader.SkipWhiteSpaces();   // 跳过前导空白
+reader.SkipWhiteSpaces(); // 跳过前导空白
+```
+
+`PathUtility.GetRelativePath` 在返回相对路径的同时，通过 `PathRelationship` 告诉你两条路径的关系：
+`IsChildOf`（子级）、`IsEqualTo`（相等）、`IsNeitherChildOfNorEqualTo`（既非子级也不相等）、
+`AreUnrelated`（没有共同的根）。
+
+```csharp
+var relative = PathUtility.GetRelativePath(@"C:\A", @"C:\A\B\C", out var relationship);
+// relative 是相对路径（如 "B\C"），relationship 是 PathRelationship.IsChildOf
+
+var equal = PathUtility.GetRelativePath(@"C:\A", @"C:\A", out var relationship1);
+// equal 是 "."，relationship1 是 PathRelationship.IsEqualTo
+
+var unrelated = PathUtility.GetRelativePath(@"C:\A", @"D:\B", out var relationship2);
+// unrelated 是 null，relationship2 是 PathRelationship.AreUnrelated
+
+var normalized = PathUtility.ReplaceBackslashWithForwardSlash(@"C:\data\file.txt"); // "C:/data/file.txt"
 ```
 
 ## 时间测量与安全计数
 
 - `ValueStopwatch`：值类型秒表，避免装箱与堆分配
-- `CountIncrementSafeHandler`：带最大次数约束的计数，防止循环/递归次数溢出
-
-```csharp
-var sw = ValueStopwatch.StartNew();
-RunExpensiveWork();
-sw.Stop();
-long ms = sw.ElapsedMilliseconds;
-
-var counter = new CountIncrementSafeHandler(10000);
-do
-{
-    counter.Increment();   // 超过上限时抛 UnexpectedException
-    // ...
-} while (condition);
-```
+- `CountIncrementSafeHandler`：当无法预料某个循环或递归要执行多少次时，给定一个合理的最大执行次数，超过上限即判定为异常
 
 ## 插值与缓动
 
@@ -774,34 +790,19 @@ do
 Sine、Quad、Cubic、Quart、Quint、Expo、Circ、Back、Elastic、Bounce）；`InterpolationUtility` 提供插值、反插值与模式转换。
 
 ```csharp
-double t = 0.5;   // 权重 [0, 1]
+double t = 0.5; // 权重 [0, 1]
 
 double value = InterpolationUtility.Interpolate(0.0, 1.0, t, Interpolation.InOutCubic);
-double eased = InterpolationUtility.Transform(t, Interpolation.OutBack);      // 转成缓动权重
+double eased = InterpolationUtility.Transform(t, Interpolation.OutBack); // 转成缓动权重
 double weight = InterpolationUtility.InverseLinearInterpolate(0.0, 10.0, 7.5); // 反插值求权重
 ```
 
-## 内存与位操作
+## 位操作
 
-- `Memory`：`unsafe` 指针级内存操作（复制、移动、填充、清零、逐字节比较）
-- `BitUtility`：`UnsignedRightShift` 无符号右移（`int` / `uint` / `long` / `ulong`），弥补 C# 9 缺少 `>>>` 运算符
+`BitUtility.UnsignedRightShift` 提供无符号右移（`int` / `uint` / `long` / `ulong`），即 `>>>` 运算符在 C# 11 之前的等价实现。
 
 ```csharp
-unsafe
-{
-    byte[] source = new byte[1024];
-    byte[] target = new byte[1024];
-    fixed (byte* pSource = source)
-    fixed (byte* pTarget = target)
-    {
-        Memory.Copy(pTarget, pSource, (ulong)source.Length);   // 复制
-        Memory.Set(pTarget, 0xFF, (ulong)target.Length);       // 填充
-        int cmp = Memory.Compare(pTarget, pSource, (ulong)source.Length);   // 比较
-        Memory.Clear(pTarget, (ulong)target.Length);           // 清零
-    }
-}
-
-uint u = BitUtility.UnsignedRightShift(0x80000000u, 1);   // 0x40000000
+var value = BitUtility.UnsignedRightShift(-1, 1); // 2147483647 (0x7FFFFFFF)；而 -1 >> 1 的结果是 -1
 ```
 
 ## 其他小型实用类
@@ -811,9 +812,9 @@ uint u = BitUtility.UnsignedRightShift(0x80000000u, 1);   // 0x40000000
 `HexCharParseUtility` 提供十六进制字符的解析（`0-9`、`A-F`、`a-f`）。
 
 ```csharp
-byte b = HexCharParseUtility.Parse('F');                  // 15；非法字符抛 ArgumentOutOfRangeException
-byte b2 = HexCharParseUtility.ParseNoCheck('F');          // 无检查的快速版本
-bool ok = HexCharParseUtility.TryParse('G', out byte v);  // false
+byte b = HexCharParseUtility.Parse('F'); // 15；非法字符抛 ArgumentOutOfRangeException
+byte b2 = HexCharParseUtility.ParseNoCheck('F'); // 无检查的快速版本
+bool ok = HexCharParseUtility.TryParse('G', out byte v); // false
 ```
 
 ### 临时 ID 生成
@@ -822,8 +823,8 @@ bool ok = HexCharParseUtility.TryParse('G', out byte v);  // false
 
 ```csharp
 var generator = new TempIdGenerator("obj_", "");
-string id = generator.NewTempId;     // 例如 "obj_3f2a9c1e..."
-bool matched = generator.Match(id);  // 检查 ID 是否符合本生成器格式
+string id = generator.NewTempId; // 例如 "obj_3f2a9c1e..."
+bool matched = generator.Match(id); // 检查 ID 是否符合本生成器格式
 ```
 
 ### 类型名友好格式化
@@ -831,8 +832,18 @@ bool matched = generator.Match(id);  // 检查 ID 是否符合本生成器格式
 `TypeUtility.GetNicelyFormattedName` 输出可读的类型名：内置类型映射为 C# 关键字，并处理数组、可空、嵌套与泛型等形态。
 
 ```csharp
-string s = TypeUtility.GetNicelyFormattedName(typeof(List<int>));   // System.Collections.Generic.List<int>
+string s = TypeUtility.GetNicelyFormattedName(typeof(List<int>)); // System.Collections.Generic.List<int>
 string t = TypeUtility.GetNicelyFormattedName(typeof((int, string))); // (int,string)
+```
+
+### 英文工具
+
+`EnglishUtility` 提供英文文本的小工具。
+
+```csharp
+var pluralized = EnglishUtility.Pluralize("apple", "apples", 3); // "apples"
+var singularized = EnglishUtility.Pluralize("apple", "apples", 1); // "apple"
+var ordinal = EnglishUtility.Th(21); // "st"，即 $"{21}{ordinal}" == "21st"
 ```
 
 ### Invocation 系列
@@ -840,60 +851,67 @@ string t = TypeUtility.GetNicelyFormattedName(typeof((int, string))); // (int,st
 把一段逻辑包装为可延迟执行、可传递的调用对象；`OneTimeInvocation` 保证整段逻辑只真正执行一次（线程安全）。
 
 ```csharp
-Invocation a = new InvocationAction(() => Console.WriteLine("执行"));
-a.Invoke();                                  // 立即执行
+Invocation a = new InvocationAction(() =>
+{
+    Console.WriteLine("执行");
+});
+a.Invoke(); // 立即执行
 
-Invocation<int> b = Invocation<int>.FromResult(42);   // 构造时固定返回值
-int result = b.Invoke();                     // 42
+Invocation<int> b = Invocation<int>.FromResult(42); // 构造时固定返回值
+int result = b.Invoke(); // 42
 
 Invocation once = new OneTimeInvocation(a);
-once.Invoke();   // 第一次真正执行
-once.Invoke();   // 之后不再执行
+once.Invoke(); // 第一次真正执行
+once.Invoke(); // 之后不再执行
 ```
 
-### 散列码组合
+### 哈希值组合
 
-`HashHelper.CombineHashCodes` 把多个值组合为散列码，提供 2~16 个参数的重载与 `params` 数组版本。
+`HashHelper.CombineHashCodes` 把多个哈希值合并为一个哈希值，提供 2~16 个参数的重载与 `params` 数组版本。
 
 ```csharp
 int hash = HashHelper.CombineHashCodes(a, b, c);
-int hash2 = HashHelper.CombineHashCodes(values);   // params int[]
+int hash2 = HashHelper.CombineHashCodes(values); // params int[]
 ```
 
-### 显式空结果与空对象
+### 空结果与空可释放对象
 
 `VoidResult` 显式表示"没有结果"，适合 `TaskCompletionSource<VoidResult>` 等只关心完成/取消/异常的信号场景；
 `NullDisposable` 是 `IDisposable` 的空对象实现（单例）。
 
 ```csharp
 var done = new TaskCompletionSource<VoidResult>();
-done.TrySetResult(default);   // 完成信号
+done.TrySetResult(new VoidResult()); // 完成信号
 
-using IDisposable noop = NullDisposable.Instance;   // 需要 IDisposable 但又无事可做
-```
-
-### 字符串扩展
-
-`StringExtensions.ReplaceBackslashWithSlash` 把反斜杠替换为正斜杠，常用于路径规范化。
-
-```csharp
-string path = @"C:\data\file.txt".ReplaceBackslashWithSlash();   // "C:/data/file.txt"
+// 某些编译条件下需要一个真实的 IDisposable，某些条件下只需形式占位
+using (
+#if XXX
+    new Xxx()
+#else
+    NullDisposable.Instance
+#endif
+)
+{
+    // ...
+}
 ```
 
 ### 其他
 
 - `UnexpectedException`：表示发生了预期之外的情况
-- `CommentAttribute`：给不支持 XML 注释的成员写说明的特性
+- `CommentAttribute`：给不支持 XML 注释的成员写说明的特性，其说明可以在 IDE 中快速查看
 - `Environment`：`IsSingleThreadEnvironment` 运行时环境标志
-- `Constant`：常用常量（`G9` / `G17` 浮点往返格式、RFC 5322 邮箱正则、大量 Unicode 字符常量等）
+- `Constant`：常用常量
+    - `Constant.String`：字符串常量，如 `G9` / `G17` 浮点往返格式
+    - `Constant.Regex.EmailAddressRegex`：符合 RFC 5322 标准的邮箱地址正则表达式，已用 `RegexOptions.Compiled` 预编译，可直接复用，无需每次创建
+    - `Constant.Character`：大量 Unicode 字符常量
 
 ```csharp
 if (Aurora.Environment.IsSingleThreadEnvironment)
 {
     // 单线程环境下的优化路径
 }
+
+// 邮箱地址校验
+bool isEmailAddress = Constant.Regex.EmailAddressRegex.IsMatch(input);
 ```
-
-## 许可证
-
-[MIT License](LICENSE)
