@@ -1,7 +1,7 @@
 # Aurora
 
 ![许可](https://img.shields.io/github/license/NOMOAX/aurora)
-![版本](https://img.shields.io/badge/version-1.5.2-blue)
+![版本](https://img.shields.io/badge/version-1.5.3-blue)
 ![最低 Unity 版本](https://img.shields.io/badge/Unity-2021.2%2B-blue)
 
 适用于 Unity 的高性能、低内存消耗的 C# 工具包。
@@ -64,7 +64,7 @@ await EventBus<int>.WhenPublished(Id.SendMessage);
 await EventBus<int>.WhenPublished(Id.SendMessage, cancellationToken);
 ```
 
-`WhenPublished` 返回一个 `Task`，它在指定事件被 `Publish` / `PublishAll` 发布时完成。如果该事件在调用之前已经发布过， 那么这次调用不会因为那次发布而完成。`Clear` 会让所有正在等待的 `Task` 完成。
+`WhenPublished` 返回一个 `Task`，它在指定事件被 `Publish` / `PublishAll` 发布时完成。如果该事件在调用之前已经发布过，那么这次调用不会因为那次发布而完成。`Clear` 会让所有正在等待的 `Task` 完成。
 
 ## 日志
 
@@ -336,7 +336,7 @@ stateMachine.Blackboard.SetValue("coin", 100);
 
 ### 修复器
 
-`Fixer` 继承 `Node`，把"需要修复的树"建模为一棵节点树： 每个节点提供"是否已就绪"的判定与"异步修复"的操作，并带优先级（小的先处理）。按优先级递归修复整棵树，直到所有节点就绪。
+`Fixer` 继承 `Node`，把"需要修复的树"建模为一棵节点树：每个节点提供"是否已就绪"的判定与"异步修复"的操作，并带优先级（小的先处理）。按优先级递归修复整棵树，直到所有节点就绪。
 
 一个简单的例子：
 
