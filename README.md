@@ -1,7 +1,7 @@
 # Aurora
 
 ![license](https://img.shields.io/github/license/NOMOAX/aurora)
-![version](https://img.shields.io/badge/version-1.5.1-blue)
+![version](https://img.shields.io/badge/version-1.5.2-blue)
 ![lowest Unity version](https://img.shields.io/badge/Unity-2021.2%2B-blue)
 
 High-performance, low-memory-consumption C# toolkit for Unity.
@@ -13,6 +13,26 @@ English | [中文](README.zh.md)
 1. Open Unity package manager.
 2. Click the `+` button in the upper-left corner, then select `Add package from git URL...`.
 3. Input `https://github.com/NOMOAX/aurora.git` and then click `Add` button.
+
+## Managed Code Stripping
+
+`EventBus<T>` reaches the private `TryRemoveInternal` method of `ConcurrentDictionary<TKey, TValue>` through reflection. The Unity linker cannot see that reference during its static analysis, so this package ships a [link.xml](link.xml) that declares the method as a root.
+
+**Unity only reads `link.xml` files under `Assets/`, so the copy inside this package is ignored.** Add it to your project by hand:
+
+- If your project has no `link.xml`, copy `link.xml` from this package to `<Unity project path>/Assets`.
+- If your project already has a `link.xml`, merge the contents of this one into it.
+
+```xml
+
+<linker>
+    <assembly fullname="mscorlib">
+        <type fullname="System.Collections.Concurrent.ConcurrentDictionary`2">
+            <method name="TryRemoveInternal" />
+        </type>
+    </assembly>
+</linker>
+```
 
 ## Event Bus
 
@@ -44,8 +64,7 @@ await EventBus<int>.WhenPublished(Id.SendMessage);
 await EventBus<int>.WhenPublished(Id.SendMessage, cancellationToken);
 ```
 
-`WhenPublished` returns a `Task` that completes when the specified event is published by `Publish` / `PublishAll`. If the event has
-already been published before the call, that publication does not complete this call. `Clear` completes all the waiting `Task`s.
+`WhenPublished` returns a `Task` that completes when the specified event is published by `Publish` / `PublishAll`. If the event has already been published before the call, that publication does not complete this call. `Clear` completes all the waiting `Task`s.
 
 ## Logging
 
@@ -79,8 +98,7 @@ public sealed class MyLogger : ILogger
 
 ### Deque
 
-`Deque<T>` is implemented with a circular buffer, so adding and removing at both the head and the tail cost O(1). It implements
-`IList<T>` / `IReadOnlyList<T>`, supports indexed reads and writes, and grows automatically when the capacity is insufficient.
+`Deque<T>` is implemented with a circular buffer, so adding and removing at both the head and the tail cost `O(1)`. It implements `IList<T>` / `IReadOnlyList<T>`, supports indexed reads and writes, and grows automatically when the capacity is insufficient.
 
 ```csharp
 var deque = new Deque<int>();
@@ -113,8 +131,7 @@ var snapshot = deque.ToArray();
 
 ### Binary Heap
 
-`BinaryHeap<T>` is a binary heap maintained by a comparer (a min-heap by default), suitable for priority queue scenarios. It supports
-bulk adding, taking the top element, removing by value and clearing.
+`BinaryHeap<T>` is a binary heap maintained by a comparer (a min-heap by default), suitable for priority queue scenarios. It supports bulk adding, taking the top element, removing by value and clearing.
 
 ```csharp
 var heap = new BinaryHeap<int>();
@@ -139,9 +156,7 @@ var binaryHeap = new BinaryHeap<Item>(
 
 ### Tree and Node
 
-`Node` is a general-purpose tree node: it maintains the parent, the child list, the root node, the level and the version number. It
-supports adding and removing children and testing ancestor and descendant relationships; subclasses can override the protected hooks to
-constrain structural changes.
+`Node` is a general-purpose tree node: it maintains the parent, the child list, the root node, the level and the version number. It supports adding and removing children and testing ancestor and descendant relationships; subclasses can override the protected hooks to constrain structural changes.
 
 ```csharp
 var root = new Node();
@@ -191,8 +206,7 @@ var rootNode = new MyNode(0)
 
 #### Tree Traversal
 
-`Node.GetEnumerator()` enumerates the direct children; `GetEnumerator(TreeEnumOrder)` traverses the whole tree in the specified order, and
-throws if the structure changes during enumeration (the version check keeps this safe).
+`Node.GetEnumerator()` enumerates the direct children; `GetEnumerator(TreeEnumOrder)` traverses the whole tree in the specified order, and throws if the structure changes during enumeration (the version check keeps this safe).
 
 ```csharp
 // Enumerates only the direct children
@@ -214,16 +228,13 @@ foreach (Node node in root.GetEnumerator(TreeEnumOrder.BreadthFirstLr))
 }
 ```
 
-`TreeEnumOrder` provides 7 orders: `Default` (direct children), `BreadthFirstLr`, `BreadthFirstRl`, `DepthFirstDlr`, `DepthFirstDrl`,
-`DepthFirstLrd`, `DepthFirstRld`.
+`TreeEnumOrder` provides 7 orders: `Default` (direct children), `BreadthFirstLr`, `BreadthFirstRl`, `DepthFirstDlr`, `DepthFirstDrl`, `DepthFirstLrd`, `DepthFirstRld`.
 
-The underlying enumerators (`LrEnumerator`, `RlEnumerator`, `DlrEnumerator`, `DrlEnumerator`, `LrdEnumerator`, `RldEnumerator` and their
-base classes) are public as well, so any "get the children" function can be passed in to traverse any tree-shaped data.
+The underlying enumerators (`LrEnumerator`, `RlEnumerator`, `DlrEnumerator`, `DrlEnumerator`, `LrdEnumerator`, `RldEnumerator` and their base classes) are public as well, so any "get the children" function can be passed in to traverse any tree-shaped data.
 
 ### Finite State Machine
 
-`StateMachine<T>` is a general-purpose finite state machine, where `T` is the identifier type of the state. It supports enter / exit
-callbacks, immediate and scheduled transitions, and state protection during transitions.
+`StateMachine<T>` is a general-purpose finite state machine, where `T` is the identifier type of the state. It supports enter / exit callbacks, immediate and scheduled transitions, and state protection during transitions.
 
 ```csharp
 // Using System.Type as the state identifier type is recommended
@@ -293,12 +304,12 @@ while (stateMachine.Update())
 Console.WriteLine(stateMachine.CurrentState); // null
 ```
 
-| Method                     | Who may call it                | When it takes effect |
-|----------------------------|--------------------------------|----------------------|
-| `TransitionTo`             | The direct owner of the state machine | Immediately   |
-| `TransitionToNull`         | The direct owner of the state machine | Immediately   |
-| `ScheduleTransitionTo`     | Anyone                         | The next `Update`    |
-| `ScheduleTransitionToNull` | Anyone                         | The next `Update`    |
+| Method                     | Who may call it                       | When it takes effect |
+|----------------------------|---------------------------------------|----------------------|
+| `TransitionTo`             | The direct owner of the state machine | Immediately          |
+| `TransitionToNull`         | The direct owner of the state machine | Immediately          |
+| `ScheduleTransitionTo`     | Anyone                                | The next `Update`    |
+| `ScheduleTransitionToNull` | Anyone                                | The next `Update`    |
 
 #### Blackboard
 
@@ -325,9 +336,7 @@ stateMachine.Blackboard.SetValue("coin", 100);
 
 ### Fixer
 
-`Fixer` derives from `Node` and models "a tree that needs fixing" as a tree of nodes:
-every node provides a test of "whether it is ready" and an "asynchronous fix" operation, along with a priority (a smaller one is handled
-first). The whole tree is fixed recursively in priority order until every node is ready.
+`Fixer` derives from `Node` and models "a tree that needs fixing" as a tree of nodes: every node provides a test of "whether it is ready" and an "asynchronous fix" operation, along with a priority (a smaller one is handled first). The whole tree is fixed recursively in priority order until every node is ready.
 
 A simple example:
 
@@ -335,17 +344,14 @@ A simple example:
 - There is a note window (referred to as `A` below), which has a close button.
 - Under `A`, there is an image list child window (referred to as `B` below) and a note body child window (referred to as `C` below).
 - Suppose the user is uploading an image in `B`, but the upload is still in progress; the asynchronous upload task is `B.uploadTask`.
-- Suppose the user has edited the note body and clicked the save button of `C` to upload the new note body to the server, but the request
-  is still in progress; the asynchronous request task is `C.saveTask`.
+- Suppose the user has edited the note body and clicked the save button of `C` to upload the new note body to the server, but the request is still in progress; the asynchronous request task is `C.saveTask`.
 - At this point, the user clicks the close button of `A`.
-- Check the value of `A.Fixer`: it is `true` itself, but its children have `B.Fixer.IsFixed == false` and `C.Fixer.IsFixed == false`, so
-  `A.Fixer.IsFixed == false`.
+- Check the value of `A.Fixer`: it is `true` itself, but its children have `B.Fixer.IsFixed == false` and `C.Fixer.IsFixed == false`, so `A.Fixer.IsFixed == false`.
 - A dialog pops up, letting the user choose whether to wait for all the asynchronous tasks to complete or to close `A` immediately.
 - Suppose the user chooses `wait for all the asynchronous tasks to complete`.
 - Execute `await A.Fixer.FixAsync()`, with a reasonable timeout set.
 - When the method returns, check the value of `A.Fixer.IsFixed` again; if it is `true`, `A` can be closed.
-- If `A.Fixer.IsFixed == false`, pop up again to remind the user that `the upload failed / the save failed`, and block this close
-  operation of `A`; the user can retry `uploading the image / saving the note body` at will.
+- If `A.Fixer.IsFixed == false`, pop up again to remind the user that `the upload failed / the save failed`, and block this close operation of `A`; the user can retry `uploading the image / saving the note body` at will.
 
 ```csharp
 var fixerA = new Fixer();
@@ -459,8 +465,7 @@ private async void OnCloseButtonClicked()
 
 ### Enumerator Tools
 
-`EnumeratorEnumerable` / `EnumeratorEnumerable<T>` wraps an existing `IEnumerator` into an `IEnumerable`, which makes `foreach` and LINQ
-convenient; `NullEnumerator` / `NullEnumerator<T>` is the null-object pattern and produces no element at all.
+`EnumeratorEnumerable` / `EnumeratorEnumerable<T>` wraps an existing `IEnumerator` into an `IEnumerable`, which makes `foreach` and LINQ convenient; `NullEnumerator` / `NullEnumerator<T>` is the null-object pattern and produces no element at all.
 
 ```csharp
 IEnumerator<int> enumerator = GetExistingEnumerator(); // an existing enumerator
@@ -478,8 +483,7 @@ IEnumerable<int> empty = new EnumeratorEnumerable<int>(NullEnumerator<int>.Insta
 
 ### Array Extension Methods
 
-`ArrayExtensions` provides shuffling, searching and conversion extension methods for arrays. The searching and conversion methods have
-"state parameter" overloads, which avoid closure allocations when the context needs to be captured.
+`ArrayExtensions` provides shuffling, searching and conversion extension methods for arrays. The searching and conversion methods have "state parameter" overloads, which avoid closure allocations when the context needs to be captured.
 
 ```csharp
 int[] numbers = { 1, 2, 3, 4, 5 };
@@ -508,8 +512,7 @@ list.ShuffleInPlace(); // shuffles in place
 
 ### Sequence Index Lookup
 
-`EnumerableExtensions` provides the sequence operations that `System.Linq.Enumerable` does not provide: looking up the **index** of an
-element in any `IEnumerable<T>`, by value or by predicate.
+`EnumerableExtensions` provides the sequence operations that `System.Linq.Enumerable` does not provide: looking up the **index** of an element in any `IEnumerable<T>`, by value or by predicate.
 
 ```csharp
 IEnumerable<string> sequence = GetNames(); // any sequence
@@ -522,8 +525,7 @@ int k = sequence.FindIndex(s => s.StartsWith("A"));
 
 ### Quick Sort
 
-`QuickSort` uses the standard quicksort algorithm, but avoids recursion internally, so it does not overflow the stack because the sequence
-to be sorted is too long.
+`QuickSort` uses the standard quicksort algorithm, but avoids recursion internally, so it does not overflow the stack because the sequence to be sorted is too long.
 
 ```csharp
 List<int> list = new() { 5, 3, 8, 1, 9 };
@@ -538,9 +540,7 @@ QuickSort.Sort(keys, values); // if elements in keys are swapped, the elements a
 
 ### Tim Sort
 
-`TimSort` is a replication of the original logic from the Java source code. It provides the same capabilities as `QuickSort` (in-place
-sorting, ranges, custom comparers, synchronized key-value sorting) and is slightly slower than `QuickSort`, but it is stable — equal
-elements keep their relative order before and after sorting.
+`TimSort` is a replication of the original logic from the Java source code. It provides the same capabilities as `QuickSort` (in-place sorting, ranges, custom comparers, synchronized key-value sorting) and is slightly slower than `QuickSort`, but it is stable — equal elements keep their relative order before and after sorting.
 
 ```csharp
 List<int> list = new() { 5, 3, 8, 1, 9 };
@@ -563,9 +563,7 @@ QuickSort.Sort(items, byName);
 
 ## Object Pooling
 
-The object pooling APIs (`Pool<T>`, `IPool<T>`, `IPooledObjectPolicy<T>`) reuse objects that are created and destroyed frequently, which
-reduces the GC pressure. `Pool<T>` is thread-safe, and the "whether it can be reused" test and the reset logic can be customized on
-returning.
+The object pooling APIs (`Pool<T>`, `IPool<T>`, `IPooledObjectPolicy<T>`) reuse objects that are created and destroyed frequently, which reduces the GC pressure. `Pool<T>` is thread-safe, and the "whether it can be reused" test and the reset logic can be customized on returning.
 
 ### Predefined Pools
 
@@ -590,12 +588,9 @@ finally
 
 ### Automatic Borrow and Return with UsingScope
 
-Each `UsingScope` class wraps "acquire → use → return" into `IDisposable`, so a `using` statement performs the borrowing and the returning
-automatically:
+Each `UsingScope` class wraps "acquire → use → return" into `IDisposable`, so a `using` statement performs the borrowing and the returning automatically:
 
-`ListUsingScope`, `DictionaryUsingScope`, `HashSetUsingScope`, `QueueUsingScope`, `StackUsingScope`, `DequeUsingScope`,
-`ArrayLength2UsingScope`, `ArrayLength4UsingScope`, `ArrayLength8UsingScope`, `ByteArray4096UsingScope`, `MemoryStreamUsingScope`,
-`StopwatchUsingScope`, `StringBuilderUsingScope`
+`ListUsingScope`, `DictionaryUsingScope`, `HashSetUsingScope`, `QueueUsingScope`, `StackUsingScope`, `DequeUsingScope`, `ArrayLength2UsingScope`, `ArrayLength4UsingScope`, `ArrayLength8UsingScope`, `ByteArray4096UsingScope`, `MemoryStreamUsingScope`, `StopwatchUsingScope`, `StringBuilderUsingScope`
 
 ```csharp
 using (var scope = new ListUsingScope<int>(out var list))
@@ -688,8 +683,7 @@ public async Task PlaceholderAsync()
 
 ### Async Barrier
 
-`AsyncBarrier` blocks the participants until the specified number of participants have all signalled, then they continue together; it suits
-stage synchronization of multiple tasks.
+`AsyncBarrier` blocks the participants until the specified number of participants have all signalled, then they continue together; it suits stage synchronization of multiple tasks.
 
 ```csharp
 var barrier = new AsyncBarrier(3); // 3 participants
@@ -701,8 +695,7 @@ await barrier.SignalAndWait(); // waits for all the other participants to arrive
 
 ### `CancellationTokenSourceUtility`
 
-`CancellationTokenSourceUtility.IsDisposed` detects whether a `CancellationTokenSource` has been disposed (the official API offers no public
-way to detect this).
+`CancellationTokenSourceUtility.IsDisposed` detects whether a `CancellationTokenSource` has been disposed (the official API offers no public way to detect this).
 
 ## Random Utilities
 
@@ -733,8 +726,7 @@ var d = AuroraRandom.Instance.NextDoubleIncludingOne(); // the closed interval [
 
 ## Enumeration Utilities
 
-`EnumUtility<TEnum>` provides the common reflection and validation operations of an enumeration; the results are cached statically, so the
-performance is good.
+`EnumUtility<TEnum>` provides the common reflection and validation operations of an enumeration; the results are cached statically, so the performance is good.
 
 ```csharp
 foreach (string name in EnumUtility<MyEnum>.Names)
@@ -777,9 +769,7 @@ using var reader = new StringReader("   hello");
 reader.SkipWhiteSpaces(); // skips the leading white space
 ```
 
-`PathUtility.GetRelativePath` returns the relative path and, at the same time, tells you the relationship between the two paths through
-`PathRelationship`: `IsChildOf` (a child), `IsEqualTo` (equal), `IsNeitherChildOfNorEqualTo` (neither a child nor equal), `AreUnrelated`
-(no common root).
+`PathUtility.GetRelativePath` returns the relative path and, at the same time, tells you the relationship between the two paths through `PathRelationship`: `IsChildOf` (a child), `IsEqualTo` (equal), `IsNeitherChildOfNorEqualTo` (neither a child nor equal), `AreUnrelated` (no common root).
 
 ```csharp
 var relative = PathUtility.GetRelativePath(@"C:\A", @"C:\A\B\C", out var relationship);
@@ -797,13 +787,11 @@ var normalized = PathUtility.ReplaceBackslashWithForwardSlash(@"C:\data\file.txt
 ## Time Measurement and Safe Counting
 
 - `ValueStopwatch`: a value-type stopwatch, which avoids boxing and heap allocation
-- `CountIncrementSafeHandler`: when the number of executions of a loop or a recursion cannot be predicted, gives a reasonable maximum
-  execution count and treats exceeding the limit as an exception
+- `CountIncrementSafeHandler`: when the number of executions of a loop or a recursion cannot be predicted, gives a reasonable maximum execution count and treats exceeding the limit as an exception
 
 ## Interpolation and Easing
 
-The `Interpolation` enumeration provides 31 easing modes (Linear; In / Out / InOut of Sine, Quad, Cubic, Quart, Quint, Expo, Circ, Back,
-Elastic and Bounce); `InterpolationUtility` provides interpolation, inverse interpolation and mode conversion.
+The `Interpolation` enumeration provides 31 easing modes (Linear; In / Out / InOut of Sine, Quad, Cubic, Quart, Quint, Expo, Circ, Back, Elastic and Bounce); `InterpolationUtility` provides interpolation, inverse interpolation and mode conversion.
 
 ```csharp
 double t = 0.5; // the weight [0, 1]
@@ -815,8 +803,7 @@ double weight = InterpolationUtility.InverseLinearInterpolate(0.0, 10.0, 7.5); /
 
 ## Bit Operations
 
-`BitUtility.UnsignedRightShift` provides the unsigned right shift (`int` / `uint` / `long` / `ulong`), that is, the equivalent of the `>>>`
-operator before C# 11.
+`BitUtility.UnsignedRightShift` provides the unsigned right shift (`int` / `uint` / `long` / `ulong`), that is, the equivalent of the `>>>` operator before C# 11.
 
 ```csharp
 var value = BitUtility.UnsignedRightShift(-1, 1); // 2147483647 (0x7FFFFFFF); whereas -1 >> 1 gives -1
@@ -836,8 +823,7 @@ bool ok = HexCharParseUtility.TryParse('G', out byte v); // false
 
 ### Temporary ID Generation
 
-`TempIdGenerator` generates a temporary ID with a prefix / suffix, whose middle is the `N` format string of a `Guid`, and provides a format
-match test.
+`TempIdGenerator` generates a temporary ID with a prefix / suffix, whose middle is the `N` format string of a `Guid`, and provides a format match test.
 
 ```csharp
 var generator = new TempIdGenerator("obj_", "");
@@ -847,8 +833,7 @@ bool matched = generator.Match(id); // tests whether the ID matches the format o
 
 ### Friendly Type Name Formatting
 
-`TypeUtility.GetNicelyFormattedName` outputs a readable type name: built-in types are mapped to the C# keywords, and the array, nullable,
-nested and generic forms are handled as well.
+`TypeUtility.GetNicelyFormattedName` outputs a readable type name: built-in types are mapped to the C# keywords, and the array, nullable, nested and generic forms are handled as well.
 
 ```csharp
 string s = TypeUtility.GetNicelyFormattedName(typeof(List<int>)); // System.Collections.Generic.List<int>
@@ -867,8 +852,7 @@ var ordinal = EnglishUtility.Th(21); // "st", that is, $"{21}{ordinal}" == "21st
 
 ### Invocation Family
 
-Wraps a piece of logic into an invocation object that can be delayed and passed around; `OneTimeInvocation` guarantees that the whole piece
-of logic really executes only once (thread-safe).
+Wraps a piece of logic into an invocation object that can be delayed and passed around; `OneTimeInvocation` guarantees that the whole piece of logic really executes only once (thread-safe).
 
 ```csharp
 Invocation a = new InvocationAction(() =>
@@ -887,8 +871,7 @@ once.Invoke(); // does not execute afterwards
 
 ### Hash Code Combination
 
-`HashHelper.CombineHashCodes` combines several hash codes into a single hash code; it provides overloads for 2 to 16 parameters and a
-`params` array version.
+`HashHelper.CombineHashCodes` combines several hash codes into a single hash code; it provides overloads for 2 to 16 parameters and a `params` array version.
 
 ```csharp
 int hash = HashHelper.CombineHashCodes(a, b, c);
@@ -897,8 +880,7 @@ int hash2 = HashHelper.CombineHashCodes(values); // params int[]
 
 ### Empty Result and Null Disposable Object
 
-`VoidResult` explicitly represents "no result", suitable for signalling scenarios such as `TaskCompletionSource<VoidResult>` that only care
-about completion / cancellation / exception; `NullDisposable` is the null-object implementation of `IDisposable` (a singleton).
+`VoidResult` explicitly represents "no result", suitable for signalling scenarios such as `TaskCompletionSource<VoidResult>` that only care about completion / cancellation / exception; `NullDisposable` is the null-object implementation of `IDisposable` (a singleton).
 
 ```csharp
 var done = new TaskCompletionSource<VoidResult>();

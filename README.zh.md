@@ -1,7 +1,7 @@
 # Aurora
 
 ![许可](https://img.shields.io/github/license/NOMOAX/aurora)
-![版本](https://img.shields.io/badge/version-1.5.1-blue)
+![版本](https://img.shields.io/badge/version-1.5.2-blue)
 ![最低 Unity 版本](https://img.shields.io/badge/Unity-2021.2%2B-blue)
 
 适用于 Unity 的高性能、低内存消耗的 C# 工具包。
@@ -13,6 +13,26 @@
 1. 打开 Unity package manager。
 2. 点击左上角的 `+` 按钮，然后选择 `Add package from git URL...`。
 3. 填入 `https://github.com/NOMOAX/aurora.git` 并点击 `Add` 按钮。
+
+## 托管代码剥离
+
+`EventBus<T>` 通过反射访问 `ConcurrentDictionary<TKey, TValue>` 的私有方法 `TryRemoveInternal`。Unity 链接器在静态分析时无法看到这一引用，因此本包附带了一个 [link.xml](link.xml)，将该方法声明为根。
+
+**Unity 只会读取 `Assets/` 目录下的 `link.xml`，因此本包内的这份不会被读取。** 需要手动加入项目：
+
+- 如果你的项目中没有 `link.xml`，请将本包中的 `link.xml` 复制到 `<Unity 项目路径>/Assets` 文件夹下。
+- 如果你的项目中已有 `link.xml`，请将这份的内容添加到已有的 `link.xml` 里。
+
+```xml
+
+<linker>
+    <assembly fullname="mscorlib">
+        <type fullname="System.Collections.Concurrent.ConcurrentDictionary`2">
+            <method name="TryRemoveInternal" />
+        </type>
+    </assembly>
+</linker>
+```
 
 ## 事件总线
 
@@ -44,8 +64,7 @@ await EventBus<int>.WhenPublished(Id.SendMessage);
 await EventBus<int>.WhenPublished(Id.SendMessage, cancellationToken);
 ```
 
-`WhenPublished` 返回一个 `Task`，它在指定事件被 `Publish` / `PublishAll` 发布时完成。如果该事件在调用之前已经发布过，
-那么这次调用不会因为那次发布而完成。`Clear` 会让所有正在等待的 `Task` 完成。
+`WhenPublished` 返回一个 `Task`，它在指定事件被 `Publish` / `PublishAll` 发布时完成。如果该事件在调用之前已经发布过， 那么这次调用不会因为那次发布而完成。`Clear` 会让所有正在等待的 `Task` 完成。
 
 ## 日志
 
@@ -79,7 +98,7 @@ public sealed class MyLogger : ILogger
 
 ### 双端队列
 
-`Deque<T>` 使用环状缓冲区实现，从头部与尾部增删均为 O(1)。实现 `IList<T>` / `IReadOnlyList<T>`，支持按索引读写，容量不足时自动增长。
+`Deque<T>` 使用环状缓冲区实现，从头部与尾部增删均为 `O(1)`。实现 `IList<T>` / `IReadOnlyList<T>`，支持按索引读写，容量不足时自动增长。
 
 ```csharp
 var deque = new Deque<int>();
@@ -209,11 +228,9 @@ foreach (Node node in root.GetEnumerator(TreeEnumOrder.BreadthFirstLr))
 }
 ```
 
-`TreeEnumOrder` 提供 7 种次序：`Default`（直接子节点）、`BreadthFirstLr`、`BreadthFirstRl`、`DepthFirstDlr`、`DepthFirstDrl`、
-`DepthFirstLrd`、`DepthFirstRld`。
+`TreeEnumOrder` 提供 7 种次序：`Default`（直接子节点）、`BreadthFirstLr`、`BreadthFirstRl`、`DepthFirstDlr`、`DepthFirstDrl`、`DepthFirstLrd`、`DepthFirstRld`。
 
-底层枚举器（`LrEnumerator`、`RlEnumerator`、`DlrEnumerator`、`DrlEnumerator`、`LrdEnumerator`、`RldEnumerator`
-及其基类）也公开可用，可传入任意的"取子节点"函数来遍历任何树形数据。
+底层枚举器（`LrEnumerator`、`RlEnumerator`、`DlrEnumerator`、`DrlEnumerator`、`LrdEnumerator`、`RldEnumerator` 及其基类）也公开可用，可传入任意的"取子节点"函数来遍历任何树形数据。
 
 ### 有限状态机
 
@@ -319,8 +336,7 @@ stateMachine.Blackboard.SetValue("coin", 100);
 
 ### 修复器
 
-`Fixer` 继承 `Node`，把"需要修复的树"建模为一棵节点树：
-每个节点提供"是否已就绪"的判定与"异步修复"的操作，并带优先级（小的先处理）。按优先级递归修复整棵树，直到所有节点就绪。
+`Fixer` 继承 `Node`，把"需要修复的树"建模为一棵节点树： 每个节点提供"是否已就绪"的判定与"异步修复"的操作，并带优先级（小的先处理）。按优先级递归修复整棵树，直到所有节点就绪。
 
 一个简单的例子：
 
@@ -330,14 +346,12 @@ stateMachine.Blackboard.SetValue("coin", 100);
 - 假设用户正在 `B` 中上传图片，但仍在上传中，上传的异步任务为 `B.uploadTask`
 - 假设用户修改了笔记正文，点击了 `C` 的保存按钮，上传新的笔记正文到服务器，但仍在请求中，请求的异步任务为 `C.saveTask`
 - 这时候用户点击了 `A` 关闭按钮
-- 检查 `A.Fixer` 的值，它本身是 `true`，但它的子级 `B.Fixer.IsFixed == false` `C.Fixer.IsFixed == false`，所以
-  `A.Fixer.IsFixed == false`
+- 检查 `A.Fixer` 的值，它本身是 `true`，但它的子级 `B.Fixer.IsFixed == false` `C.Fixer.IsFixed == false`，所以 `A.Fixer.IsFixed == false`
 - 弹出一个对话框，让用户选择是要等待所有异步任务完成，还是立即关闭 `A`
 - 假设用户选择了 `等待所有异步任务完成`
 - 执行 `await A.Fixer.FixAsync()`，并设置一个合理的超时时间
 - 当方法返回值，再次检查 `A.Fixer.IsFixed` 的值，如果为 `true`，就可以关闭 `A` 了
-- 如果 `A.Fixer.IsFixed == false`，则可以再弹窗提醒用户 `上传失败/保存失败`，并阻止这次关闭 `A` 的操作，用户可以自行重试
-  `上传图片/保存笔记正文`
+- 如果 `A.Fixer.IsFixed == false`，则可以再弹窗提醒用户 `上传失败/保存失败`，并阻止这次关闭 `A` 的操作，用户可以自行重试 `上传图片/保存笔记正文`
 
 ```csharp
 var fixerA = new Fixer();
@@ -451,8 +465,7 @@ private async void OnCloseButtonClicked()
 
 ### 枚举器工具
 
-`EnumeratorEnumerable` / `EnumeratorEnumerable<T>` 把已有的 `IEnumerator` 包装为 `IEnumerable`，便于 `foreach` 与 LINQ；
-`NullEnumerator` / `NullEnumerator<T>` 是空对象模式，不产生任何元素。
+`EnumeratorEnumerable` / `EnumeratorEnumerable<T>` 把已有的 `IEnumerator` 包装为 `IEnumerable`，便于 `foreach` 与 LINQ；`NullEnumerator` / `NullEnumerator<T>` 是空对象模式，不产生任何元素。
 
 ```csharp
 IEnumerator<int> enumerator = GetExistingEnumerator(); // 已有的枚举器
@@ -499,8 +512,7 @@ list.ShuffleInPlace(); // 就地洗牌
 
 ### 序列索引检索
 
-`EnumerableExtensions` 提供了 `System.Linq.Enumerable` 没有提供的序列操作：对任意 `IEnumerable<T>` 按值或按谓词查找其
-**索引**。
+`EnumerableExtensions` 提供了 `System.Linq.Enumerable` 没有提供的序列操作：对任意 `IEnumerable<T>` 按值或按谓词查找其 **索引**。
 
 ```csharp
 IEnumerable<string> sequence = GetNames(); // 任意序列
@@ -528,8 +540,7 @@ QuickSort.Sort(keys, values); // 如果 keys 中的元素被交换了位置，�
 
 ### Tim 排序
 
-`TimSort` 是从 Java 源码中的原逻辑复刻而来。它提供与 `QuickSort` 相同的能力（就地排序、范围、自定义比较器、键值同步排序），速度稍慢于
-`QuickSort`，但它是稳定的——相等元素在排序前后的相对顺序不会改变。
+`TimSort` 是从 Java 源码中的原逻辑复刻而来。它提供与 `QuickSort` 相同的能力（就地排序、范围、自定义比较器、键值同步排序），速度稍慢于 `QuickSort`，但它是稳定的——相等元素在排序前后的相对顺序不会改变。
 
 ```csharp
 List<int> list = new() { 5, 3, 8, 1, 9 };
@@ -552,16 +563,14 @@ QuickSort.Sort(items, byName);
 
 ## 对象池
 
-对象池系列 API（`Pool<T>`、`IPool<T>`、`IPooledObjectPolicy<T>`）用于复用高频创建/销毁的对象，减少 GC 压力。`Pool<T>`
-线程安全，归还时可自定义"是否可复用"的判定与复位逻辑。
+对象池系列 API（`Pool<T>`、`IPool<T>`、`IPooledObjectPolicy<T>`）用于复用高频创建/销毁的对象，减少 GC 压力。`Pool<T>` 线程安全，归还时可自定义"是否可复用"的判定与复位逻辑。
 
 ### 预定义的池
 
 `PredefinedPools` 提供常用类型的现成池，按需借用、用完归还即可：
 
 - `ByteArrayLength4096`（`byte[4096]`）、`MemoryStream`、`Stopwatch`、`StringBuilder`
-- `PredefinedPools<T>`：`ArrayLength2`、`ArrayLength4`、`ArrayLength8`、`HashSet<T>`、`List<T>`、`Queue<T>`、`Stack<T>`、
-  `Deque<T>`
+- `PredefinedPools<T>`：`ArrayLength2`、`ArrayLength4`、`ArrayLength8`、`HashSet<T>`、`List<T>`、`Queue<T>`、`Stack<T>`、`Deque<T>`
 - `PredefinedPools<T1, T2>`：`Dictionary<TKey, TValue>`
 
 ```csharp
@@ -581,9 +590,7 @@ finally
 
 各 `UsingScope` 类把"获取 → 使用 → 归还"封装进 `IDisposable`，配合 `using` 语句自动完成借用与归还：
 
-`ListUsingScope`、`DictionaryUsingScope`、`HashSetUsingScope`、`QueueUsingScope`、`StackUsingScope`、`DequeUsingScope`、
-`ArrayLength2UsingScope`、`ArrayLength4UsingScope`、`ArrayLength8UsingScope`、`ByteArray4096UsingScope`、
-`MemoryStreamUsingScope`、`StopwatchUsingScope`、`StringBuilderUsingScope`
+`ListUsingScope`、`DictionaryUsingScope`、`HashSetUsingScope`、`QueueUsingScope`、`StackUsingScope`、`DequeUsingScope`、`ArrayLength2UsingScope`、`ArrayLength4UsingScope`、`ArrayLength8UsingScope`、`ByteArray4096UsingScope`、`MemoryStreamUsingScope`、`StopwatchUsingScope`、`StringBuilderUsingScope`
 
 ```csharp
 using (var scope = new ListUsingScope<int>(out var list))
@@ -762,9 +769,7 @@ using var reader = new StringReader("   hello");
 reader.SkipWhiteSpaces(); // 跳过前导空白
 ```
 
-`PathUtility.GetRelativePath` 在返回相对路径的同时，通过 `PathRelationship` 告诉你两条路径的关系：
-`IsChildOf`（子级）、`IsEqualTo`（相等）、`IsNeitherChildOfNorEqualTo`（既非子级也不相等）、
-`AreUnrelated`（没有共同的根）。
+`PathUtility.GetRelativePath` 在返回相对路径的同时，通过 `PathRelationship` 告诉你两条路径的关系：`IsChildOf`（子级）、`IsEqualTo`（相等）、`IsNeitherChildOfNorEqualTo`（既非子级也不相等）、`AreUnrelated`（没有共同的根）。
 
 ```csharp
 var relative = PathUtility.GetRelativePath(@"C:\A", @"C:\A\B\C", out var relationship);
@@ -786,8 +791,7 @@ var normalized = PathUtility.ReplaceBackslashWithForwardSlash(@"C:\data\file.txt
 
 ## 插值与缓动
 
-`Interpolation` 枚举提供 31 种缓动模式（Linear、In/Out/InOut 的
-Sine、Quad、Cubic、Quart、Quint、Expo、Circ、Back、Elastic、Bounce）；`InterpolationUtility` 提供插值、反插值与模式转换。
+`Interpolation` 枚举提供 31 种缓动模式（Linear、In/Out/InOut 的 Sine、Quad、Cubic、Quart、Quint、Expo、Circ、Back、Elastic、Bounce）；`InterpolationUtility` 提供插值、反插值与模式转换。
 
 ```csharp
 double t = 0.5; // 权重 [0, 1]
@@ -876,8 +880,7 @@ int hash2 = HashHelper.CombineHashCodes(values); // params int[]
 
 ### 空结果与空可释放对象
 
-`VoidResult` 显式表示"没有结果"，适合 `TaskCompletionSource<VoidResult>` 等只关心完成/取消/异常的信号场景；
-`NullDisposable` 是 `IDisposable` 的空对象实现（单例）。
+`VoidResult` 显式表示"没有结果"，适合 `TaskCompletionSource<VoidResult>` 等只关心完成/取消/异常的信号场景；`NullDisposable` 是 `IDisposable` 的空对象实现（单例）。
 
 ```csharp
 var done = new TaskCompletionSource<VoidResult>();

@@ -1,5 +1,7 @@
-﻿<linker>
+<linker>
     <assembly fullname="mscorlib">
-        <type fullname="System.Collections.Concurrent.ConcurrentDictionary`2"/>
+        <type fullname="System.Collections.Concurrent.ConcurrentDictionary`2">
+            <method name="TryRemoveInternal" />
+        </type>
     </assembly>
 </linker>
