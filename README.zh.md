@@ -1,7 +1,7 @@
 # Aurora
 
 ![许可](https://img.shields.io/github/license/NOMOAX/aurora)
-![版本](https://img.shields.io/badge/version-1.5.3-blue)
+![版本](https://img.shields.io/badge/version-1.5.4-blue)
 ![最低 Unity 版本](https://img.shields.io/badge/Unity-2021.2%2B-blue)
 
 适用于 Unity 的高性能、低内存消耗的 C# 工具包。
