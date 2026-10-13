@@ -1,7 +1,7 @@
 # Aurora
 
 ![license](https://img.shields.io/github/license/NOMOAX/aurora)
-![version](https://img.shields.io/badge/version-1.5.4-blue)
+![version](https://img.shields.io/badge/version-1.6.0-blue)
 ![lowest Unity version](https://img.shields.io/badge/Unity-2021.2%2B-blue)
 
 High-performance, low-memory-consumption C# toolkit for Unity.
@@ -523,29 +523,23 @@ int k = sequence.FindIndex(s => s.StartsWith("A"));
 
 ## Sorting
 
-### Quick Sort
+`Sorts` is the single entry point for the sorting algorithms. It offers the same overloads for both modes: the default comparer, a specified comparer, a sub-range, and synchronized key-value sorting.
 
-`QuickSort` uses the standard quicksort algorithm, but avoids recursion internally, so it does not overflow the stack because the sequence to be sorted is too long.
+`Sorts.Sort` runs an in-place quicksort that avoids recursion internally, so it does not overflow the stack because the sequence to be sorted is too long. It is not stable.
+
+`Sorts.StableSort` runs a stable sort — equal elements keep their relative order before and after sorting — at the cost of a temporary buffer of up to half the sorted length, rented from `ArrayPool<T>`. It is a port of CPython's list sort, using the powersort merge strategy.
 
 ```csharp
 List<int> list = new() { 5, 3, 8, 1, 9 };
-QuickSort.Sort(list); // the default comparer
-QuickSort.Sort(list, Comparer<int>.Default); // a specified comparer
-QuickSort.Sort(list, 1, 3); // sorts only part of the range
+Sorts.Sort(list); // the default comparer
+Sorts.Sort(list, Comparer<int>.Default); // a specified comparer
+Sorts.Sort(list, 1, 3); // sorts only part of the range
 
 var items = new List<Item>();
-QuickSort.Sort(items, Comparer<Item>.Create((a, b) => a.Price.CompareTo(b.Price))); // a custom comparer
-QuickSort.Sort(keys, values); // if elements in keys are swapped, the elements at the corresponding positions in values are swapped accordingly, so that a key and its value always match
-```
+Sorts.Sort(items, Comparer<Item>.Create((a, b) => a.Price.CompareTo(b.Price))); // a custom comparer
+Sorts.Sort(keys, values); // if elements in keys are swapped, the elements at the corresponding positions in values are swapped accordingly, so that a key and its value always match
 
-### Tim Sort
-
-`TimSort` is a replication of the original logic from the Java source code. It provides the same capabilities as `QuickSort` (in-place sorting, ranges, custom comparers, synchronized key-value sorting) and is slightly slower than `QuickSort`, but it is stable — equal elements keep their relative order before and after sorting.
-
-```csharp
-List<int> list = new() { 5, 3, 8, 1, 9 };
-TimSort.Sort(list); // the default comparer
-TimSort.Sort(list, Comparer<int>.Default); // a specified comparer
+Sorts.StableSort(list); // the stable variant, with the same overloads
 ```
 
 ### Comparer Utilities
@@ -558,7 +552,7 @@ TimSort.Sort(list, Comparer<int>.Default); // a specified comparer
 ```csharp
 IComparer<int> descending = Comparer<int>.Default.Reversed();
 IComparer<Item> byName = new FunctorComparer<Item>((a, b) => string.Compare(a.Name, b.Name));
-QuickSort.Sort(items, byName);
+Sorts.Sort(items, byName);
 ```
 
 ## Object Pooling

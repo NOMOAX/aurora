@@ -106,7 +106,7 @@ namespace Aurora.Collections
                 GetChildren(list);
                 if (list.Count > 0)
                 {
-                    TimSort.Sort(list);
+                    Sorts.StableSort(list);
                     foreach (var child in list)
                     {
                         if (child.InternalIsFixed)

@@ -1,344 +1,77 @@
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using Aurora.Pooling;
 
 namespace Aurora.Sorting
 {
     /// <summary>
-    /// The Tim Peters sort algorithm.
+    /// The Tim Peters sort algorithm. (Not the original TimSort: it is a port of CPython's list sort, using the powersort merge strategy, CPython's improved run detection and its variable minrun scheme.)
     /// </summary>
-    public static class TimSort
+    internal static class TimSort
     {
-        private const int MinMerge = 32;
+        /// <summary>
+        /// The largest minimum run length, mirroring CPython's MAX_MINRUN scheme.
+        /// </summary>
+        /// <remarks>CPython uses 64 because comparisons are very expensive and element moves cheap; here keys go through <see cref="IComparer{T}"/> while the element moves are plain array copies, so 32 measures better on structured inputs.</remarks>
+        private const int MaxMinRun = 32;
+
+        /// <summary>
+        /// A short input (shorter than <see cref="MaxMinRun"/>) is finished with the plain <see cref="InsertionSort"/> up to this length and with <see cref="BinaryInsertionSort"/> beyond it.
+        /// </summary>
+        /// <remarks>The crossover between the two depends on how costly a comparison is: it sits near 140 elements for <see cref="int"/> comparisons and only drops to about 8 when a comparison costs tens of times as much, so this threshold targets relatively expensive comparers. Runs grown inside the main loop always use <see cref="BinaryInsertionSort"/>, because a minrun is at least this long anyway.</remarks>
+        private const int InsertionSortThreshold = 16;
 
         private const int MinGallop = 7;
 
         /// <summary>
-        /// Sorts the elements in the collection.
+        /// Sorts the requested range. The caller is responsible for validating the arguments.
         /// </summary>
-        /// <param name="collection">The collection.</param>
-        /// <typeparam name="T">The type of the elements in the collection.</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
-        public static void Sort<T>(IList<T> collection)
+        internal static void InternalSort<T>(IList<T> collection, int index, int count, IComparer<T> comparer)
         {
-            if (collection == null)
-            {
-                throw new ArgumentNullException(nameof(collection));
-            }
-            var count = collection.Count;
-            if (count < 2)
-            {
-                return;
-            }
-            InternalSort(collection, 0, count, Comparer<T>.Default);
-        }
-
-        /// <summary>
-        /// Sorts the elements in the collection using the specified comparer.
-        /// </summary>
-        /// <param name="collection">The collection.</param>
-        /// <param name="comparer">The comparer used to compare elements. If it is <see langword="null"/>, the default comparer (<see cref="Comparer{T}.Default"/>) is used.</param>
-        /// <typeparam name="T">The type of the elements in the collection.</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
-        public static void Sort<T>(IList<T> collection, IComparer<T> comparer)
-        {
-            if (collection == null)
-            {
-                throw new ArgumentNullException(nameof(collection));
-            }
-            var count = collection.Count;
-            if (count < 2)
-            {
-                return;
-            }
-            InternalSort(collection, 0, count, comparer ?? Comparer<T>.Default);
-        }
-
-        /// <summary>
-        /// Sorts part of the elements in the collection using the specified comparer.
-        /// </summary>
-        /// <param name="collection">The collection.</param>
-        /// <param name="index">The starting index of the sort range.</param>
-        /// <param name="count">The number of elements in the sort range.</param>
-        /// <typeparam name="T">The type of the elements in the collection.</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="collection"/>.</exception>
-        public static void Sort<T>(IList<T> collection, int index, int count)
-        {
-            if (collection == null)
-            {
-                throw new ArgumentNullException(nameof(collection));
-            }
-            if (index < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index), index, null);
-            }
-            if (count < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(count), count, null);
-            }
-            if (index + count > collection.Count)
-            {
-                throw new ArgumentException(
-                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(collection)}'s number of elements"
-                );
-            }
-            if (count < 2)
-            {
-                return;
-            }
-            InternalSort(collection, index, count, Comparer<T>.Default);
-        }
-
-        /// <summary>
-        /// Sorts part of the elements in the collection using the specified comparer.
-        /// </summary>
-        /// <param name="collection">The collection.</param>
-        /// <param name="index">The starting index of the sort range.</param>
-        /// <param name="count">The number of elements in the sort range.</param>
-        /// <param name="comparer">The comparer used to compare elements. If it is <see langword="null"/>, the default comparer (<see cref="Comparer{T}.Default"/>) is used.</param>
-        /// <typeparam name="T">The type of the elements in the collection.</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="collection"/>.</exception>
-        public static void Sort<T>(IList<T> collection, int index, int count, IComparer<T> comparer)
-        {
-            if (collection == null)
-            {
-                throw new ArgumentNullException(nameof(collection));
-            }
-            if (index < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index), index, null);
-            }
-            if (count < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(count), count, null);
-            }
-            if (index + count > collection.Count)
-            {
-                throw new ArgumentException(
-                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(collection)}'s number of elements"
-                );
-            }
-            if (count < 2)
-            {
-                return;
-            }
-            InternalSort(collection, index, count, comparer ?? Comparer<T>.Default);
-        }
-
-        /// <summary>
-        /// Uses the specified sorter. Sorts the elements in the key collection and correspondingly changes the order of the elements in the value collection.
-        /// </summary>
-        /// <param name="keys">The key collection.</param>
-        /// <param name="values">The value collection.</param>
-        /// <typeparam name="TKey">The type of the elements in the key collection.</typeparam>
-        /// <typeparam name="TValue">The type of the elements in the value collection.</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="keys"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="values"/> is not <see langword="null"/>, and the number of elements in <paramref name="values"/> is less than the number of elements in <paramref name="keys"/>.</exception>
-        public static void Sort<TKey, TValue>(IList<TKey> keys, IList<TValue> values)
-        {
-            if (keys == null)
-            {
-                throw new ArgumentNullException(nameof(keys));
-            }
-            var count = keys.Count;
-            if (values != null && values.Count < count)
-            {
-                throw new ArgumentException(
-                    $"{nameof(values)}'s number of elements is less than {nameof(keys)}'s number of elements",
-                    nameof(values)
-                );
-            }
-            if (count < 2)
-            {
-                return;
-            }
-            if (values == null)
-            {
-                InternalSort(keys, 0, count, Comparer<TKey>.Default);
-            }
-            else
-            {
-                InternalSort(keys, values, 0, count, Comparer<TKey>.Default);
-            }
-        }
-
-        /// <summary>
-        /// Uses the specified sorter. Sorts the elements in the key collection and correspondingly changes the order of the elements in the value collection.
-        /// </summary>
-        /// <param name="keys">The key collection.</param>
-        /// <param name="values">The value collection.</param>
-        /// <param name="comparer">The comparer used to compare elements. If it is <see langword="null"/>, the default comparer (<see cref="Comparer{T}.Default"/>) is used.</param>
-        /// <typeparam name="TKey">The type of the elements in the key collection.</typeparam>
-        /// <typeparam name="TValue">The type of the elements in the value collection.</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="keys"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="values"/> is not <see langword="null"/>, and the number of elements in <paramref name="values"/> is less than the number of elements in <paramref name="keys"/>.</exception>
-        public static void Sort<TKey, TValue>(IList<TKey> keys, IList<TValue> values, IComparer<TKey> comparer)
-        {
-            if (keys == null)
-            {
-                throw new ArgumentNullException(nameof(keys));
-            }
-            var count = keys.Count;
-            if (values != null && values.Count < count)
-            {
-                throw new ArgumentException(
-                    $"{nameof(values)}'s number of elements is less than {nameof(keys)}'s number of elements",
-                    nameof(values)
-                );
-            }
-            if (count < 2)
-            {
-                return;
-            }
-            if (values == null)
-            {
-                InternalSort(keys, 0, count, comparer ?? Comparer<TKey>.Default);
-            }
-            else
-            {
-                InternalSort(keys, values, 0, count, comparer ?? Comparer<TKey>.Default);
-            }
-        }
-
-        /// <summary>
-        /// Uses the specified sorter. Sorts part of the elements in the key collection and correspondingly changes the order of the elements in the value collection.
-        /// </summary>
-        /// <param name="keys">The key collection.</param>
-        /// <param name="values">The value collection.</param>
-        /// <param name="index">The starting index of the sort range.</param>
-        /// <param name="count">The number of elements in the sort range.</param>
-        /// <typeparam name="TKey">The type of the elements in the key collection.</typeparam>
-        /// <typeparam name="TValue">The type of the elements in the value collection.</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="keys"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="keys"/>, or <paramref name="values"/> is not <see langword="null"/> and <paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="values"/>.</exception>
-        public static void Sort<TKey, TValue>(IList<TKey> keys, IList<TValue> values, int index, int count)
-        {
-            if (keys == null)
-            {
-                throw new ArgumentNullException(nameof(keys));
-            }
-            if (index < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index), index, null);
-            }
-            if (count < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(count), count, null);
-            }
-            if (index + count > keys.Count)
-            {
-                throw new ArgumentException(
-                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(keys)}'s number of elements"
-                );
-            }
-            if (values != null && index + count > values.Count)
-            {
-                throw new ArgumentException(
-                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(values)}'s number of elements"
-                );
-            }
-            if (count < 2)
-            {
-                return;
-            }
-            if (values == null)
-            {
-                InternalSort(keys, index, count, Comparer<TKey>.Default);
-            }
-            else
-            {
-                InternalSort(keys, values, index, count, Comparer<TKey>.Default);
-            }
-        }
-
-        /// <summary>
-        /// Uses the specified sorter. Sorts part of the elements in the key collection and correspondingly changes the order of the elements in the value collection.
-        /// </summary>
-        /// <param name="keys">The key collection.</param>
-        /// <param name="values">The value collection.</param>
-        /// <param name="index">The starting index of the sort range.</param>
-        /// <param name="count">The number of elements in the sort range.</param>
-        /// <param name="comparer">The comparer used to compare elements. If it is <see langword="null"/>, the default comparer (<see cref="Comparer{T}.Default"/>) is used.</param>
-        /// <typeparam name="TKey">The type of the elements in the key collection.</typeparam>
-        /// <typeparam name="TValue">The type of the elements in the value collection.</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="keys"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="keys"/>, or <paramref name="values"/> is not <see langword="null"/> and <paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="values"/>.</exception>
-        public static void Sort<TKey, TValue>(
-            IList<TKey>     keys,
-            IList<TValue>   values,
-            int             index,
-            int             count,
-            IComparer<TKey> comparer)
-        {
-            if (keys == null)
-            {
-                throw new ArgumentNullException(nameof(keys));
-            }
-            if (index < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index), index, null);
-            }
-            if (count < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(count), count, null);
-            }
-            if (index + count > keys.Count)
-            {
-                throw new ArgumentException(
-                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(keys)}'s number of elements"
-                );
-            }
-            if (values != null && index + count > values.Count)
-            {
-                throw new ArgumentException(
-                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(values)}'s number of elements"
-                );
-            }
-            if (count < 2)
-            {
-                return;
-            }
-            if (values == null)
-            {
-                InternalSort(keys, index, count, comparer ?? Comparer<TKey>.Default);
-            }
-            else
-            {
-                InternalSort(keys, values, index, count, comparer ?? Comparer<TKey>.Default);
-            }
-        }
-
-        private static void InternalSort<T>(IList<T> collection, int index, int count, IComparer<T> comparer)
-        {
-            if (count < MinMerge)
+            if (count < MaxMinRun)
             {
                 var runCount = CountRunAndMakeAscending(collection, index, count, comparer);
-                BinaryInsertionSort.InternalSort(collection, index, count, index + runCount, comparer);
+                if (count <= InsertionSortThreshold)
+                {
+                    InsertionSort.InternalSort(collection, index, count, index + runCount, comparer);
+                }
+                else
+                {
+                    BinaryInsertionSort.InternalSort(collection, index, count, index + runCount, comparer);
+                }
                 return;
             }
 
-            var runs = PredefinedPools<Run>.List.Get();
+            var runs       = PredefinedPools<Run>.List.Get();
+            /*
+             * MergeLow and MergeHigh need extra space to merge two runs
+             * The space is proportional to the shorter of the two run lengths, so in the worst case (the two runs are of equal length and this is the final merge) half of the count length is enough
+             * The rented array may be longer than requested; only the first Min(len1, len2) elements are ever touched
+             */
+            var tempLength = count >> 1;
+            var temp       = ArrayPool<T>.Shared.Rent(tempLength);
             try
             {
                 var globalMinGallop = MinGallop;
+                var baseIndex       = index;
+                var totalCount      = count;
                 /*
-                 * MergeLow and MergeHigh need extra space to merge two runs
-                 * Uses the shorter of the two run lengths
-                 * In the worst case, the two runs have equal lengths and it is the final merge, so an array of half the count length is directly initialized here as extra space
-                 * Using a smaller value and growing it when appropriate is also fine,
-                 * However, the run lengths from the top to the bottom of the stack roughly grow at a Fibonacci-sequence rate, so the performance impact of multiple reallocations must be considered
+                 * State used to generate the minimum run length of each run
+                 * The lengths vary slightly so that the number of runs is a power of two and merges stay as balanced as possible; see listobject.c's minrun_next
                  */
-                var temp            = new T[count >> 1];
-                // The minimum run length
-                var minRunCount     = GetMinRunCount(count);
+                var minRunShift     = 0;
+                while (totalCount >> minRunShift >= MaxMinRun)
+                {
+                    minRunShift++;
+                }
+                var minRunMask    = (1 << minRunShift) - 1;
+                var minRunCurrent = 0L;
                 do
                 {
+                    minRunCurrent += totalCount;
+                    var minRunCount = (int)(minRunCurrent >> minRunShift);
+                    minRunCurrent &= minRunMask;
                     var runCount = CountRunAndMakeAscending(collection, index, count, comparer);
                     // The run length is not enough; grow it to minRunCount, but do not exceed the remaining element count
                     if (runCount < minRunCount)
@@ -347,8 +80,9 @@ namespace Aurora.Sorting
                         BinaryInsertionSort.InternalSort(collection, index, forceRunCount, index + runCount, comparer);
                         runCount = forceRunCount;
                     }
-                    runs.Add(new Run(index, runCount));
-                    MergeCollapse(collection, runs, ref globalMinGallop, temp, comparer);
+                    // Merge the pending runs according to the powersort strategy, then push the new run
+                    FoundNewRun(collection, runs, runCount, baseIndex, totalCount, ref globalMinGallop, temp, comparer);
+                    runs.Add(new Run(index, runCount, 0));
                     index += runCount;
                     count -= runCount;
                 } while (count > 0);
@@ -357,40 +91,64 @@ namespace Aurora.Sorting
             finally
             {
                 PredefinedPools<Run>.List.Return(runs);
+                ArrayPool<T>.Shared.Return(temp, true);
             }
         }
 
-        private static void InternalSort<TKey, TValue>(
+        /// <summary>
+        /// Sorts the requested range of keys and reorders the values to match. The caller is responsible for validating the arguments.
+        /// </summary>
+        internal static void InternalSort<TKey, TValue>(
             IList<TKey>     keys,
             IList<TValue>   values,
             int             index,
             int             count,
             IComparer<TKey> comparer)
         {
-            if (count < MinMerge)
+            if (count < MaxMinRun)
             {
                 var runCount = CountRunAndMakeAscending(keys, values, index, count, comparer);
-                BinaryInsertionSort.InternalSort(keys, values, index, count, index + runCount, comparer);
+                if (count <= InsertionSortThreshold)
+                {
+                    InsertionSort.InternalSort(keys, values, index, count, index + runCount, comparer);
+                }
+                else
+                {
+                    BinaryInsertionSort.InternalSort(keys, values, index, count, index + runCount, comparer);
+                }
                 return;
             }
 
-            var runs = PredefinedPools<Run>.List.Get();
+            var runs       = PredefinedPools<Run>.List.Get();
+            /*
+             * MergeLow and MergeHigh need extra space to merge two runs
+             * The space is proportional to the shorter of the two run lengths, so in the worst case (the two runs are of equal length and this is the final merge) half of the count length is enough
+             * The rented arrays may be longer than requested; only the first Min(len1, len2) elements are ever touched
+             */
+            var tempLength = count >> 1;
+            var tempKeys   = ArrayPool<TKey>.Shared.Rent(tempLength);
+            var tempValues = ArrayPool<TValue>.Shared.Rent(tempLength);
             try
             {
                 var globalMinGallop = MinGallop;
+                var baseIndex       = index;
+                var totalCount      = count;
                 /*
-                 * MergeLow and MergeHigh need extra space to merge two runs
-                 * Uses the shorter of the two run lengths
-                 * In the worst case, the two runs have equal lengths and it is the final merge, so an array of half the count length is directly initialized here as extra space
-                 * Using a smaller value and growing it when appropriate is also fine,
-                 * However, the run lengths from the top to the bottom of the stack roughly grow at a Fibonacci-sequence rate, so the performance impact of multiple reallocations must be considered
+                 * State used to generate the minimum run length of each run
+                 * The lengths vary slightly so that the number of runs is a power of two and merges stay as balanced as possible; see listobject.c's minrun_next
                  */
-                var tempKeys        = new TKey[count >> 1];
-                var tempValues      = new TValue[count >> 1];
-                // The minimum run length
-                var minRunCount     = GetMinRunCount(count);
+                var minRunShift     = 0;
+                while (totalCount >> minRunShift >= MaxMinRun)
+                {
+                    minRunShift++;
+                }
+                var minRunMask    = (1 << minRunShift) - 1;
+                var minRunCurrent = 0L;
                 do
                 {
+                    minRunCurrent += totalCount;
+                    var minRunCount = (int)(minRunCurrent >> minRunShift);
+                    minRunCurrent &= minRunMask;
                     var runCount = CountRunAndMakeAscending(keys, values, index, count, comparer);
                     // The run length is not enough; grow it to minRunCount, but do not exceed the remaining element count
                     if (runCount < minRunCount)
@@ -406,8 +164,20 @@ namespace Aurora.Sorting
                         );
                         runCount = forceRunCount;
                     }
-                    runs.Add(new Run(index, runCount));
-                    MergeCollapse(keys, values, runs, ref globalMinGallop, tempKeys, tempValues, comparer);
+                    // Merge the pending runs according to the powersort strategy, then push the new run
+                    FoundNewRun(
+                        keys,
+                        values,
+                        runs,
+                        runCount,
+                        baseIndex,
+                        totalCount,
+                        ref globalMinGallop,
+                        tempKeys,
+                        tempValues,
+                        comparer
+                    );
+                    runs.Add(new Run(index, runCount, 0));
                     index += runCount;
                     count -= runCount;
                 } while (count > 0);
@@ -416,52 +186,91 @@ namespace Aurora.Sorting
             finally
             {
                 PredefinedPools<Run>.List.Return(runs);
+                ArrayPool<TKey>.Shared.Return(tempKeys, true);
+                ArrayPool<TValue>.Shared.Return(tempValues, true);
             }
         }
 
-        private static int GetMinRunCount(int count)
-        {
-            var r = 0;
-            while (count >= MinMerge)
-            {
-                r     |=  count & 1;
-                count >>= 1;
-            }
-            return count + r;
-        }
-
+        /// <summary>
+        /// Returns the length of the run beginning at <paramref name="index"/>, reversing it in place if it is descending.
+        /// </summary>
+        /// <remarks>
+        /// Ported from CPython's count_run: a descending run may contain sub-runs of equal elements, which are reversed on the fly so that the final reversal preserves their original order. The reversed run is then extended by a naturally ascending suffix.
+        /// </remarks>
         private static int CountRunAndMakeAscending<T>(IList<T> collection, int index, int count, IComparer<T> comparer)
         {
             if (count < 2)
             {
                 return count;
             }
-            // Compare the first two elements to determine whether the sequence is ascending or strictly descending
-            var isAscending = comparer.Compare(collection[index], collection[index + 1]) <= 0;
-            // Move the pointer to the third element; from then on, each round compares the element before the pointer and the element at the pointer
-            var i           = index + 2;
-            if (isAscending)
+            // Find the ascending prefix; it ends at the first strict descent
+            var n = 1;
+            while (n < count && comparer.Compare(collection[index + n], collection[index + n - 1]) >= 0)
             {
-                while (i < index + count && comparer.Compare(collection[i - 1], collection[i]) <= 0)
-                {
-                    i++;
-                }
+                n++;
             }
-            else
+            if (n == count)
             {
-                while (i < index + count && comparer.Compare(collection[i - 1], collection[i]) > 0)
+                return n;
+            }
+            /*
+             * collection[index + n] is strictly less than collection[index + n - 1], so the sequence is descending from here on
+             * If the ascending prefix contains a strict increase, it is already a valid run
+             */
+            if (n > 1)
+            {
+                if (comparer.Compare(collection[index], collection[index + n - 1]) < 0)
                 {
-                    i++;
+                    return n;
                 }
                 /*
-                 * Reverse the strictly descending sequence to make it strictly ascending
-                 * Since a strictly descending sequence has no equal elements, this operation does not break the stability of the sort
+                 * The ascending prefix consists of equal elements only, so this is a descending run leading with a run of equal elements
+                 * Reverse the prefix in place; the final whole-run reversal restores the original order of those equal elements
                  */
-                ReverseRange(collection, index, i - index);
+                ReverseRange(collection, index, n);
             }
-            return i - index;
+            n++;
+            /*
+             * Finish the strictly descending run
+             * Runs of equal elements are reversed in place as they end, so that the final whole-run reversal restores their original order
+             */
+            var equalCount = 0;
+            while (n < count)
+            {
+                if (comparer.Compare(collection[index + n], collection[index + n - 1]) < 0)
+                {
+                    ReverseLastEqualElements(collection, index, n, ref equalCount);
+                }
+                else if (comparer.Compare(collection[index + n - 1], collection[index + n]) < 0)
+                {
+                    break;
+                }
+                else
+                {
+                    equalCount++;
+                }
+                n++;
+            }
+            ReverseLastEqualElements(collection, index, n, ref equalCount);
+            // Reverse the strictly descending run to make it ascending; the reversal above keeps equal elements stable
+            ReverseRange(collection, index, n);
+            /*
+             * The reversed run can be extended by a naturally ascending suffix
+             * e.g. [3, 2, 3, 4, 1] makes an ascending run from the first 4 elements
+             */
+            while (n < count && comparer.Compare(collection[index + n], collection[index + n - 1]) >= 0)
+            {
+                n++;
+            }
+            return n;
         }
 
+        /// <summary>
+        /// Returns the length of the run beginning at <paramref name="index"/>, reversing it in place if it is descending.
+        /// </summary>
+        /// <remarks>
+        /// Ported from CPython's count_run: a descending run may contain sub-runs of equal elements, which are reversed on the fly so that the final reversal preserves their original order. The reversed run is then extended by a naturally ascending suffix.
+        /// </remarks>
         private static int CountRunAndMakeAscending<TKey, TValue>(
             IList<TKey>     keys,
             IList<TValue>   values,
@@ -473,30 +282,66 @@ namespace Aurora.Sorting
             {
                 return count;
             }
-            // Compare the first two elements to determine whether the sequence is ascending or strictly descending
-            var isAscending = comparer.Compare(keys[index], keys[index + 1]) <= 0;
-            // Move the pointer to the third element; from then on, each round compares the element before the pointer and the element at the pointer
-            var i           = index + 2;
-            if (isAscending)
+            // Find the ascending prefix; it ends at the first strict descent
+            var n = 1;
+            while (n < count && comparer.Compare(keys[index + n], keys[index + n - 1]) >= 0)
             {
-                while (i < index + count && comparer.Compare(keys[i - 1], keys[i]) <= 0)
-                {
-                    i++;
-                }
+                n++;
             }
-            else
+            if (n == count)
             {
-                while (i < index + count && comparer.Compare(keys[i - 1], keys[i]) > 0)
+                return n;
+            }
+            /*
+             * keys[index + n] is strictly less than keys[index + n - 1], so the sequence is descending from here on
+             * If the ascending prefix contains a strict increase, it is already a valid run
+             */
+            if (n > 1)
+            {
+                if (comparer.Compare(keys[index], keys[index + n - 1]) < 0)
                 {
-                    i++;
+                    return n;
                 }
                 /*
-                 * Reverse the strictly descending sequence to make it strictly ascending
-                 * Since a strictly descending sequence has no equal elements, this operation does not break the stability of the sort
+                 * The ascending prefix consists of equal elements only, so this is a descending run leading with a run of equal elements
+                 * Reverse the prefix in place; the final whole-run reversal restores the original order of those equal elements
                  */
-                ReverseRange(keys, values, index, i - index);
+                ReverseRange(keys, values, index, n);
             }
-            return i - index;
+            n++;
+            /*
+             * Finish the strictly descending run
+             * Runs of equal elements are reversed in place as they end, so that the final whole-run reversal restores their original order
+             */
+            var equalCount = 0;
+            while (n < count)
+            {
+                if (comparer.Compare(keys[index + n], keys[index + n - 1]) < 0)
+                {
+                    ReverseLastEqualElements(keys, values, index, n, ref equalCount);
+                }
+                else if (comparer.Compare(keys[index + n - 1], keys[index + n]) < 0)
+                {
+                    break;
+                }
+                else
+                {
+                    equalCount++;
+                }
+                n++;
+            }
+            ReverseLastEqualElements(keys, values, index, n, ref equalCount);
+            // Reverse the strictly descending run to make it ascending; the reversal above keeps equal elements stable
+            ReverseRange(keys, values, index, n);
+            /*
+             * The reversed run can be extended by a naturally ascending suffix
+             * e.g. [3, 2, 3, 4, 1] makes an ascending run from the first 4 elements
+             */
+            while (n < count && comparer.Compare(keys[index + n], keys[index + n - 1]) >= 0)
+            {
+                n++;
+            }
+            return n;
         }
 
         private static void ReverseRange<T>(IList<T> collection, int index, int count)
@@ -516,54 +361,117 @@ namespace Aurora.Sorting
             }
         }
 
-        private static void MergeCollapse<T>(
+        /// <summary>
+        /// Reverses the last <paramref name="equalCount"/> + 1 equal elements and resets <paramref name="equalCount"/>.
+        /// </summary>
+        private static void ReverseLastEqualElements<T>(IList<T> collection, int index, int n, ref int equalCount)
+        {
+            if (equalCount == 0)
+            {
+                return;
+            }
+            ReverseRange(collection, index + n - (equalCount + 1), equalCount + 1);
+            equalCount = 0;
+        }
+
+        /// <summary>
+        /// Reverses the last <paramref name="equalCount"/> + 1 equal elements and resets <paramref name="equalCount"/>.
+        /// </summary>
+        private static void ReverseLastEqualElements<TKey, TValue>(
+            IList<TKey>   keys,
+            IList<TValue> values,
+            int           index,
+            int           n,
+            ref int       equalCount)
+        {
+            if (equalCount == 0)
+            {
+                return;
+            }
+            ReverseRange(keys, values, index + n - (equalCount + 1), equalCount + 1);
+            equalCount = 0;
+        }
+
+        /// <summary>
+        /// Applies the powersort merge strategy: merges the runs on the stack whose power is greater than the power of the boundary between the top run and <paramref name="newRunCount"/>.
+        /// </summary>
+        private static void FoundNewRun<T>(
             IList<T>     collection,
             IList<Run>   runs,
+            int          newRunCount,
+            int          baseIndex,
+            int          totalCount,
             ref int      globalMinGallop,
             T[]          temp,
             IComparer<T> comparer)
         {
-            while (runs.Count > 1)
+            if (runs.Count == 0)
             {
-                var runIndex = runs.Count - 2;
-                if (runIndex > 0 && runs[runIndex - 1].Count <= runs[runIndex].Count + runs[runIndex + 1].Count ||
-                    runIndex > 1 && runs[runIndex - 2].Count <= runs[runIndex].Count + runs[runIndex - 1].Count)
+                return;
+            }
+            var topRun = runs[^1];
+            var power  = GetPower(topRun.Index - baseIndex, topRun.Count, newRunCount, totalCount);
+            while (runs.Count > 1 && runs[^2].Power > power)
+            {
+                MergeAt(collection, runs, runs.Count - 2, ref globalMinGallop, temp, comparer);
+            }
+            topRun   = runs[^1];
+            runs[^1] = new Run(topRun.Index, topRun.Count, power);
+        }
+
+        /// <summary>
+        /// Computes the powersort power of the boundary between two adjacent runs, that is its depth in the conceptual binary merge tree.
+        /// </summary>
+        private static int GetPower(int startIndex, int count1, int count2, int count)
+        {
+            var result = 0;
+            var a      = 2L * startIndex + count1;
+            var b      = a + count1 + count2;
+            while (true)
+            {
+                result++;
+                if (a >= count)
                 {
-                    if (runs[runIndex - 1].Count < runs[runIndex + 1].Count)
-                        runIndex--;
+                    a -= count;
+                    b -= count;
                 }
-                else if (runIndex < 0 || runs[runIndex].Count > runs[runIndex + 1].Count)
+                else if (b >= count)
                 {
                     break;
                 }
-                MergeAt(collection, runs, runIndex, ref globalMinGallop, temp, comparer);
+                a <<= 1;
+                b <<= 1;
             }
+            return result;
         }
 
-        private static void MergeCollapse<TKey, TValue>(
+        /// <summary>
+        /// Applies the powersort merge strategy: merges the runs on the stack whose power is greater than the power of the boundary between the top run and <paramref name="newRunCount"/>.
+        /// </summary>
+        private static void FoundNewRun<TKey, TValue>(
             IList<TKey>     keys,
             IList<TValue>   values,
             IList<Run>      runs,
+            int             newRunCount,
+            int             baseIndex,
+            int             totalCount,
             ref int         globalMinGallop,
             TKey[]          tempKeys,
             TValue[]        tempValues,
             IComparer<TKey> comparer)
         {
-            while (runs.Count > 1)
+            if (runs.Count == 0)
             {
-                var runIndex = runs.Count - 2;
-                if (runIndex > 0 && runs[runIndex - 1].Count <= runs[runIndex].Count + runs[runIndex + 1].Count ||
-                    runIndex > 1 && runs[runIndex - 2].Count <= runs[runIndex].Count + runs[runIndex - 1].Count)
-                {
-                    if (runs[runIndex - 1].Count < runs[runIndex + 1].Count)
-                        runIndex--;
-                }
-                else if (runIndex < 0 || runs[runIndex].Count > runs[runIndex + 1].Count)
-                {
-                    break;
-                }
-                MergeAt(keys, values, runs, runIndex, ref globalMinGallop, tempKeys, tempValues, comparer);
+                return;
             }
+            var topRun = runs[^1];
+            var power  = GetPower(topRun.Index - baseIndex, topRun.Count, newRunCount, totalCount);
+            while (runs.Count > 1 && runs[^2].Power > power)
+            {
+                MergeAt(keys, values, runs, runs.Count - 2, ref globalMinGallop, tempKeys, tempValues, comparer);
+            }
+            topRun   = runs[^1];
+            runs[^1] = new Run(topRun.Index, topRun.Count, power);
         }
 
         private static void MergeForceCollapse<T>(
@@ -630,7 +538,11 @@ namespace Aurora.Sorting
              * if [runIndex + 2] exists, store [runIndex + 2] into [runIndex + 1]
              * remove the run at the end
              */
-            runs[runIndex] = new Run(runs[runIndex].Index, runs[runIndex].Count + runs[runIndex + 1].Count);
+            runs[runIndex] = new Run(
+                runs[runIndex].Index,
+                runs[runIndex].Count + runs[runIndex + 1].Count,
+                runs[runIndex].Power
+            );
             if (runIndex == runs.Count - 3)
             {
                 runs[runIndex + 1] = runs[runIndex + 2];
@@ -705,7 +617,11 @@ namespace Aurora.Sorting
              * if [runIndex + 2] exists, store [runIndex + 2] into [runIndex + 1]
              * remove the run at the end
              */
-            runs[runIndex] = new Run(runs[runIndex].Index, runs[runIndex].Count + runs[runIndex + 1].Count);
+            runs[runIndex] = new Run(
+                runs[runIndex].Index,
+                runs[runIndex].Count + runs[runIndex + 1].Count,
+                runs[runIndex].Power
+            );
             if (runIndex == runs.Count - 3)
             {
                 runs[runIndex + 1] = runs[runIndex + 2];
@@ -828,8 +744,13 @@ namespace Aurora.Sorting
                         }
                     }
                 } while ((count1 | count2) < minGallop);
+                minGallop++;
                 do
                 {
+                    if (minGallop > 1)
+                    {
+                        minGallop--;
+                    }
                     count1 = GallopRight(collection[cursor2], temp, cursor1, len1, 0, comparer);
                     if (count1 != 0)
                     {
@@ -864,16 +785,11 @@ namespace Aurora.Sorting
                     {
                         goto EndOfTheWhileStatement;
                     }
-                    minGallop--;
                 } while (count1 >= MinGallop | count2 >= MinGallop);
-                if (minGallop < 0)
-                {
-                    minGallop = 0;
-                }
-                minGallop += 2;
+                minGallop++;
             }
             EndOfTheWhileStatement:
-            globalMinGallop = minGallop < 1 ? 1 : minGallop;
+            globalMinGallop = minGallop;
             switch (len1)
             {
                 case 0:
@@ -957,8 +873,13 @@ namespace Aurora.Sorting
                         }
                     }
                 } while ((count1 | count2) < minGallop);
+                minGallop++;
                 do
                 {
+                    if (minGallop > 1)
+                    {
+                        minGallop--;
+                    }
                     count1 = GallopRight(keys[cursor2], tempKeys, cursor1, len1, 0, comparer);
                     if (count1 != 0)
                     {
@@ -1001,16 +922,11 @@ namespace Aurora.Sorting
                     {
                         goto EndOfTheWhileStatement;
                     }
-                    minGallop--;
                 } while (count1 >= MinGallop | count2 >= MinGallop);
-                if (minGallop < 0)
-                {
-                    minGallop = 0;
-                }
-                minGallop += 2;
+                minGallop++;
             }
             EndOfTheWhileStatement:
-            globalMinGallop = minGallop < 1 ? 1 : minGallop;
+            globalMinGallop = minGallop;
             switch (len1)
             {
                 case 0:
@@ -1084,8 +1000,13 @@ namespace Aurora.Sorting
                         }
                     }
                 } while ((count1 | count2) < minGallop);
+                minGallop++;
                 do
                 {
+                    if (minGallop > 1)
+                    {
+                        minGallop--;
+                    }
                     count1 = len1 - GallopRight(temp[cursor2], collection, base1, len1, len1 - 1, comparer);
                     if (count1 != 0)
                     {
@@ -1120,16 +1041,11 @@ namespace Aurora.Sorting
                     {
                         goto EndOfTheWhileStatement;
                     }
-                    minGallop--;
                 } while (count1 >= MinGallop | count2 >= MinGallop);
-                if (minGallop < 0)
-                {
-                    minGallop = 0;
-                }
-                minGallop += 2;
+                minGallop++;
             }
             EndOfTheWhileStatement:
-            globalMinGallop = minGallop < 1 ? 1 : minGallop;
+            globalMinGallop = minGallop;
             switch (len2)
             {
                 case 0:
@@ -1217,8 +1133,13 @@ namespace Aurora.Sorting
                         }
                     }
                 } while ((count1 | count2) < minGallop);
+                minGallop++;
                 do
                 {
+                    if (minGallop > 1)
+                    {
+                        minGallop--;
+                    }
                     count1 = len1 - GallopRight(tempKeys[cursor2], keys, base1, len1, len1 - 1, comparer);
                     if (count1 != 0)
                     {
@@ -1261,16 +1182,11 @@ namespace Aurora.Sorting
                     {
                         goto EndOfTheWhileStatement;
                     }
-                    minGallop--;
                 } while (count1 >= MinGallop | count2 >= MinGallop);
-                if (minGallop < 0)
-                {
-                    minGallop = 0;
-                }
-                minGallop += 2;
+                minGallop++;
             }
             EndOfTheWhileStatement:
-            globalMinGallop = minGallop < 1 ? 1 : minGallop;
+            globalMinGallop = minGallop;
             switch (len2)
             {
                 case 0:
@@ -1434,10 +1350,16 @@ namespace Aurora.Sorting
 
             internal readonly int Count;
 
-            internal Run(int index, int count)
+            /// <summary>
+            /// The powersort power of the boundary between this run and the run above it on the run stack.
+            /// </summary>
+            internal readonly int Power;
+
+            internal Run(int index, int count, int power)
             {
                 Index = index;
                 Count = count;
+                Power = power;
             }
         }
     }

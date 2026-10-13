@@ -1,7 +1,7 @@
 # Aurora
 
 ![许可](https://img.shields.io/github/license/NOMOAX/aurora)
-![版本](https://img.shields.io/badge/version-1.5.4-blue)
+![版本](https://img.shields.io/badge/version-1.6.0-blue)
 ![最低 Unity 版本](https://img.shields.io/badge/Unity-2021.2%2B-blue)
 
 适用于 Unity 的高性能、低内存消耗的 C# 工具包。
@@ -523,29 +523,23 @@ int k = sequence.FindIndex(s => s.StartsWith("A"));
 
 ## 排序
 
-### 快速排序
+`Sorts` 是排序算法的统一入口，两种模式提供相同的重载：默认比较器、指定比较器、部分范围，以及键值同步排序。
 
-`QuickSort` 使用标准快速排序算法实现，但在内部避免了递归，因此不会因为待排序序列过长而栈溢出。
+`Sorts.Sort` 使用就地快速排序，内部避免了递归，因此不会因为待排序序列过长而栈溢出；它是不稳定的。
+
+`Sorts.StableSort` 是稳定排序——相等元素在排序前后的相对顺序不会改变——代价是一块最长可达待排序长度一半的临时缓冲区，从 `ArrayPool<T>` 租用。它是 CPython 列表排序的移植，采用 powersort 归并策略。
 
 ```csharp
 List<int> list = new() { 5, 3, 8, 1, 9 };
-QuickSort.Sort(list); // 默认比较器
-QuickSort.Sort(list, Comparer<int>.Default); // 指定比较器
-QuickSort.Sort(list, 1, 3); // 仅排序部分范围
+Sorts.Sort(list); // 默认比较器
+Sorts.Sort(list, Comparer<int>.Default); // 指定比较器
+Sorts.Sort(list, 1, 3); // 仅排序部分范围
 
 var items = new List<Item>();
-QuickSort.Sort(items, Comparer<Item>.Create((a, b) => a.Price.CompareTo(b.Price))); // 自定义比较器
-QuickSort.Sort(keys, values); // 如果 keys 中的元素被交换了位置，也相应地交换 values 中对应位置的元素，从而确保 key 和 value 始终匹配
-```
+Sorts.Sort(items, Comparer<Item>.Create((a, b) => a.Price.CompareTo(b.Price))); // 自定义比较器
+Sorts.Sort(keys, values); // 如果 keys 中的元素被交换了位置，也相应地交换 values 中对应位置的元素，从而确保 key 和 value 始终匹配
 
-### Tim 排序
-
-`TimSort` 是从 Java 源码中的原逻辑复刻而来。它提供与 `QuickSort` 相同的能力（就地排序、范围、自定义比较器、键值同步排序），速度稍慢于 `QuickSort`，但它是稳定的——相等元素在排序前后的相对顺序不会改变。
-
-```csharp
-List<int> list = new() { 5, 3, 8, 1, 9 };
-TimSort.Sort(list); // 默认比较器
-TimSort.Sort(list, Comparer<int>.Default); // 指定比较器
+Sorts.StableSort(list); // 稳定版本，重载相同
 ```
 
 ### 比较器工具
@@ -558,7 +552,7 @@ TimSort.Sort(list, Comparer<int>.Default); // 指定比较器
 ```csharp
 IComparer<int> descending = Comparer<int>.Default.Reversed();
 IComparer<Item> byName = new FunctorComparer<Item>((a, b) => string.Compare(a.Name, b.Name));
-QuickSort.Sort(items, byName);
+Sorts.Sort(items, byName);
 ```
 
 ## 对象池

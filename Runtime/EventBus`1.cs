@@ -321,8 +321,7 @@ namespace Aurora
         /// <param name="id">The unique identifier of the event.</param>
         /// <returns>A task that completes when the event identified by <paramref name="id"/> is published.</returns>
         /// <remarks>
-        /// The task is completed when <see cref="Publish"/> or <see cref="PublishAll"/> is called with <paramref name="id"/>.
-        /// If the event has already been published before this method is called, the returned task will never complete.
+        /// The task is completed when <see cref="Publish"/> or <see cref="PublishAll"/> is called with <paramref name="id"/>. If the event has already been published before this method is called, the returned task will never complete.
         /// </remarks>
         public static Task WhenPublished(T id)
         {
@@ -338,8 +337,7 @@ namespace Aurora
         /// <returns>A task that completes when the event identified by <paramref name="id"/> is published, or when <paramref name="cancellationToken"/> is canceled.</returns>
         /// <exception cref="OperationCanceledException">The <paramref name="cancellationToken"/> was canceled.</exception>
         /// <remarks>
-        /// The task is completed when <see cref="Publish"/> or <see cref="PublishAll"/> is called with <paramref name="id"/>.
-        /// If the event has already been published before this method is called, the returned task will never complete.
+        /// The task is completed when <see cref="Publish"/> or <see cref="PublishAll"/> is called with <paramref name="id"/>. If the event has already been published before this method is called, the returned task will never complete.
         /// </remarks>
         public static Task WhenPublished(T id, CancellationToken cancellationToken)
         {

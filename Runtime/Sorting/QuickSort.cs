@@ -1,316 +1,27 @@
-using System;
 using System.Collections.Generic;
 using Aurora.Pooling;
 
 namespace Aurora.Sorting
 {
     /// <summary>
-    /// A quick-sort algorithm.
+    /// A quick-sort algorithm, with the usual practical optimizations applied to the plain textbook version.
     /// </summary>
-    public static class QuickSort
+    internal static class QuickSort
     {
         /// <summary>
-        /// Sorts the elements in the collection.
+        /// Sections of at most this many elements are finished off with an insertion sort.
         /// </summary>
-        /// <param name="collection">The collection.</param>
-        /// <typeparam name="T">The type of the elements in the collection.</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
-        public static void Sort<T>(IList<T> collection)
-        {
-            if (collection == null)
-            {
-                throw new ArgumentNullException(nameof(collection));
-            }
-            var count = collection.Count;
-            if (count < 2)
-            {
-                return;
-            }
-            InternalSort(collection, 0, count, Comparer<T>.Default);
-        }
+        private const int InsertionSortThreshold = 16;
 
         /// <summary>
-        /// Sorts the elements in the collection using the specified comparer.
+        /// Sections of at most this many elements use a median of three as the pivot; larger ones use the median of the medians of three evenly spread triples.
         /// </summary>
-        /// <param name="collection">The collection.</param>
-        /// <param name="comparer">The comparer used to compare elements. If it is <see langword="null"/>, the default comparer (<see cref="Comparer{T}.Default"/>) is used.</param>
-        /// <typeparam name="T">The type of the elements in the collection.</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
-        public static void Sort<T>(IList<T> collection, IComparer<T> comparer)
-        {
-            if (collection == null)
-            {
-                throw new ArgumentNullException(nameof(collection));
-            }
-            var count = collection.Count;
-            if (count < 2)
-            {
-                return;
-            }
-            InternalSort(collection, 0, count, comparer ?? Comparer<T>.Default);
-        }
+        private const int MedianOfMediansThreshold = 40;
 
         /// <summary>
-        /// Sorts part of the elements in the collection using the specified comparer.
+        /// Sorts the requested range. The caller is responsible for validating the arguments.
         /// </summary>
-        /// <param name="collection">The collection.</param>
-        /// <param name="index">The starting index of the sort range.</param>
-        /// <param name="count">The number of elements in the sort range.</param>
-        /// <typeparam name="T">The type of the elements in the collection.</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="collection"/>.</exception>
-        public static void Sort<T>(IList<T> collection, int index, int count)
-        {
-            if (collection == null)
-            {
-                throw new ArgumentNullException(nameof(collection));
-            }
-            if (index < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index), index, null);
-            }
-            if (count < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(count), count, null);
-            }
-            if (index + count > collection.Count)
-            {
-                throw new ArgumentException(
-                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(collection)}'s number of elements"
-                );
-            }
-            if (count < 2)
-            {
-                return;
-            }
-            InternalSort(collection, index, count, Comparer<T>.Default);
-        }
-
-        /// <summary>
-        /// Sorts part of the elements in the collection using the specified comparer.
-        /// </summary>
-        /// <param name="collection">The collection.</param>
-        /// <param name="index">The starting index of the sort range.</param>
-        /// <param name="count">The number of elements in the sort range.</param>
-        /// <param name="comparer">The comparer used to compare elements. If it is <see langword="null"/>, the default comparer (<see cref="Comparer{T}.Default"/>) is used.</param>
-        /// <typeparam name="T">The type of the elements in the collection.</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="collection"/>.</exception>
-        public static void Sort<T>(IList<T> collection, int index, int count, IComparer<T> comparer)
-        {
-            if (collection == null)
-            {
-                throw new ArgumentNullException(nameof(collection));
-            }
-            if (index < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index), index, null);
-            }
-            if (count < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(count), count, null);
-            }
-            if (index + count > collection.Count)
-            {
-                throw new ArgumentException(
-                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(collection)}'s number of elements"
-                );
-            }
-            if (count < 2)
-            {
-                return;
-            }
-            InternalSort(collection, index, count, comparer ?? Comparer<T>.Default);
-        }
-
-        /// <summary>
-        /// Uses the specified sorter. Sorts the elements in the key collection and correspondingly changes the order of the elements in the value collection.
-        /// </summary>
-        /// <param name="keys">The key collection.</param>
-        /// <param name="values">The value collection.</param>
-        /// <typeparam name="TKey">The type of the elements in the key collection.</typeparam>
-        /// <typeparam name="TValue">The type of the elements in the value collection.</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="keys"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="values"/> is not <see langword="null"/>, and the number of elements in <paramref name="values"/> is less than the number of elements in <paramref name="keys"/>.</exception>
-        public static void Sort<TKey, TValue>(IList<TKey> keys, IList<TValue> values)
-        {
-            if (keys == null)
-            {
-                throw new ArgumentNullException(nameof(keys));
-            }
-            var count = keys.Count;
-            if (values != null && values.Count < count)
-            {
-                throw new ArgumentException(
-                    $"{nameof(values)}'s number of elements is less than {nameof(keys)}'s number of elements",
-                    nameof(values)
-                );
-            }
-            if (count < 2)
-            {
-                return;
-            }
-            if (values == null)
-            {
-                InternalSort(keys, 0, count, Comparer<TKey>.Default);
-            }
-            else
-            {
-                InternalSort(keys, values, 0, count, Comparer<TKey>.Default);
-            }
-        }
-
-        /// <summary>
-        /// Uses the specified sorter. Sorts the elements in the key collection and correspondingly changes the order of the elements in the value collection.
-        /// </summary>
-        /// <param name="keys">The key collection.</param>
-        /// <param name="values">The value collection.</param>
-        /// <param name="comparer">The comparer used to compare elements. If it is <see langword="null"/>, the default comparer (<see cref="Comparer{T}.Default"/>) is used.</param>
-        /// <typeparam name="TKey">The type of the elements in the key collection.</typeparam>
-        /// <typeparam name="TValue">The type of the elements in the value collection.</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="keys"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="values"/> is not <see langword="null"/>, and the number of elements in <paramref name="values"/> is less than the number of elements in <paramref name="keys"/>.</exception>
-        public static void Sort<TKey, TValue>(IList<TKey> keys, IList<TValue> values, IComparer<TKey> comparer)
-        {
-            if (keys == null)
-            {
-                throw new ArgumentNullException(nameof(keys));
-            }
-            var count = keys.Count;
-            if (values != null && values.Count < count)
-            {
-                throw new ArgumentException(
-                    $"{nameof(values)}'s number of elements is less than {nameof(keys)}'s number of elements",
-                    nameof(values)
-                );
-            }
-            if (count < 2)
-            {
-                return;
-            }
-            if (values == null)
-            {
-                InternalSort(keys, 0, count, comparer ?? Comparer<TKey>.Default);
-            }
-            else
-            {
-                InternalSort(keys, values, 0, count, comparer ?? Comparer<TKey>.Default);
-            }
-        }
-
-        /// <summary>
-        /// Uses the specified sorter. Sorts part of the elements in the key collection and correspondingly changes the order of the elements in the value collection.
-        /// </summary>
-        /// <param name="keys">The key collection.</param>
-        /// <param name="values">The value collection.</param>
-        /// <param name="index">The starting index of the sort range.</param>
-        /// <param name="count">The number of elements in the sort range.</param>
-        /// <typeparam name="TKey">The type of the elements in the key collection.</typeparam>
-        /// <typeparam name="TValue">The type of the elements in the value collection.</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="keys"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="keys"/>, or <paramref name="values"/> is not <see langword="null"/> and <paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="values"/>.</exception>
-        public static void Sort<TKey, TValue>(IList<TKey> keys, IList<TValue> values, int index, int count)
-        {
-            if (keys == null)
-            {
-                throw new ArgumentNullException(nameof(keys));
-            }
-            if (index < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index), index, null);
-            }
-            if (count < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(count), count, null);
-            }
-            if (index + count > keys.Count)
-            {
-                throw new ArgumentException(
-                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(keys)}'s number of elements"
-                );
-            }
-            if (values != null && index + count > values.Count)
-            {
-                throw new ArgumentException(
-                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(values)}'s number of elements"
-                );
-            }
-            if (count < 2)
-            {
-                return;
-            }
-            if (values == null)
-            {
-                InternalSort(keys, index, count, Comparer<TKey>.Default);
-            }
-            else
-            {
-                InternalSort(keys, values, index, count, Comparer<TKey>.Default);
-            }
-        }
-
-        /// <summary>
-        /// Uses the specified sorter. Sorts part of the elements in the key collection and correspondingly changes the order of the elements in the value collection.
-        /// </summary>
-        /// <param name="keys">The key collection.</param>
-        /// <param name="values">The value collection.</param>
-        /// <param name="index">The starting index of the sort range.</param>
-        /// <param name="count">The number of elements in the sort range.</param>
-        /// <param name="comparer">The comparer used to compare elements. If it is <see langword="null"/>, the default comparer (<see cref="Comparer{T}.Default"/>) is used.</param>
-        /// <typeparam name="TKey">The type of the elements in the key collection.</typeparam>
-        /// <typeparam name="TValue">The type of the elements in the value collection.</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="keys"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="keys"/>, or <paramref name="values"/> is not <see langword="null"/> and <paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="values"/>.</exception>
-        public static void Sort<TKey, TValue>(
-            IList<TKey>     keys,
-            IList<TValue>   values,
-            int             index,
-            int             count,
-            IComparer<TKey> comparer)
-        {
-            if (keys == null)
-            {
-                throw new ArgumentNullException(nameof(keys));
-            }
-            if (index < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index), index, null);
-            }
-            if (count < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(count), count, null);
-            }
-            if (index + count > keys.Count)
-            {
-                throw new ArgumentException(
-                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(keys)}'s number of elements"
-                );
-            }
-            if (values != null && index + count > values.Count)
-            {
-                throw new ArgumentException(
-                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(values)}'s number of elements"
-                );
-            }
-            if (count < 2)
-            {
-                return;
-            }
-            if (values == null)
-            {
-                InternalSort(keys, index, count, comparer ?? Comparer<TKey>.Default);
-            }
-            else
-            {
-                InternalSort(keys, values, index, count, comparer ?? Comparer<TKey>.Default);
-            }
-        }
-
-        private static void InternalSort<T>(IList<T> collection, int index, int count, IComparer<T> comparer)
+        internal static void InternalSort<T>(IList<T> collection, int index, int count, IComparer<T> comparer)
         {
             var sections = PredefinedPools<Section>.Stack.Get();
             try
@@ -328,7 +39,10 @@ namespace Aurora.Sorting
             }
         }
 
-        private static void InternalSort<TKey, TValue>(
+        /// <summary>
+        /// Sorts the requested range of keys and reorders the values to match. The caller is responsible for validating the arguments.
+        /// </summary>
+        internal static void InternalSort<TKey, TValue>(
             IList<TKey>     keys,
             IList<TValue>   values,
             int             index,
@@ -359,12 +73,29 @@ namespace Aurora.Sorting
         {
             var left  = section.Left;
             var right = section.Right;
-            var key   = collection[left];
-            var l     = left;
-            var r     = right;
+
+            if (right - left + 1 <= InsertionSortThreshold)
+            {
+                InsertionSort.InternalSort(collection, left, right - left + 1, left, comparer);
+                return;
+            }
+            /*
+             * Partition around the median of three, kept in a hole at the left end
+             * The scans compare strictly, so keys equal to the pivot stop them and end up on both sides; that keeps
+             * all-equal and duplicate-heavy input at O(n log n), while each element is still written at most once
+             */
+            var pivotIndex = ChoosePivotIndex(collection, left, right, comparer);
+            if (pivotIndex != left)
+            {
+                (collection[left], collection[pivotIndex]) = (collection[pivotIndex], collection[left]);
+            }
+
+            var key = collection[left];
+            var l   = left;
+            var r   = right;
             while (l < r)
             {
-                while (l < r && comparer.Compare(collection[r], key) >= 0)
+                while (l < r && comparer.Compare(collection[r], key) > 0)
                 {
                     r--;
                 }
@@ -372,7 +103,7 @@ namespace Aurora.Sorting
                 {
                     collection[l++] = collection[r];
                 }
-                while (l < r && comparer.Compare(collection[l], key) <= 0)
+                while (l < r && comparer.Compare(collection[l], key) < 0)
                 {
                     l++;
                 }
@@ -401,13 +132,31 @@ namespace Aurora.Sorting
         {
             var left  = section.Left;
             var right = section.Right;
+
+            if (right - left + 1 <= InsertionSortThreshold)
+            {
+                InsertionSort.InternalSort(keys, values, left, right - left + 1, left, comparer);
+                return;
+            }
+            /*
+             * Partition around the median of three, kept in a hole at the left end
+             * The scans compare strictly, so keys equal to the pivot stop them and end up on both sides; that keeps
+             * all-equal and duplicate-heavy input at O(n log n), while each element is still written at most once
+             */
+            var pivotIndex = ChoosePivotIndex(keys, left, right, comparer);
+            if (pivotIndex != left)
+            {
+                (keys[left], keys[pivotIndex])     = (keys[pivotIndex], keys[left]);
+                (values[left], values[pivotIndex]) = (values[pivotIndex], values[left]);
+            }
+
             var key   = keys[left];
             var value = values[left];
             var l     = left;
             var r     = right;
             while (l < r)
             {
-                while (l < r && comparer.Compare(keys[r], key) >= 0)
+                while (l < r && comparer.Compare(keys[r], key) > 0)
                 {
                     r--;
                 }
@@ -417,7 +166,7 @@ namespace Aurora.Sorting
                     values[l] = values[r];
                     l++;
                 }
-                while (l < r && comparer.Compare(keys[l], key) <= 0)
+                while (l < r && comparer.Compare(keys[l], key) < 0)
                 {
                     l++;
                 }
@@ -438,6 +187,39 @@ namespace Aurora.Sorting
             {
                 sections.Push(new Section(l + 1, right));
             }
+        }
+
+        private static int ChoosePivotIndex<T>(IList<T> collection, int left, int right, IComparer<T> comparer)
+        {
+            var count = right - left + 1;
+            if (count <= MedianOfMediansThreshold)
+            {
+                return MedianOfThreeIndex(collection, left, left + (count >> 1), right, comparer);
+            }
+            /*
+             * The median of the medians of three evenly spread triples
+             * It stays balanced on distributions that defeat a plain median of three, such as an organ pipe
+             */
+            var step = (right - left) / 8;
+            var m1   = MedianOfThreeIndex(collection, left,            left + step,     left + step * 2, comparer);
+            var m2   = MedianOfThreeIndex(collection, left + step * 3, left + step * 4, left + step * 5, comparer);
+            var m3   = MedianOfThreeIndex(collection, left + step * 6, left + step * 7, right,           comparer);
+            return MedianOfThreeIndex(collection, m1, m2, m3, comparer);
+        }
+
+        private static int MedianOfThreeIndex<T>(IList<T> collection, int i, int j, int k, IComparer<T> comparer)
+        {
+            return i == j || comparer.Compare(collection[i], collection[j]) <= 0
+                       ? j == k || comparer.Compare(collection[j], collection[k]) <= 0
+                             ? j /* i <= j <= k */
+                             : i == k || comparer.Compare(collection[i], collection[k]) <= 0
+                                 ? k /* i <= k < j */
+                                 : i /* k < i < j */
+                       : j == k || comparer.Compare(collection[j], collection[k]) <= 0
+                           ? i == k || comparer.Compare(collection[i], collection[k]) <= 0
+                                 ? i /* j < i <= k */
+                                 : k /* j < k < i */
+                           : j /* k < j < i */;
         }
 
         private readonly struct Section
