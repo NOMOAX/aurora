@@ -19,10 +19,10 @@ namespace Aurora.Collections
         private Node _parent;
 
         /// <summary>
-        /// Gets or sets the direct parent node.
+        /// Gets or sets the parent node.
         /// </summary>
         /// <exception cref="ArgumentException">
-        /// <paramref name="value"/> is this node itself, or <paramref name="value"/> is a child of this node, or this type's implementation rejects setting <paramref name="value"/> as the direct parent, or <paramref name="value"/> is not <see langword="null"/>, and <paramref name="value"/> type's implementation rejects adding this node to <paramref name="value"/>'s list of direct children.</exception>
+        /// <paramref name="value"/> is this node itself, or <paramref name="value"/> is a descendant of this node, or this type's implementation rejects setting <paramref name="value"/> as the parent, or <paramref name="value"/> is not <see langword="null"/>, and <paramref name="value"/> type's implementation rejects adding this node to <paramref name="value"/>'s children.</exception>
         public Node Parent
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -36,7 +36,7 @@ namespace Aurora.Collections
         private int _version;
 
         /// <summary>
-        /// Gets the read-only collection that stores the direct children.
+        /// Gets the read-only collection that stores the children.
         /// </summary>
         public IReadOnlyList<Node> Children
         {
@@ -87,7 +87,7 @@ namespace Aurora.Collections
         /// <remarks>
         /// Expose this property to allow additional enumerators to be implemented.
         /// <br/>
-        /// This value updates whenever direct or indirect children change.
+        /// This value updates whenever its children or descendants change.
         /// <br/>
         /// The invariants based on this value ensure enumeration remains valid.
         /// </remarks>
@@ -108,38 +108,38 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// Gets a value indicating whether this node is a child of the specified node.
+        /// Gets a value indicating whether this node is a descendant of the specified node.
         /// </summary>
         /// <param name="node">The specified node.</param>
-        /// <returns>Whether this node is a child of the specified node.</returns>
+        /// <returns>Whether this node is a descendant of the specified node.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <see langword="null"/>.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsChildOf(Node node)
+        public bool IsDescendantOf(Node node)
         {
             if (node == null)
             {
                 throw new ArgumentNullException(nameof(node));
             }
-            return InternalIsChildOf(node);
+            return InternalIsDescendantOf(node);
         }
 
         /// <summary>
-        /// Gets a value indicating whether this node is the parent of the specified node.
+        /// Gets a value indicating whether this node is an ancestor of the specified node.
         /// </summary>
         /// <param name="node">The specified node.</param>
-        /// <returns>Whether this node is the parent of the specified node.</returns>
+        /// <returns>Whether this node is an ancestor of the specified node.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <see langword="null"/>.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsParentOf(Node node)
+        public bool IsAncestorOf(Node node)
         {
             if (node == null)
             {
                 throw new ArgumentNullException(nameof(node));
             }
-            return node.InternalIsChildOf(this);
+            return node.InternalIsDescendantOf(this);
         }
 
-        private bool InternalIsChildOf(Node node)
+        private bool InternalIsDescendantOf(Node node)
         {
             if (node == this)
             {
@@ -229,7 +229,7 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// Gets all direct children and stores them into the specified collection.
+        /// Gets all children and stores them into the specified collection.
         /// </summary>
         /// <param name="results">The collection used to store the results.</param>
         /// <exception cref="ArgumentNullException"><paramref name="results"/> is <see langword="null"/>.</exception>
@@ -252,10 +252,10 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// Gets all direct children of the specified type and stores them into the specified collection.
+        /// Gets all children of the specified type and stores them into the specified collection.
         /// </summary>
         /// <param name="results">The collection used to store the results.</param>
-        /// <typeparam name="TNode">The type of direct children to get.</typeparam>
+        /// <typeparam name="TNode">The type of children to get.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="results"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">The collection is read-only.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -298,7 +298,7 @@ namespace Aurora.Collections
         /// </summary>
         /// <param name="child">The child node to add.</param>
         /// <exception cref="ArgumentNullException"><paramref name="child"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="child"/> is this node itself, or <paramref name="child"/> is the parent of this node, or <paramref name="child"/> type's implementation rejects setting this node as <paramref name="child"/>'s direct parent, or this type's implementation rejects adding <paramref name="child"/> to this node's list of direct children.</exception>
+        /// <exception cref="ArgumentException"><paramref name="child"/> is this node itself, or <paramref name="child"/> is an ancestor of this node, or <paramref name="child"/> type's implementation rejects setting this node as <paramref name="child"/>'s parent, or this type's implementation rejects adding <paramref name="child"/> to this node's children.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Add(Node child)
         {
@@ -331,19 +331,19 @@ namespace Aurora.Collections
         }
 
         /// <summary>
-        /// About to set <paramref name="parent"/> as this node's direct parent; to reject this, a subclass may override this method and throw <see cref="ArgumentException"/> in its implementation.
+        /// About to set <paramref name="parent"/> as this node's parent; to reject this, a subclass may override this method and throw <see cref="ArgumentException"/> in its implementation.
         /// </summary>
-        /// <param name="parent">The new direct parent (not <see langword="null"/>).</param>
-        /// <exception cref="ArgumentException">In a subclass implementation, <paramref name="parent"/> is rejected as this node's direct parent.</exception>
+        /// <param name="parent">The new parent (not <see langword="null"/>).</param>
+        /// <exception cref="ArgumentException">In a subclass implementation, <paramref name="parent"/> is rejected as this node's parent.</exception>
         protected virtual void ThrowIfRejectParent(Node parent)
         {
         }
 
         /// <summary>
-        /// About to add <paramref name="child"/> to this node's list of direct children; to reject this, a subclass may override this method and throw <see cref="ArgumentException"/> in its implementation.
+        /// About to add <paramref name="child"/> to this node's children; to reject this, a subclass may override this method and throw <see cref="ArgumentException"/> in its implementation.
         /// </summary>
-        /// <param name="child">The new direct child (not <see langword="null"/>).</param>
-        /// <exception cref="ArgumentException">In a subclass implementation, <paramref name="child"/> is rejected from being added to this node's list of direct children.</exception>
+        /// <param name="child">The new child (not <see langword="null"/>).</param>
+        /// <exception cref="ArgumentException">In a subclass implementation, <paramref name="child"/> is rejected from being added to this node's children.</exception>
         protected virtual void ThrowIfRejectChild(Node child)
         {
         }
@@ -358,11 +358,15 @@ namespace Aurora.Collections
             {
                 if (parent == this)
                 {
-                    throw new ArgumentException("Cannot set a node as its own parent.");
+                    throw new ArgumentException(
+                        "Cannot set a node as its own parent, because that would create a cycle."
+                    );
                 }
-                if (parent.InternalIsChildOf(this))
+                if (parent.InternalIsDescendantOf(this))
                 {
-                    throw new ArgumentException("Cannot set a child node as a parent.");
+                    throw new ArgumentException(
+                        "Cannot set a descendant node as the parent, because that would create a cycle."
+                    );
                 }
                 ThrowIfRejectParent(parent);
                 parent.ThrowIfRejectChild(this);
@@ -418,7 +422,7 @@ namespace Aurora.Collections
         {
             return order switch
             {
-                TreeEnumOrder.Default        => new DirectChildEnumerator(this),
+                TreeEnumOrder.Default        => new ChildEnumerator(this),
                 TreeEnumOrder.BreadthFirstLr => new LrEnumerator<Node>(this, FuncGetChildren, FuncValidate, Version),
                 TreeEnumOrder.BreadthFirstRl => new RlEnumerator<Node>(this, FuncGetChildren, FuncValidate, Version),
                 TreeEnumOrder.DepthFirstDlr  => new DlrEnumerator<Node>(this, FuncGetChildren, FuncValidate, Version),
@@ -441,7 +445,7 @@ namespace Aurora.Collections
             return InternalGetEnumerator(TreeEnumOrder.Default);
         }
 
-        private struct DirectChildEnumerator : IEnumerator<Node>
+        private struct ChildEnumerator : IEnumerator<Node>
         {
             private Node _node;
 
@@ -451,7 +455,7 @@ namespace Aurora.Collections
 
             private Node _current;
 
-            internal DirectChildEnumerator(Node node)
+            internal ChildEnumerator(Node node)
             {
                 _node    = node;
                 _index   = 0;
@@ -473,7 +477,7 @@ namespace Aurora.Collections
             {
                 if (_node == null)
                 {
-                    throw new ObjectDisposedException(typeof(DirectChildEnumerator).FullName);
+                    throw new ObjectDisposedException(typeof(ChildEnumerator).FullName);
                 }
                 if (_version != _node.Version)
                 {
@@ -499,7 +503,7 @@ namespace Aurora.Collections
                 {
                     if (_node == null)
                     {
-                        throw new ObjectDisposedException(typeof(DirectChildEnumerator).FullName);
+                        throw new ObjectDisposedException(typeof(ChildEnumerator).FullName);
                     }
                     return _current ?? throw new InvalidOperationException();
                 }
@@ -509,7 +513,7 @@ namespace Aurora.Collections
             {
                 if (_node == null)
                 {
-                    throw new ObjectDisposedException(nameof(DirectChildEnumerator));
+                    throw new ObjectDisposedException(nameof(ChildEnumerator));
                 }
                 if (_version != _node.Version)
                 {

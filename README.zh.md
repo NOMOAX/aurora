@@ -1,7 +1,7 @@
 # Aurora
 
 ![许可](https://img.shields.io/github/license/NOMOAX/aurora)
-![版本](https://img.shields.io/badge/version-1.6.2-blue)
+![版本](https://img.shields.io/badge/version-2.0.0-blue)
 ![最低 Unity 版本](https://img.shields.io/badge/Unity-2021.2%2B-blue)
 
 适用于 Unity 的高性能、低内存消耗的 C# 工具包。
@@ -170,8 +170,8 @@ root.IsRoot; // true
 b.IsLeaf; // true
 a.Level; // 1
 root.Root; // 根节点自身
-root.IsParentOf(b); // true
-b.IsChildOf(root); // true
+root.IsAncestorOf(b); // true
+b.IsDescendantOf(root); // true
 ```
 
 ```csharp

@@ -1,7 +1,7 @@
 # Aurora
 
 ![license](https://img.shields.io/github/license/NOMOAX/aurora)
-![version](https://img.shields.io/badge/version-1.6.2-blue)
+![version](https://img.shields.io/badge/version-2.0.0-blue)
 ![lowest Unity version](https://img.shields.io/badge/Unity-2021.2%2B-blue)
 
 High-performance, low-memory-consumption C# toolkit for Unity.
@@ -170,8 +170,8 @@ root.IsRoot; // true
 b.IsLeaf; // true
 a.Level; // 1
 root.Root; // the root node itself
-root.IsParentOf(b); // true
-b.IsChildOf(root); // true
+root.IsAncestorOf(b); // true
+b.IsDescendantOf(root); // true
 ```
 
 ```csharp

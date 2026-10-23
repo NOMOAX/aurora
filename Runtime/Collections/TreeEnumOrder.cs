@@ -6,7 +6,7 @@ namespace Aurora.Collections
     public enum TreeEnumOrder
     {
         /// <summary>
-        /// Performs only a simple enumeration, i.e. enumerates direct child nodes.
+        /// Performs only a simple enumeration, i.e. enumerates the child nodes.
         /// </summary>
         Default,
 
