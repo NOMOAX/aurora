@@ -1,7 +1,7 @@
 {
   "name": "com.kevin-games.aurora",
   "displayName": "Aurora",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "unity": "2021.2",
   "description": "High-performance, low-memory-consumption C# toolkit for Unity.",
   "keywords": [
