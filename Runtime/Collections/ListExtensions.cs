@@ -14,11 +14,16 @@ namespace Aurora.Collections
         /// <param name="collection">The collection to shuffle.</param>
         /// <typeparam name="T">The type of the elements in the collection.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="collection"/> is read-only.</exception>
         public static void ShuffleInPlace<T>(this IList<T> collection)
         {
             if (collection == null)
             {
                 throw new ArgumentNullException(nameof(collection));
+            }
+            if (collection.IsReadOnly)
+            {
+                throw new ArgumentException();
             }
             collection.ShuffleInPlace(0, collection.Count);
         }
@@ -32,12 +37,16 @@ namespace Aurora.Collections
         /// <typeparam name="T">The type of the elements in the collection.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in <paramref name="collection"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="collection"/> is read-only, or <paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in <paramref name="collection"/>.</exception>
         public static void ShuffleInPlace<T>(this IList<T> collection, int index, int count)
         {
             if (collection == null)
             {
                 throw new ArgumentNullException(nameof(collection));
+            }
+            if (collection.IsReadOnly)
+            {
+                throw new ArgumentException();
             }
             if (index < 0)
             {
