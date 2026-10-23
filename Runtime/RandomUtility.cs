@@ -46,7 +46,7 @@ namespace Aurora
         /// <typeparam name="T">The type of the elements in the collection.</typeparam>
         /// <returns>If an element was selected, that element; otherwise, the default value of <typeparamref name="T"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="weights"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="collection"/> contains fewer elements than <paramref name="weights"/>, or <paramref name="weights"/> contains at least one element that is not a number or is less than 0.</exception>
+        /// <exception cref="ArgumentException"><paramref name="weights"/> contains fewer elements than <paramref name="collection"/>, or <paramref name="weights"/> contains at least one element that is not a number or is less than 0.</exception>
         /// <exception cref="NotSupportedException">Accumulating <paramref name="weights"/> from back to front reaches positive infinity at some step.</exception>
         public static T Choose<T>(IList<T> collection, IList<double> weights)
         {
@@ -65,7 +65,7 @@ namespace Aurora
         /// <typeparam name="T">The type of the elements in the collection.</typeparam>
         /// <returns>If an element was selected, that element; otherwise, the default value of <typeparamref name="T"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="weights"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="collection"/> contains fewer elements than <paramref name="weights"/>, or <paramref name="weights"/> contains at least one element that is not a number or is less than 0.</exception>
+        /// <exception cref="ArgumentException"><paramref name="weights"/> contains fewer elements than <paramref name="collection"/>, or <paramref name="weights"/> contains at least one element that is not a number or is less than 0.</exception>
         /// <exception cref="NotSupportedException">Accumulating <paramref name="weights"/> from back to front reaches positive infinity at some step.</exception>
         public static T Choose<T>(IList<T> collection, IList<float> weights)
         {
@@ -87,7 +87,7 @@ namespace Aurora
         /// <returns>If an element was selected, that element; otherwise, the default value of <typeparamref name="T"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="weights"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 1.</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="collection"/>, or <paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="weights"/>, or <paramref name="weights"/> contains at least one element that is not a number or is less than 0.</exception>
+        /// <exception cref="ArgumentException"><paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in the collection, or <paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in the weights collection, or <paramref name="weights"/> contains at least one element that is not a number or is less than 0.</exception>
         /// <exception cref="NotSupportedException">Accumulating <paramref name="weights"/> from back to front reaches positive infinity at some step.</exception>
         public static T Choose<T>(IList<T> collection, IList<double> weights, int index, int count)
         {
@@ -109,11 +109,15 @@ namespace Aurora
             }
             if (index + count > collection.Count)
             {
-                throw new ArgumentException();
+                throw new ArgumentException(
+                    "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."
+                );
             }
             if (index + count > weights.Count)
             {
-                throw new ArgumentException();
+                throw new ArgumentException(
+                    "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."
+                );
             }
             var chosenIndex = GetChosenIndex(weights, index, count);
             return chosenIndex >= 0 ? collection[chosenIndex] : default;
@@ -130,7 +134,7 @@ namespace Aurora
         /// <returns>If an element was selected, that element; otherwise, the default value of <typeparamref name="T"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="weights"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 1.</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="collection"/>, or <paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="weights"/>, or <paramref name="weights"/> contains at least one element that is not a number or is less than 0.</exception>
+        /// <exception cref="ArgumentException"><paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in the collection, or <paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in the weights collection, or <paramref name="weights"/> contains at least one element that is not a number or is less than 0.</exception>
         /// <exception cref="NotSupportedException">Accumulating <paramref name="weights"/> from back to front reaches positive infinity at some step.</exception>
         public static T Choose<T>(IList<T> collection, IList<float> weights, int index, int count)
         {
@@ -152,11 +156,15 @@ namespace Aurora
             }
             if (index + count > collection.Count)
             {
-                throw new ArgumentException();
+                throw new ArgumentException(
+                    "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."
+                );
             }
             if (index + count > weights.Count)
             {
-                throw new ArgumentException();
+                throw new ArgumentException(
+                    "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."
+                );
             }
             var chosenIndex = GetChosenIndex(weights, index, count);
             return chosenIndex >= 0 ? collection[chosenIndex] : default;
@@ -171,7 +179,7 @@ namespace Aurora
         /// <typeparam name="T">The type of the elements in the collection.</typeparam>
         /// <returns><see langword="true"/> if an element was selected; otherwise, <see langword="false"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="weights"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="collection"/> contains fewer elements than <paramref name="weights"/>, or <paramref name="weights"/> contains at least one element that is not a number or is less than 0.</exception>
+        /// <exception cref="ArgumentException"><paramref name="weights"/> contains fewer elements than <paramref name="collection"/>, or <paramref name="weights"/> contains at least one element that is not a number or is less than 0.</exception>
         /// <exception cref="NotSupportedException">Accumulating <paramref name="weights"/> from back to front reaches positive infinity at some step.</exception>
         public static bool TryChoose<T>(IList<T> collection, IList<double> weights, out T chosen)
         {
@@ -191,7 +199,7 @@ namespace Aurora
         /// <typeparam name="T">The type of the elements in the collection.</typeparam>
         /// <returns><see langword="true"/> if an element was selected; otherwise, <see langword="false"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="weights"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="collection"/> contains fewer elements than <paramref name="weights"/>, or <paramref name="weights"/> contains at least one element that is not a number or is less than 0.</exception>
+        /// <exception cref="ArgumentException"><paramref name="weights"/> contains fewer elements than <paramref name="collection"/>, or <paramref name="weights"/> contains at least one element that is not a number or is less than 0.</exception>
         /// <exception cref="NotSupportedException">Accumulating <paramref name="weights"/> from back to front reaches positive infinity at some step.</exception>
         public static bool TryChoose<T>(IList<T> collection, IList<float> weights, out T chosen)
         {
@@ -214,7 +222,7 @@ namespace Aurora
         /// <returns><see langword="true"/> if an element was selected; otherwise, <see langword="false"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="weights"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 1.</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="collection"/>, or <paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="weights"/>, or <paramref name="weights"/> contains at least one element that is not a number or is less than 0.</exception>
+        /// <exception cref="ArgumentException"><paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in the collection, or <paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in the weights collection, or <paramref name="weights"/> contains at least one element that is not a number or is less than 0.</exception>
         /// <exception cref="NotSupportedException">Accumulating <paramref name="weights"/> from back to front reaches positive infinity at some step.</exception>
         public static bool TryChoose<T>(IList<T> collection, IList<double> weights, int index, int count, out T chosen)
         {
@@ -236,11 +244,15 @@ namespace Aurora
             }
             if (index + count > collection.Count)
             {
-                throw new ArgumentException();
+                throw new ArgumentException(
+                    "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."
+                );
             }
             if (index + count > weights.Count)
             {
-                throw new ArgumentException();
+                throw new ArgumentException(
+                    "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."
+                );
             }
             var chosenIndex = GetChosenIndex(weights, index, count);
             var result      = chosenIndex >= 0;
@@ -260,7 +272,7 @@ namespace Aurora
         /// <returns><see langword="true"/> if an element was selected; otherwise, <see langword="false"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="weights"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 1.</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="collection"/>, or <paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="weights"/>, or <paramref name="weights"/> contains at least one element that is not a number or is less than 0.</exception>
+        /// <exception cref="ArgumentException"><paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in the collection, or <paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in the weights collection, or <paramref name="weights"/> contains at least one element that is not a number or is less than 0.</exception>
         /// <exception cref="NotSupportedException">Accumulating <paramref name="weights"/> from back to front reaches positive infinity at some step.</exception>
         public static bool TryChoose<T>(IList<T> collection, IList<float> weights, int index, int count, out T chosen)
         {
@@ -282,11 +294,15 @@ namespace Aurora
             }
             if (index + count > collection.Count)
             {
-                throw new ArgumentException();
+                throw new ArgumentException(
+                    "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."
+                );
             }
             if (index + count > weights.Count)
             {
-                throw new ArgumentException();
+                throw new ArgumentException(
+                    "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."
+                );
             }
             var chosenIndex = GetChosenIndex(weights, index, count);
             var result      = chosenIndex >= 0;
@@ -335,7 +351,7 @@ namespace Aurora
         /// <returns>If a weight value was selected, the index of that weight value in the collection of weight values; otherwise, a negative number.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="weights"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 1.</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="weights"/>, or <paramref name="weights"/> contains at least one element that is not a number or is less than 0.</exception>
+        /// <exception cref="ArgumentException"><paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in the weights collection, or <paramref name="weights"/> contains at least one element that is not a number or is less than 0.</exception>
         /// <exception cref="NotSupportedException">Accumulating <paramref name="weights"/> from back to front reaches positive infinity at some step.</exception>
         public static int GetChosenIndex(IList<double> weights, int index, int count)
         {
@@ -353,20 +369,22 @@ namespace Aurora
             }
             if (index + count > weights.Count)
             {
-                throw new ArgumentException();
+                throw new ArgumentException(
+                    "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."
+                );
             }
             var last = weights[index + count - 1];
             if (last is double.NaN)
             {
                 throw new ArgumentException(
-                    $"{nameof(weights)} contains at least one element that is not a number",
+                    $"{nameof(weights)} contains at least one element that is not a number.",
                     nameof(weights)
                 );
             }
             if (last < 0)
             {
                 throw new ArgumentException(
-                    $"{nameof(weights)} contains at least one element less than 0",
+                    $"{nameof(weights)} contains at least one element less than 0.",
                     nameof(weights)
                 );
             }
@@ -379,14 +397,14 @@ namespace Aurora
                 if (weight is double.NaN)
                 {
                     throw new ArgumentException(
-                        $"{nameof(weights)} contains at least one element that is not a number",
+                        $"{nameof(weights)} contains at least one element that is not a number.",
                         nameof(weights)
                     );
                 }
                 if (weight < 0)
                 {
                     throw new ArgumentException(
-                        $"{nameof(weights)} contains at least one element less than 0",
+                        $"{nameof(weights)} contains at least one element less than 0.",
                         nameof(weights)
                     );
                 }
@@ -394,7 +412,7 @@ namespace Aurora
                 if (sum is double.PositiveInfinity)
                 {
                     throw new NotSupportedException(
-                        $"{nameof(weights)} would reach positive infinity at some step when accumulated from back to front, so the calculation cannot be performed"
+                        $"{nameof(weights)} would reach positive infinity at some step when accumulated from back to front, so the calculation cannot be performed."
                     );
                 }
                 sums[sumIndex] = sum;
@@ -424,7 +442,7 @@ namespace Aurora
         /// <returns>If a weight value was selected, the index of that weight value in the collection of weight values; otherwise, a negative number.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="weights"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 1.</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="weights"/>, or <paramref name="weights"/> contains at least one element that is not a number or is less than 0.</exception>
+        /// <exception cref="ArgumentException"><paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in the weights collection, or <paramref name="weights"/> contains at least one element that is not a number or is less than 0.</exception>
         /// <exception cref="NotSupportedException">Accumulating <paramref name="weights"/> from back to front reaches positive infinity at some step.</exception>
         public static int GetChosenIndex(IList<float> weights, int index, int count)
         {
@@ -442,20 +460,22 @@ namespace Aurora
             }
             if (index + count > weights.Count)
             {
-                throw new ArgumentException();
+                throw new ArgumentException(
+                    "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."
+                );
             }
             var last = weights[index + count - 1];
             if (last is float.NaN)
             {
                 throw new ArgumentException(
-                    $"{nameof(weights)} contains at least one element that is not a number",
+                    $"{nameof(weights)} contains at least one element that is not a number.",
                     nameof(weights)
                 );
             }
             if (last < 0)
             {
                 throw new ArgumentException(
-                    $"{nameof(weights)} contains at least one element less than 0",
+                    $"{nameof(weights)} contains at least one element less than 0.",
                     nameof(weights)
                 );
             }
@@ -468,14 +488,14 @@ namespace Aurora
                 if (weight is float.NaN)
                 {
                     throw new ArgumentException(
-                        $"{nameof(weights)} contains at least one element that is not a number",
+                        $"{nameof(weights)} contains at least one element that is not a number.",
                         nameof(weights)
                     );
                 }
                 if (weight < 0)
                 {
                     throw new ArgumentException(
-                        $"{nameof(weights)} contains at least one element less than 0",
+                        $"{nameof(weights)} contains at least one element less than 0.",
                         nameof(weights)
                     );
                 }
@@ -483,7 +503,7 @@ namespace Aurora
                 if (sum is float.PositiveInfinity)
                 {
                     throw new NotSupportedException(
-                        $"{nameof(weights)} would reach positive infinity at some step when accumulated from back to front, so the calculation cannot be performed"
+                        $"{nameof(weights)} would reach positive infinity at some step when accumulated from back to front, so the calculation cannot be performed."
                     );
                 }
                 sums[sumIndex] = sum;

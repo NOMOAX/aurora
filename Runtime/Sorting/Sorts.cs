@@ -14,7 +14,7 @@ namespace Aurora.Sorting
         /// <param name="collection">The collection.</param>
         /// <typeparam name="T">The type of the elements in the collection.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="collection"/> is read-only.</exception>
+        /// <exception cref="ArgumentException">The collection is read-only.</exception>
         public static void Sort<T>(IList<T> collection)
         {
             if (collection == null)
@@ -23,7 +23,7 @@ namespace Aurora.Sorting
             }
             if (collection.IsReadOnly)
             {
-                throw new ArgumentException($"{nameof(collection)} is read-only", nameof(collection));
+                throw new ArgumentException("Collection is read-only.");
             }
             var count = collection.Count;
             if (count < 2)
@@ -39,7 +39,7 @@ namespace Aurora.Sorting
         /// <param name="collection">The collection.</param>
         /// <typeparam name="T">The type of the elements in the collection.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="collection"/> is read-only.</exception>
+        /// <exception cref="ArgumentException">The collection is read-only.</exception>
         public static void StableSort<T>(IList<T> collection)
         {
             if (collection == null)
@@ -48,7 +48,7 @@ namespace Aurora.Sorting
             }
             if (collection.IsReadOnly)
             {
-                throw new ArgumentException($"{nameof(collection)} is read-only", nameof(collection));
+                throw new ArgumentException("Collection is read-only.");
             }
             var count = collection.Count;
             if (count < 2)
@@ -65,7 +65,7 @@ namespace Aurora.Sorting
         /// <param name="comparer">The comparer used to compare elements. If it is <see langword="null"/>, the default comparer (<see cref="Comparer{T}.Default"/>) is used.</param>
         /// <typeparam name="T">The type of the elements in the collection.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="collection"/> is read-only.</exception>
+        /// <exception cref="ArgumentException">The collection is read-only.</exception>
         public static void Sort<T>(IList<T> collection, IComparer<T> comparer)
         {
             if (collection == null)
@@ -74,7 +74,7 @@ namespace Aurora.Sorting
             }
             if (collection.IsReadOnly)
             {
-                throw new ArgumentException($"{nameof(collection)} is read-only", nameof(collection));
+                throw new ArgumentException("Collection is read-only.");
             }
             var count = collection.Count;
             if (count < 2)
@@ -91,7 +91,7 @@ namespace Aurora.Sorting
         /// <param name="comparer">The comparer used to compare elements. If it is <see langword="null"/>, the default comparer (<see cref="Comparer{T}.Default"/>) is used.</param>
         /// <typeparam name="T">The type of the elements in the collection.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="collection"/> is read-only.</exception>
+        /// <exception cref="ArgumentException">The collection is read-only.</exception>
         public static void StableSort<T>(IList<T> collection, IComparer<T> comparer)
         {
             if (collection == null)
@@ -100,7 +100,7 @@ namespace Aurora.Sorting
             }
             if (collection.IsReadOnly)
             {
-                throw new ArgumentException($"{nameof(collection)} is read-only", nameof(collection));
+                throw new ArgumentException("Collection is read-only.");
             }
             var count = collection.Count;
             if (count < 2)
@@ -119,7 +119,7 @@ namespace Aurora.Sorting
         /// <typeparam name="T">The type of the elements in the collection.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
-        /// <exception cref="ArgumentException"><paramref name="collection"/> is read-only, or <paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="collection"/>.</exception>
+        /// <exception cref="ArgumentException">The collection is read-only, or <paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in the collection.</exception>
         public static void Sort<T>(IList<T> collection, int index, int count)
         {
             if (collection == null)
@@ -128,7 +128,7 @@ namespace Aurora.Sorting
             }
             if (collection.IsReadOnly)
             {
-                throw new ArgumentException($"{nameof(collection)} is read-only", nameof(collection));
+                throw new ArgumentException("Collection is read-only.");
             }
             if (index < 0)
             {
@@ -141,7 +141,7 @@ namespace Aurora.Sorting
             if (index + count > collection.Count)
             {
                 throw new ArgumentException(
-                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(collection)}'s number of elements"
+                    "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."
                 );
             }
             if (count < 2)
@@ -160,7 +160,7 @@ namespace Aurora.Sorting
         /// <typeparam name="T">The type of the elements in the collection.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
-        /// <exception cref="ArgumentException"><paramref name="collection"/> is read-only, or <paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="collection"/>.</exception>
+        /// <exception cref="ArgumentException">The collection is read-only, or <paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in the collection.</exception>
         public static void StableSort<T>(IList<T> collection, int index, int count)
         {
             if (collection == null)
@@ -169,7 +169,7 @@ namespace Aurora.Sorting
             }
             if (collection.IsReadOnly)
             {
-                throw new ArgumentException($"{nameof(collection)} is read-only", nameof(collection));
+                throw new ArgumentException("Collection is read-only.");
             }
             if (index < 0)
             {
@@ -182,7 +182,7 @@ namespace Aurora.Sorting
             if (index + count > collection.Count)
             {
                 throw new ArgumentException(
-                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(collection)}'s number of elements"
+                    "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."
                 );
             }
             if (count < 2)
@@ -202,7 +202,7 @@ namespace Aurora.Sorting
         /// <typeparam name="T">The type of the elements in the collection.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
-        /// <exception cref="ArgumentException"><paramref name="collection"/> is read-only, or <paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="collection"/>.</exception>
+        /// <exception cref="ArgumentException">The collection is read-only, or <paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in the collection.</exception>
         public static void Sort<T>(IList<T> collection, int index, int count, IComparer<T> comparer)
         {
             if (collection == null)
@@ -211,7 +211,7 @@ namespace Aurora.Sorting
             }
             if (collection.IsReadOnly)
             {
-                throw new ArgumentException($"{nameof(collection)} is read-only", nameof(collection));
+                throw new ArgumentException("Collection is read-only.");
             }
             if (index < 0)
             {
@@ -224,7 +224,7 @@ namespace Aurora.Sorting
             if (index + count > collection.Count)
             {
                 throw new ArgumentException(
-                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(collection)}'s number of elements"
+                    "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."
                 );
             }
             if (count < 2)
@@ -244,7 +244,7 @@ namespace Aurora.Sorting
         /// <typeparam name="T">The type of the elements in the collection.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
-        /// <exception cref="ArgumentException"><paramref name="collection"/> is read-only, or <paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="collection"/>.</exception>
+        /// <exception cref="ArgumentException">The collection is read-only, or <paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in the collection.</exception>
         public static void StableSort<T>(IList<T> collection, int index, int count, IComparer<T> comparer)
         {
             if (collection == null)
@@ -253,7 +253,7 @@ namespace Aurora.Sorting
             }
             if (collection.IsReadOnly)
             {
-                throw new ArgumentException($"{nameof(collection)} is read-only", nameof(collection));
+                throw new ArgumentException("Collection is read-only.");
             }
             if (index < 0)
             {
@@ -266,7 +266,7 @@ namespace Aurora.Sorting
             if (index + count > collection.Count)
             {
                 throw new ArgumentException(
-                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(collection)}'s number of elements"
+                    "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."
                 );
             }
             if (count < 2)
@@ -284,7 +284,7 @@ namespace Aurora.Sorting
         /// <typeparam name="TKey">The type of the elements in the key collection.</typeparam>
         /// <typeparam name="TValue">The type of the elements in the value collection.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="keys"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="keys"/> is read-only, or <paramref name="values"/> is not <see langword="null"/> and is read-only, or <paramref name="values"/> is not <see langword="null"/>, and the number of elements in <paramref name="values"/> is less than the number of elements in <paramref name="keys"/>.</exception>
+        /// <exception cref="ArgumentException">The key collection or the value collection is read-only, or <paramref name="values"/> is not <see langword="null"/> and the number of elements in the value collection is less than the number of elements in the key collection.</exception>
         public static void Sort<TKey, TValue>(IList<TKey> keys, IList<TValue> values)
         {
             if (keys == null)
@@ -293,19 +293,19 @@ namespace Aurora.Sorting
             }
             if (keys.IsReadOnly)
             {
-                throw new ArgumentException($"{nameof(keys)} is read-only", nameof(keys));
+                throw new ArgumentException("Collection is read-only.");
             }
             var count = keys.Count;
             if (values != null)
             {
                 if (values.IsReadOnly)
                 {
-                    throw new ArgumentException($"{nameof(values)} is read-only", nameof(values));
+                    throw new ArgumentException("Collection is read-only.");
                 }
                 if (values.Count < count)
                 {
                     throw new ArgumentException(
-                        $"{nameof(values)}'s number of elements is less than {nameof(keys)}'s number of elements",
+                        $"{nameof(values)}'s number of elements is less than {nameof(keys)}'s number of elements.",
                         nameof(values)
                     );
                 }
@@ -325,7 +325,7 @@ namespace Aurora.Sorting
         /// <typeparam name="TKey">The type of the elements in the key collection.</typeparam>
         /// <typeparam name="TValue">The type of the elements in the value collection.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="keys"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="keys"/> is read-only, or <paramref name="values"/> is not <see langword="null"/> and is read-only, or <paramref name="values"/> is not <see langword="null"/>, and the number of elements in <paramref name="values"/> is less than the number of elements in <paramref name="keys"/>.</exception>
+        /// <exception cref="ArgumentException">The key collection or the value collection is read-only, or <paramref name="values"/> is not <see langword="null"/> and the number of elements in the value collection is less than the number of elements in the key collection.</exception>
         public static void StableSort<TKey, TValue>(IList<TKey> keys, IList<TValue> values)
         {
             if (keys == null)
@@ -334,19 +334,19 @@ namespace Aurora.Sorting
             }
             if (keys.IsReadOnly)
             {
-                throw new ArgumentException($"{nameof(keys)} is read-only", nameof(keys));
+                throw new ArgumentException("Collection is read-only.");
             }
             var count = keys.Count;
             if (values != null)
             {
                 if (values.IsReadOnly)
                 {
-                    throw new ArgumentException($"{nameof(values)} is read-only", nameof(values));
+                    throw new ArgumentException("Collection is read-only.");
                 }
                 if (values.Count < count)
                 {
                     throw new ArgumentException(
-                        $"{nameof(values)}'s number of elements is less than {nameof(keys)}'s number of elements",
+                        $"{nameof(values)}'s number of elements is less than {nameof(keys)}'s number of elements.",
                         nameof(values)
                     );
                 }
@@ -367,7 +367,7 @@ namespace Aurora.Sorting
         /// <typeparam name="TKey">The type of the elements in the key collection.</typeparam>
         /// <typeparam name="TValue">The type of the elements in the value collection.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="keys"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="keys"/> is read-only, or <paramref name="values"/> is not <see langword="null"/> and is read-only, or <paramref name="values"/> is not <see langword="null"/>, and the number of elements in <paramref name="values"/> is less than the number of elements in <paramref name="keys"/>.</exception>
+        /// <exception cref="ArgumentException">The key collection or the value collection is read-only, or <paramref name="values"/> is not <see langword="null"/> and the number of elements in the value collection is less than the number of elements in the key collection.</exception>
         public static void Sort<TKey, TValue>(IList<TKey> keys, IList<TValue> values, IComparer<TKey> comparer)
         {
             if (keys == null)
@@ -376,19 +376,19 @@ namespace Aurora.Sorting
             }
             if (keys.IsReadOnly)
             {
-                throw new ArgumentException($"{nameof(keys)} is read-only", nameof(keys));
+                throw new ArgumentException("Collection is read-only.");
             }
             var count = keys.Count;
             if (values != null)
             {
                 if (values.IsReadOnly)
                 {
-                    throw new ArgumentException($"{nameof(values)} is read-only", nameof(values));
+                    throw new ArgumentException("Collection is read-only.");
                 }
                 if (values.Count < count)
                 {
                     throw new ArgumentException(
-                        $"{nameof(values)}'s number of elements is less than {nameof(keys)}'s number of elements",
+                        $"{nameof(values)}'s number of elements is less than {nameof(keys)}'s number of elements.",
                         nameof(values)
                     );
                 }
@@ -409,7 +409,7 @@ namespace Aurora.Sorting
         /// <typeparam name="TKey">The type of the elements in the key collection.</typeparam>
         /// <typeparam name="TValue">The type of the elements in the value collection.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="keys"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="keys"/> is read-only, or <paramref name="values"/> is not <see langword="null"/> and is read-only, or <paramref name="values"/> is not <see langword="null"/>, and the number of elements in <paramref name="values"/> is less than the number of elements in <paramref name="keys"/>.</exception>
+        /// <exception cref="ArgumentException">The key collection or the value collection is read-only, or <paramref name="values"/> is not <see langword="null"/> and the number of elements in the value collection is less than the number of elements in the key collection.</exception>
         public static void StableSort<TKey, TValue>(IList<TKey> keys, IList<TValue> values, IComparer<TKey> comparer)
         {
             if (keys == null)
@@ -418,19 +418,19 @@ namespace Aurora.Sorting
             }
             if (keys.IsReadOnly)
             {
-                throw new ArgumentException($"{nameof(keys)} is read-only", nameof(keys));
+                throw new ArgumentException("Collection is read-only.");
             }
             var count = keys.Count;
             if (values != null)
             {
                 if (values.IsReadOnly)
                 {
-                    throw new ArgumentException($"{nameof(values)} is read-only", nameof(values));
+                    throw new ArgumentException("Collection is read-only.");
                 }
                 if (values.Count < count)
                 {
                     throw new ArgumentException(
-                        $"{nameof(values)}'s number of elements is less than {nameof(keys)}'s number of elements",
+                        $"{nameof(values)}'s number of elements is less than {nameof(keys)}'s number of elements.",
                         nameof(values)
                     );
                 }
@@ -453,7 +453,7 @@ namespace Aurora.Sorting
         /// <typeparam name="TValue">The type of the elements in the value collection.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="keys"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
-        /// <exception cref="ArgumentException"><paramref name="keys"/> is read-only, or <paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="keys"/>, or <paramref name="values"/> is not <see langword="null"/> and is read-only, or <paramref name="values"/> is not <see langword="null"/> and <paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="values"/>.</exception>
+        /// <exception cref="ArgumentException">The key collection or the value collection is read-only, or <paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in the key collection or in the value collection.</exception>
         public static void Sort<TKey, TValue>(IList<TKey> keys, IList<TValue> values, int index, int count)
         {
             if (keys == null)
@@ -462,7 +462,7 @@ namespace Aurora.Sorting
             }
             if (keys.IsReadOnly)
             {
-                throw new ArgumentException($"{nameof(keys)} is read-only", nameof(keys));
+                throw new ArgumentException("Collection is read-only.");
             }
             if (index < 0)
             {
@@ -475,19 +475,19 @@ namespace Aurora.Sorting
             if (index + count > keys.Count)
             {
                 throw new ArgumentException(
-                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(keys)}'s number of elements"
+                    "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."
                 );
             }
             if (values != null)
             {
                 if (values.IsReadOnly)
                 {
-                    throw new ArgumentException($"{nameof(values)} is read-only", nameof(values));
+                    throw new ArgumentException("Collection is read-only.");
                 }
                 if (index + count > values.Count)
                 {
                     throw new ArgumentException(
-                        $"{nameof(index)} plus {nameof(count)} is greater than {nameof(values)}'s number of elements"
+                        "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."
                     );
                 }
             }
@@ -509,7 +509,7 @@ namespace Aurora.Sorting
         /// <typeparam name="TValue">The type of the elements in the value collection.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="keys"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
-        /// <exception cref="ArgumentException"><paramref name="keys"/> is read-only, or <paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="keys"/>, or <paramref name="values"/> is not <see langword="null"/> and is read-only, or <paramref name="values"/> is not <see langword="null"/> and <paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="values"/>.</exception>
+        /// <exception cref="ArgumentException">The key collection or the value collection is read-only, or <paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in the key collection or in the value collection.</exception>
         public static void StableSort<TKey, TValue>(IList<TKey> keys, IList<TValue> values, int index, int count)
         {
             if (keys == null)
@@ -518,7 +518,7 @@ namespace Aurora.Sorting
             }
             if (keys.IsReadOnly)
             {
-                throw new ArgumentException($"{nameof(keys)} is read-only", nameof(keys));
+                throw new ArgumentException("Collection is read-only.");
             }
             if (index < 0)
             {
@@ -531,19 +531,19 @@ namespace Aurora.Sorting
             if (index + count > keys.Count)
             {
                 throw new ArgumentException(
-                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(keys)}'s number of elements"
+                    "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."
                 );
             }
             if (values != null)
             {
                 if (values.IsReadOnly)
                 {
-                    throw new ArgumentException($"{nameof(values)} is read-only", nameof(values));
+                    throw new ArgumentException("Collection is read-only.");
                 }
                 if (index + count > values.Count)
                 {
                     throw new ArgumentException(
-                        $"{nameof(index)} plus {nameof(count)} is greater than {nameof(values)}'s number of elements"
+                        "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."
                     );
                 }
             }
@@ -566,7 +566,7 @@ namespace Aurora.Sorting
         /// <typeparam name="TValue">The type of the elements in the value collection.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="keys"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
-        /// <exception cref="ArgumentException"><paramref name="keys"/> is read-only, or <paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="keys"/>, or <paramref name="values"/> is not <see langword="null"/> and is read-only, or <paramref name="values"/> is not <see langword="null"/> and <paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="values"/>.</exception>
+        /// <exception cref="ArgumentException">The key collection or the value collection is read-only, or <paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in the key collection or in the value collection.</exception>
         public static void Sort<TKey, TValue>(
             IList<TKey>     keys,
             IList<TValue>   values,
@@ -580,7 +580,7 @@ namespace Aurora.Sorting
             }
             if (keys.IsReadOnly)
             {
-                throw new ArgumentException($"{nameof(keys)} is read-only", nameof(keys));
+                throw new ArgumentException("Collection is read-only.");
             }
             if (index < 0)
             {
@@ -593,19 +593,19 @@ namespace Aurora.Sorting
             if (index + count > keys.Count)
             {
                 throw new ArgumentException(
-                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(keys)}'s number of elements"
+                    "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."
                 );
             }
             if (values != null)
             {
                 if (values.IsReadOnly)
                 {
-                    throw new ArgumentException($"{nameof(values)} is read-only", nameof(values));
+                    throw new ArgumentException("Collection is read-only.");
                 }
                 if (index + count > values.Count)
                 {
                     throw new ArgumentException(
-                        $"{nameof(index)} plus {nameof(count)} is greater than {nameof(values)}'s number of elements"
+                        "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."
                     );
                 }
             }
@@ -628,7 +628,7 @@ namespace Aurora.Sorting
         /// <typeparam name="TValue">The type of the elements in the value collection.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="keys"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
-        /// <exception cref="ArgumentException"><paramref name="keys"/> is read-only, or <paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="keys"/>, or <paramref name="values"/> is not <see langword="null"/> and is read-only, or <paramref name="values"/> is not <see langword="null"/> and <paramref name="index"/> plus <paramref name="count"/> is greater than the number of elements in <paramref name="values"/>.</exception>
+        /// <exception cref="ArgumentException">The key collection or the value collection is read-only, or <paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in the key collection or in the value collection.</exception>
         public static void StableSort<TKey, TValue>(
             IList<TKey>     keys,
             IList<TValue>   values,
@@ -642,7 +642,7 @@ namespace Aurora.Sorting
             }
             if (keys.IsReadOnly)
             {
-                throw new ArgumentException($"{nameof(keys)} is read-only", nameof(keys));
+                throw new ArgumentException("Collection is read-only.");
             }
             if (index < 0)
             {
@@ -655,19 +655,19 @@ namespace Aurora.Sorting
             if (index + count > keys.Count)
             {
                 throw new ArgumentException(
-                    $"{nameof(index)} plus {nameof(count)} is greater than {nameof(keys)}'s number of elements"
+                    "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."
                 );
             }
             if (values != null)
             {
                 if (values.IsReadOnly)
                 {
-                    throw new ArgumentException($"{nameof(values)} is read-only", nameof(values));
+                    throw new ArgumentException("Collection is read-only.");
                 }
                 if (index + count > values.Count)
                 {
                     throw new ArgumentException(
-                        $"{nameof(index)} plus {nameof(count)} is greater than {nameof(values)}'s number of elements"
+                        "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."
                     );
                 }
             }

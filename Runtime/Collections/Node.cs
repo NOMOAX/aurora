@@ -233,7 +233,7 @@ namespace Aurora.Collections
         /// </summary>
         /// <param name="results">The collection used to store the results.</param>
         /// <exception cref="ArgumentNullException"><paramref name="results"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="results"/> is read-only.</exception>
+        /// <exception cref="ArgumentException">The collection is read-only.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void GetChildren(ICollection<Node> results)
         {
@@ -243,7 +243,7 @@ namespace Aurora.Collections
             }
             if (results.IsReadOnly)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Collection is read-only.");
             }
             foreach (var child in _children)
             {
@@ -257,7 +257,7 @@ namespace Aurora.Collections
         /// <param name="results">The collection used to store the results.</param>
         /// <typeparam name="TNode">The type of direct children to get.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="results"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="results"/> is read-only.</exception>
+        /// <exception cref="ArgumentException">The collection is read-only.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void GetChildren<TNode>(ICollection<TNode> results) where TNode : Node
         {
@@ -267,7 +267,7 @@ namespace Aurora.Collections
             }
             if (results.IsReadOnly)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Collection is read-only.");
             }
             foreach (var child in _children)
             {
@@ -358,11 +358,11 @@ namespace Aurora.Collections
             {
                 if (parent == this)
                 {
-                    throw new ArgumentException("Cannot set a node as its own parent");
+                    throw new ArgumentException("Cannot set a node as its own parent.");
                 }
                 if (parent.InternalIsChildOf(this))
                 {
-                    throw new ArgumentException("Cannot set a child node as a parent");
+                    throw new ArgumentException("Cannot set a child node as a parent.");
                 }
                 ThrowIfRejectParent(parent);
                 parent.ThrowIfRejectChild(this);

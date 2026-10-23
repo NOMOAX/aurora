@@ -34,7 +34,10 @@ namespace Aurora.IO
             var rootDirectoryPath = Path.GetPathRoot(path);
             if (string.IsNullOrEmpty(rootDirectoryPath))
             {
-                throw new ArgumentException();
+                throw new ArgumentException(
+                    $@"The drive containing {nameof(path)} cannot be found, or {nameof(path)} is a UNC (for example \\server\share) path.",
+                    nameof(path)
+                );
             }
             driveInfo = new DriveInfo(rootDirectoryPath);
             if (!driveInfo.IsReady)

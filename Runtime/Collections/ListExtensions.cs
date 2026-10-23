@@ -14,7 +14,7 @@ namespace Aurora.Collections
         /// <param name="collection">The collection to shuffle.</param>
         /// <typeparam name="T">The type of the elements in the collection.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="collection"/> is read-only.</exception>
+        /// <exception cref="ArgumentException">The collection is read-only.</exception>
         public static void ShuffleInPlace<T>(this IList<T> collection)
         {
             if (collection == null)
@@ -23,7 +23,7 @@ namespace Aurora.Collections
             }
             if (collection.IsReadOnly)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Collection is read-only.");
             }
             collection.ShuffleInPlace(0, collection.Count);
         }
@@ -37,7 +37,7 @@ namespace Aurora.Collections
         /// <typeparam name="T">The type of the elements in the collection.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
-        /// <exception cref="ArgumentException"><paramref name="collection"/> is read-only, or <paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in <paramref name="collection"/>.</exception>
+        /// <exception cref="ArgumentException">The collection is read-only, or <paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in the collection.</exception>
         public static void ShuffleInPlace<T>(this IList<T> collection, int index, int count)
         {
             if (collection == null)
@@ -46,7 +46,7 @@ namespace Aurora.Collections
             }
             if (collection.IsReadOnly)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Collection is read-only.");
             }
             if (index < 0)
             {
@@ -58,7 +58,9 @@ namespace Aurora.Collections
             }
             if (collection.Count - index < count)
             {
-                throw new ArgumentException();
+                throw new ArgumentException(
+                    "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."
+                );
             }
             for (var i = index + count - 1; i > index; i--)
             {
@@ -246,7 +248,7 @@ namespace Aurora.Collections
         /// <typeparam name="TState">The type of <paramref name="state"/>.</typeparam>
         /// <returns>The number of elements removed from the <see cref="IList{T}"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="match"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="collection"/> is read-only.</exception>
+        /// <exception cref="ArgumentException">The collection is read-only.</exception>
         public static int RemoveAll<TSource, TState>(
             this IList<TSource>                     collection,
             ParameterizedPredicate<TSource, TState> match,
@@ -258,7 +260,7 @@ namespace Aurora.Collections
             }
             if (collection.IsReadOnly)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Collection is read-only.");
             }
             if (match == null)
             {

@@ -164,7 +164,9 @@ namespace Aurora.Collections
             {
                 return 0;
             }
-            return obj is Fixer other ? CompareTo(other) : throw new ArgumentException();
+            return obj is Fixer other
+                       ? CompareTo(other)
+                       : throw new ArgumentException($"Object must be of type {nameof(Fixer)}.");
         }
 
         /// <inheritdoc />

@@ -497,7 +497,7 @@ namespace Aurora.Collections
             if (array.Length - arrayIndex < _size)
             {
                 throw new ArgumentException(
-                    $"The number of elements in the source deque is greater than the available space from {nameof(arrayIndex)} to the end of the target {nameof(array)}"
+                    $"The number of elements in the source deque is greater than the available space from {nameof(arrayIndex)} to the end of the target {nameof(array)}."
                 );
             }
             var numToCopy = _size;
@@ -955,7 +955,7 @@ namespace Aurora.Collections
 
         private static void ThrowForEmptyDeque()
         {
-            throw new InvalidOperationException("The deque is empty");
+            throw new InvalidOperationException("The deque is empty.");
         }
 
         /// <summary>
@@ -1043,7 +1043,7 @@ namespace Aurora.Collections
             private readonly void ThrowEnumerationNotStartedOrEnded()
             {
                 throw new InvalidOperationException(
-                    _index == -1 ? "Enumeration has not started" : "Enumeration has ended"
+                    _index == -1 ? "Enumeration has not started." : "Enumeration has ended"
                 );
             }
 

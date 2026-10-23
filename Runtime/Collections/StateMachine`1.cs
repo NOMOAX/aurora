@@ -169,12 +169,12 @@ namespace Aurora.Collections
             var stateId = state.Id;
             if (stateId == null)
             {
-                throw new ArgumentException("The state identifier cannot be null", nameof(state));
+                throw new ArgumentException("The state identifier cannot be null.", nameof(state));
             }
             ThrowIfEnteringOrExiting();
             if (_states.ContainsKey(stateId))
             {
-                throw new ArgumentException($"A state with identifier '{stateId}' already exists");
+                throw new ArgumentException($"A state with identifier '{stateId}' already exists.");
             }
             ThrowIfRejectState(state);
             _states.Add(stateId, state);
@@ -230,7 +230,7 @@ namespace Aurora.Collections
         {
             if (stateId == null)
             {
-                throw new ArgumentException("The state identifier cannot be null", nameof(stateId));
+                throw new ArgumentException("The state identifier cannot be null.", nameof(stateId));
             }
             ThrowIfEnteringOrExiting();
             InternalScheduleTransitionTo(stateId);
@@ -248,7 +248,7 @@ namespace Aurora.Collections
         {
             if (stateId == null)
             {
-                throw new ArgumentException("The state identifier cannot be null", nameof(stateId));
+                throw new ArgumentException("The state identifier cannot be null.", nameof(stateId));
             }
             ThrowIfExiting();
             InternalScheduleTransitionTo(stateId);
@@ -259,7 +259,7 @@ namespace Aurora.Collections
         {
             if (!_states.TryGetValue(stateId, out var nextState))
             {
-                throw new ArgumentException($"No state with identifier '{stateId}' exists");
+                throw new ArgumentException($"No state with identifier '{stateId}' exists.");
             }
             _isStateTransitionScheduled = true;
             _nextState                  = nextState;
@@ -362,7 +362,7 @@ namespace Aurora.Collections
         {
             if (_isEntering)
             {
-                throw new InvalidOperationException("The finite state machine is entering a state");
+                throw new InvalidOperationException("The finite state machine is entering a state.");
             }
         }
 
@@ -371,7 +371,7 @@ namespace Aurora.Collections
         {
             if (_isExiting)
             {
-                throw new InvalidOperationException("The finite state machine is exiting a state");
+                throw new InvalidOperationException("The finite state machine is exiting a state.");
             }
         }
     }

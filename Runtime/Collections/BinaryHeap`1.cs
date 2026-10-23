@@ -118,7 +118,7 @@ namespace Aurora.Collections
         {
             if (_size == 0)
             {
-                throw new InvalidOperationException("This binary heap has no members");
+                throw new InvalidOperationException("This binary heap has no members.");
             }
             var t = _array[0];
             _array[0] = _array[--_size];
@@ -310,7 +310,7 @@ namespace Aurora.Collections
                 }
                 if (_version != _binaryHeap._version)
                 {
-                    throw new InvalidOperationException("The binary heap was modified during enumeration");
+                    throw new InvalidOperationException("The binary heap was modified during enumeration.");
                 }
                 if (_index == -2)
                 {
@@ -339,10 +339,10 @@ namespace Aurora.Collections
                     return _index switch
                     {
                         -2 => throw new InvalidOperationException(
-                                  "The enumerator is positioned before the first member of the binary heap"
+                                  "The enumerator is positioned before the first member of the binary heap."
                               ),
                         -1 => throw new InvalidOperationException(
-                                  "The enumerator is positioned after the last member of the binary heap"
+                                  "The enumerator is positioned after the last member of the binary heap."
                               ),
                         _ => _currentElement
                     };
@@ -359,7 +359,7 @@ namespace Aurora.Collections
                 }
                 if (_version != _binaryHeap._version)
                 {
-                    throw new InvalidOperationException("The binary heap was modified during enumeration");
+                    throw new InvalidOperationException("The binary heap was modified during enumeration.");
                 }
                 _index          = -1;
                 _currentElement = default;

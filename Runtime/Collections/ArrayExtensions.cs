@@ -31,7 +31,7 @@ namespace Aurora.Collections
         /// <typeparam name="T">The type of the elements in the array.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="array"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than 0, or <paramref name="count"/> is less than 0.</exception>
-        /// <exception cref="ArgumentException"><paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in <paramref name="array"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in the array.</exception>
         public static void ShuffleInPlace<T>(this T[] array, int index, int count)
         {
             if (array == null)
@@ -48,7 +48,9 @@ namespace Aurora.Collections
             }
             if (array.Length - index < count)
             {
-                throw new ArgumentException();
+                throw new ArgumentException(
+                    "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."
+                );
             }
             for (var i = index + count - 1; i > index; i--)
             {

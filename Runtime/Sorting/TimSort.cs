@@ -793,7 +793,9 @@ namespace Aurora.Sorting
             switch (len1)
             {
                 case 0:
-                    throw new ArgumentException("Comparer violates its general contract!", nameof(comparer));
+                    throw new ArgumentException(
+                        $"Unable to sort because the IComparer.Compare() method returns inconsistent results. Either a value does not compare equal to itself, or one value repeatedly compared to another value yields different results. IComparer: '{comparer}'."
+                    );
                 case 1:
                     SortHelper.Copy(collection, cursor2, collection, dest, len2);
                     collection[dest + len2] = temp[cursor1];
@@ -930,7 +932,9 @@ namespace Aurora.Sorting
             switch (len1)
             {
                 case 0:
-                    throw new ArgumentException("Comparer violates its general contract!", nameof(comparer));
+                    throw new ArgumentException(
+                        $"Unable to sort because the IComparer.Compare() method returns inconsistent results. Either a value does not compare equal to itself, or one value repeatedly compared to another value yields different results. IComparer: '{comparer}'."
+                    );
                 case 1:
                     SortHelper.Copy(keys,   cursor2, keys,   dest, len2);
                     SortHelper.Copy(values, cursor2, values, dest, len2);
@@ -1049,7 +1053,9 @@ namespace Aurora.Sorting
             switch (len2)
             {
                 case 0:
-                    throw new ArgumentException("Comparer violates its general contract!", nameof(comparer));
+                    throw new ArgumentException(
+                        $"Unable to sort because the IComparer.Compare() method returns inconsistent results. Either a value does not compare equal to itself, or one value repeatedly compared to another value yields different results. IComparer: '{comparer}'."
+                    );
                 case 1:
                     dest    -= len1;
                     cursor1 -= len1;
@@ -1190,7 +1196,9 @@ namespace Aurora.Sorting
             switch (len2)
             {
                 case 0:
-                    throw new ArgumentException("Comparer violates its general contract!", nameof(comparer));
+                    throw new ArgumentException(
+                        $"Unable to sort because the IComparer.Compare() method returns inconsistent results. Either a value does not compare equal to itself, or one value repeatedly compared to another value yields different results. IComparer: '{comparer}'."
+                    );
                 case 1:
                     dest    -= len1;
                     cursor1 -= len1;
